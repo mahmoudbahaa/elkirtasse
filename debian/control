@@ -1,0 +1,14 @@
+Source: elkirtasse
+Section: utils
+Priority: extra
+Maintainer: kovax <kovax3k@gmail.com>
+Build-Depends: debhelper (>= 5.0.0),cdbs, qt4-qmake, libqt4-dev
+Standards-Version: 3.8.4
+Homepage: http://www.elkirtasse.co.cc
+#Vcs-Git: git://git.debian.org/collab-maint/elkirtasse.git
+#Vcs-Browser: http://git.debian.org/?p=collab-maint/elkirtasse.git;a=summary
+Pre-Depends:libc6 (>= 2.3.6-6~), libc6 (>= 2.4), libgcc1 (>= 1:4.1.1), libqt4-xml (>= 4:4.5.3), libqtcore4 (>= 4:4.7.0~beta1), libqtgui4 (>= 4:4.6.2), libstdc++6 (>= 4.1.1)
+Package: elkirtasse
+Architecture: all
+Depends: libqtgui4 (>= 4:4.6.0),libqt4-xml (>= 4:4.6.0)
+Description: مكتبة القرطاس
