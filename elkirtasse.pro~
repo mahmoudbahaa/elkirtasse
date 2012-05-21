@@ -1,0 +1,11 @@
+#! [0]
+TEMPLATE    = subdirs
+SUBDIRS	    = qbooks \
+	      kirtassenetwork \
+              kirtasserowat \
+              kirtassecdrom
+#! [0]
+
+# install
+
+
