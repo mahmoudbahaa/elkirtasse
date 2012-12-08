@@ -78,12 +78,13 @@ public:
 protected:
     virtual void closeEvent(QCloseEvent *e);
      bool eventFilter(QObject *obj, QEvent *ev);
+         void changeEvent(QEvent *e);
 signals:
     void bookAvailable(bool );
 private:
     Ui::MainWindowClass *ui;
     //BooksInterface *booksInterface;
-    QGraphicsScene m_scene;
+    //QGraphicsScene m_scene;
 
     int m_currentIndex  ;
    // enum  { NumIndex = 10};
@@ -129,7 +130,7 @@ private:
     QLabel *labelProgressInfo;                //معلومات عن الكتاب المفتوح
     QLabel *labelProgress;                     //عنوان شريط المعلومات
     QLabel *labelProgressImg;
-    QLabel *labelBetaka;
+   // QLabel *labelBetaka;
     QLabel *labelAnim;
     QLabel *labelTextFind;
 
@@ -171,7 +172,9 @@ QList<QString > listLineEditName;
     bool m_findIsTitle;
 bool m_iconsThemes;
     bool m_isCadre;
-
+int m_lng;
+bool     m_layouDir;
+int m_arabicNmber;
 public slots:
 
 private slots:
@@ -284,8 +287,8 @@ private slots:
     void on_actionAnimHistorie_triggered();
     void on_actionAnimGroup_triggered();
     void on_lineEdit_textChanged(QString );
-    void startAnimationBitaka();
-    void startAnimationPixmap();
+  //  void startAnimationBitaka();
+    //void startAnimationPixmap();
 
 //**tabs**
     void on_tabWidget_tabCloseRequested(int index);
@@ -354,6 +357,8 @@ bool loadPluginCdrom();
 
     void on_actionShamilaCdrom_triggered();
 
+    void on_actionControle_triggered();
+    void on_actionDvd_triggered();
 };
 
 #endif // MAINWINDOW_H

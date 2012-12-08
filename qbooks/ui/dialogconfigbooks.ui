@@ -13,272 +13,271 @@
   <property name="windowTitle">
    <string>لوحة تحكم الكتب</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_6">
+  <layout class="QVBoxLayout" name="verticalLayout_9">
    <item>
-    <widget class="QSplitter" name="splitter_2">
+    <widget class="QSplitter" name="splitter">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
-     <widget class="QSplitter" name="splitter">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
-      </property>
-      <widget class="QWidget" name="layoutWidget">
-       <layout class="QGridLayout" name="gridLayout_2">
-        <item row="2" column="0">
-         <widget class="QLabel" name="label_3">
-          <property name="text">
-           <string>قائمة المجموغات</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="0">
-         <widget class="QTreeWidget" name="treeWidgetCurGroup">
-          <column>
+     <widget class="QWidget" name="widget" native="true">
+      <layout class="QVBoxLayout" name="verticalLayout_6">
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_4">
+         <item>
+          <widget class="QLabel" name="label_7">
            <property name="text">
-            <string notr="true">المجموعة</string>
+            <string>حدد قسما من القائمة المنسدلة</string>
            </property>
-          </column>
-         </widget>
-        </item>
-        <item row="3" column="1">
-         <layout class="QVBoxLayout" name="verticalLayout_8">
-          <item>
-           <widget class="QToolButton" name="toolButtonGroupAdd">
-            <property name="toolTip">
-             <string>اضافة مجموعة جديدة</string>
-            </property>
-            <property name="whatsThis">
-             <string>اضافة مجموعة جديدة</string>
-            </property>
+          </widget>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_2">
+           <item>
+            <widget class="QComboBox" name="comboBoxSection"/>
+           </item>
+           <item>
+            <widget class="QToolButton" name="toolButtonSectionAdd">
+             <property name="toolTip">
+              <string>اضافة قسم جديد</string>
+             </property>
+             <property name="statusTip">
+              <string>اضافة قسم جديد</string>
+             </property>
+             <property name="whatsThis">
+              <string>اضافة قسم جديد</string>
+             </property>
+             <property name="text">
+              <string>...</string>
+             </property>
+             <property name="icon">
+              <iconset resource="images.qrc">
+               <normaloff>:/images/image/list-add.png</normaloff>:/images/image/list-add.png</iconset>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QToolButton" name="toolButtonSectionRname">
+             <property name="toolTip">
+              <string>اعادة تسمية القسم</string>
+             </property>
+             <property name="whatsThis">
+              <string>اعادة تسمية القسم</string>
+             </property>
+             <property name="text">
+              <string>...</string>
+             </property>
+             <property name="icon">
+              <iconset resource="images.qrc">
+               <normaloff>:/images/image/edit-rename.png</normaloff>:/images/image/edit-rename.png</iconset>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QToolButton" name="toolButtonSectionRemove">
+             <property name="toolTip">
+              <string>حذف القسم المحدد</string>
+             </property>
+             <property name="whatsThis">
+              <string>حذف القسم المحدد</string>
+             </property>
+             <property name="text">
+              <string>...</string>
+             </property>
+             <property name="icon">
+              <iconset resource="images.qrc">
+               <normaloff>:/images/image/edit-delete.png</normaloff>:/images/image/edit-delete.png</iconset>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="Line" name="line_3">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_3">
+         <property name="text">
+          <string>قائمة المجموغات</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_10">
+         <item>
+          <widget class="QTreeWidget" name="treeWidgetCurGroup">
+           <column>
             <property name="text">
-             <string>...</string>
+             <string notr="true">المجموعة</string>
             </property>
-            <property name="icon">
-             <iconset resource="images.qrc">
-              <normaloff>:/images/image/list-add.png</normaloff>:/images/image/list-add.png</iconset>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QToolButton" name="toolButtonGrouprename">
-            <property name="toolTip">
-             <string>اعادة تسمية الحجموعة المحددة</string>
-            </property>
-            <property name="whatsThis">
-             <string>اعادة تسمية الحجموعة المحددة</string>
-            </property>
-            <property name="text">
-             <string>...</string>
-            </property>
-            <property name="icon">
-             <iconset resource="images.qrc">
-              <normaloff>:/images/image/edit-rename.png</normaloff>:/images/image/edit-rename.png</iconset>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QToolButton" name="toolButtonGroupRemove">
-            <property name="toolTip">
-             <string>حذف المجموعة المحددة</string>
-            </property>
-            <property name="whatsThis">
-             <string>حذف المجموعة المحددة</string>
-            </property>
-            <property name="text">
-             <string>...</string>
-            </property>
-            <property name="icon">
-             <iconset resource="images.qrc">
-              <normaloff>:/images/image/edit-delete.png</normaloff>:/images/image/edit-delete.png</iconset>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QToolButton" name="toolButtonGroupTosection">
-            <property name="toolTip">
-             <string>نقل المجموعة الى قسم محدد</string>
-            </property>
-            <property name="whatsThis">
-             <string>نقل المجموعة الى قسم محدد</string>
-            </property>
-            <property name="text">
-             <string>...</string>
-            </property>
-            <property name="arrowType">
-             <enum>Qt::RightArrow</enum>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <spacer name="verticalSpacer_2">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>40</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-         </layout>
-        </item>
-        <item row="0" column="0">
-         <layout class="QVBoxLayout" name="verticalLayout_4">
-          <item>
-           <widget class="QLabel" name="label_7">
-            <property name="text">
-             <string>حدد قسما من القائمة المنسدلة</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_2">
-            <item>
-             <widget class="QComboBox" name="comboBoxSection"/>
-            </item>
-            <item>
-             <widget class="QToolButton" name="toolButtonSectionAdd">
-              <property name="toolTip">
-               <string>اضافة قسم جديد</string>
-              </property>
-              <property name="statusTip">
-               <string>اضافة قسم جديد</string>
-              </property>
-              <property name="whatsThis">
-               <string>اضافة قسم جديد</string>
-              </property>
-              <property name="text">
-               <string>...</string>
-              </property>
-              <property name="icon">
-               <iconset resource="images.qrc">
-                <normaloff>:/images/image/list-add.png</normaloff>:/images/image/list-add.png</iconset>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QToolButton" name="toolButtonSectionRname">
-              <property name="toolTip">
-               <string>اعادة تسمية القسم</string>
-              </property>
-              <property name="whatsThis">
-               <string>اعادة تسمية القسم</string>
-              </property>
-              <property name="text">
-               <string>...</string>
-              </property>
-              <property name="icon">
-               <iconset resource="images.qrc">
-                <normaloff>:/images/image/edit-rename.png</normaloff>:/images/image/edit-rename.png</iconset>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QToolButton" name="toolButtonSectionRemove">
-              <property name="toolTip">
-               <string>حذف القسم المحدد</string>
-              </property>
-              <property name="whatsThis">
-               <string>حذف القسم المحدد</string>
-              </property>
-              <property name="text">
-               <string>...</string>
-              </property>
-              <property name="icon">
-               <iconset resource="images.qrc">
-                <normaloff>:/images/image/edit-delete.png</normaloff>:/images/image/edit-delete.png</iconset>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-         </layout>
-        </item>
-        <item row="1" column="0">
-         <widget class="Line" name="line_3">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-      <widget class="QWidget" name="layoutWidget">
-       <layout class="QGridLayout" name="gridLayout">
-        <item row="0" column="0">
-         <widget class="QLabel" name="label_2">
-          <property name="text">
-           <string>قائمة الكتب</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="QTreeWidget" name="treeWidgetCurBooks">
-          <property name="selectionMode">
-           <enum>QAbstractItemView::MultiSelection</enum>
-          </property>
-          <column>
-           <property name="text">
-            <string notr="true">الكتاب</string>
+           </column>
+          </widget>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_8">
+           <item>
+            <widget class="QToolButton" name="toolButtonGroupAdd">
+             <property name="toolTip">
+              <string>اضافة مجموعة جديدة</string>
+             </property>
+             <property name="whatsThis">
+              <string>اضافة مجموعة جديدة</string>
+             </property>
+             <property name="text">
+              <string>...</string>
+             </property>
+             <property name="icon">
+              <iconset resource="images.qrc">
+               <normaloff>:/images/image/list-add.png</normaloff>:/images/image/list-add.png</iconset>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QToolButton" name="toolButtonGrouprename">
+             <property name="toolTip">
+              <string>اعادة تسمية الحجموعة المحددة</string>
+             </property>
+             <property name="whatsThis">
+              <string>اعادة تسمية الحجموعة المحددة</string>
+             </property>
+             <property name="text">
+              <string>...</string>
+             </property>
+             <property name="icon">
+              <iconset resource="images.qrc">
+               <normaloff>:/images/image/edit-rename.png</normaloff>:/images/image/edit-rename.png</iconset>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QToolButton" name="toolButtonGroupRemove">
+             <property name="toolTip">
+              <string>حذف المجموعة المحددة</string>
+             </property>
+             <property name="whatsThis">
+              <string>حذف المجموعة المحددة</string>
+             </property>
+             <property name="text">
+              <string>...</string>
+             </property>
+             <property name="icon">
+              <iconset resource="images.qrc">
+               <normaloff>:/images/image/edit-delete.png</normaloff>:/images/image/edit-delete.png</iconset>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QToolButton" name="toolButtonGroupTosection">
+             <property name="toolTip">
+              <string>نقل المجموعة الى قسم محدد</string>
+             </property>
+             <property name="whatsThis">
+              <string>نقل المجموعة الى قسم محدد</string>
+             </property>
+             <property name="text">
+              <string>...</string>
+             </property>
+             <property name="arrowType">
+              <enum>Qt::RightArrow</enum>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_2">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string>قائمة الكتب</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_9">
+         <item>
+          <widget class="QTreeWidget" name="treeWidgetCurBooks">
+           <property name="selectionMode">
+            <enum>QAbstractItemView::MultiSelection</enum>
            </property>
-          </column>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <layout class="QVBoxLayout" name="verticalLayout_5">
-          <item>
-           <widget class="QToolButton" name="toolButtonRemoveBooks">
-            <property name="toolTip">
-             <string>حذف الكتب المحددة</string>
-            </property>
-            <property name="whatsThis">
-             <string>حذف الكتب المحددة</string>
-            </property>
+           <column>
             <property name="text">
-             <string>...</string>
+             <string notr="true">الكتاب</string>
             </property>
-            <property name="icon">
-             <iconset resource="images.qrc">
-              <normaloff>:/images/image/edit-delete.png</normaloff>:/images/image/edit-delete.png</iconset>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QToolButton" name="toolButtonBookToGroup">
-            <property name="toolTip">
-             <string>نقل الكتب المحددة الى المجموعة المحددة</string>
-            </property>
-            <property name="whatsThis">
-             <string>نقل الكتب المحددة الى المجموعة المحددة</string>
-            </property>
-            <property name="text">
-             <string>...</string>
-            </property>
-            <property name="arrowType">
-             <enum>Qt::RightArrow</enum>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <spacer name="verticalSpacer_3">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>40</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-         </layout>
-        </item>
-       </layout>
-      </widget>
+           </column>
+          </widget>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_5">
+           <item>
+            <widget class="QToolButton" name="toolButtonRemoveBooks">
+             <property name="toolTip">
+              <string>حذف الكتب المحددة</string>
+             </property>
+             <property name="whatsThis">
+              <string>حذف الكتب المحددة</string>
+             </property>
+             <property name="text">
+              <string>...</string>
+             </property>
+             <property name="icon">
+              <iconset resource="images.qrc">
+               <normaloff>:/images/image/edit-delete.png</normaloff>:/images/image/edit-delete.png</iconset>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QToolButton" name="toolButtonBookToGroup">
+             <property name="toolTip">
+              <string>نقل الكتب المحددة الى المجموعة المحددة</string>
+             </property>
+             <property name="whatsThis">
+              <string>نقل الكتب المحددة الى المجموعة المحددة</string>
+             </property>
+             <property name="text">
+              <string>...</string>
+             </property>
+             <property name="arrowType">
+              <enum>Qt::RightArrow</enum>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_3">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+      </layout>
      </widget>
      <widget class="QWidget" name="layoutWidget">
       <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -484,15 +483,15 @@
         </layout>
        </item>
        <item>
-        <layout class="QGridLayout" name="gridLayout_3">
-         <item row="0" column="0">
+        <layout class="QHBoxLayout" name="horizontalLayout_6">
+         <item>
           <widget class="QLabel" name="label_11">
            <property name="text">
             <string>صورة الكتاب</string>
            </property>
           </widget>
          </item>
-         <item row="0" column="1">
+         <item>
           <widget class="QPushButton" name="pushButtonImg">
            <property name="enabled">
             <bool>false</bool>
@@ -536,7 +535,11 @@
            </property>
           </widget>
          </item>
-         <item row="1" column="0">
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_7">
+         <item>
           <widget class="QLabel" name="label_5">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -555,10 +558,14 @@
            </property>
           </widget>
          </item>
-         <item row="1" column="1">
+         <item>
           <widget class="QLineEdit" name="lineEditBooknam"/>
          </item>
-         <item row="2" column="0">
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_8">
+         <item>
           <widget class="QLabel" name="label_6">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -577,7 +584,7 @@
            </property>
           </widget>
          </item>
-         <item row="2" column="1">
+         <item>
           <widget class="QLineEdit" name="lineEditAautor"/>
          </item>
         </layout>

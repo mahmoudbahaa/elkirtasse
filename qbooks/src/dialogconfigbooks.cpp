@@ -1,3 +1,32 @@
+/****************************************************************************
+//   elkirtasse Copyright (C) 2010 yahia abouzakaria <yahiaui@gmail.com>
+//
+//      This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
+//      This is free software, and you are welcome to redistribute it
+//      under certain conditions; type `show c' for details.
+//
+//  The hypothetical commands `show w' and `show c' should show the appropriate
+//  parts of the General Public License.  Of course, your program's commands
+//  might be different; for a GUI interface, you would use an "about box".
+//
+//    You should also get your employer (if you work as a programmer) or school,
+//  if any, to sign a "copyright disclaimer" for the program, if necessary.
+//  For more information on this, and how to apply and follow the GNU GPL, see
+//  <http://www.gnu.org/licenses/>.
+//
+//    The GNU General Public License does not permit incorporating your program
+//  into proprietary programs.  If your program is a subroutine library, you
+//  may consider it more useful to permit linking proprietary applications with
+//  the library.  If this is what you want to do, use the GNU Lesser General
+//  Public License instead of this License.  But first, please read
+//  <http://www.gnu.org/philosophy/why-not-lgpl.html>.
+// ----------------------------------------------------------
+** If you have questions regarding the use of this file, please contact
+** abouzakaria (yahiaui@gmail.com)
+** $elkirtasse_END_LICENSE$
+**
+****************************************************************************/
+
 #include "dialogconfigbooks.h"
 #include "ui_dialogconfigbooks.h"
 #include <QDebug>
@@ -294,22 +323,53 @@ void DialogConfigBooks::on_toolButtonSectionRemove_clicked()
 void DialogConfigBooks::on_toolButtonGroupRemove_clicked()
 {
     int index=ui->comboBoxSection->currentIndex();
-    QTreeWidgetItem *item=  ui->treeWidgetBooks->topLevelItem(index)->child(indexGroup);
     QTreeWidgetItem *item2=  ui->treeWidgetCurGroup->currentItem();
+int curIndex=ui->treeWidgetCurGroup->indexOfTopLevelItem(item2);
+qDebug()<<curIndex;
+    QTreeWidgetItem *item=  ui->treeWidgetBooks->topLevelItem(index)->child(curIndex);
+    if (!item)return;
     if (!item2)return;
     if (item->childCount()>0){
-        int reponse = QMessageBox::warning(this, trUtf8("معلومات"), trUtf8("المجموعة تحتوي على عناصر وكتب  تحتها \n هل تريد بالفعل حذف المجموعة المحددة؟") , QMessageBox::Yes | QMessageBox::No);
+        int reponse = QMessageBox::warning(this, trUtf8("معلومات"), trUtf8("المجموعة تحتوي على عناصر وكتب  تحتها  \n سيتم حذف الكتب من الجهاز نهائيا \n هل تريد بالفعل حذف المجموعة المحددة؟") , QMessageBox::Yes | QMessageBox::No);
         if (reponse == QMessageBox::Yes){
+     curIndex=     ui->treeWidgetCurGroup->currentIndex().row();
+                if (curIndex==-1)return;
+     int count= ui->treeWidgetCurBooks->topLevelItemCount();
+                 for(int i=0;i<count;i++){  //الحف من الجهاز
+                     QTreeWidgetItem *item=ui->treeWidgetCurBooks->topLevelItem(i);
 
-            ui->treeWidgetBooks->topLevelItem(index)->takeChild(indexGroup);
-            ui->treeWidgetCurGroup->takeTopLevelItem(indexGroup);
-            ui->treeWidgetCurBooks->clear();
+                       QString BKname=item->data(1,1).toString();
+                       qDebug()<<BKname;
+                       QString    pathbook=pathCostm;
+                       QDir dir(pathCostm+"/" +BKname);
+                        qDebug()<<pathCostm+"/" +BKname;
+                        if (dir.exists()){
+                            dir.setFilter(QDir::Files | QDir::Hidden );
+                            QFileInfoList list = dir.entryInfoList();
+                            for (int i = 0; i < list.size(); ++i) {
+                                QFileInfo fileInfo = list.at(i);
+                                if(dir.remove(fileInfo.fileName())==false){
+                                    qDebug()<<fileInfo.fileName();
+                                }
+                            }
+                            QDir dirm(pathbook );
+                            if(dirm.rmdir(BKname)==false){
+                                qDebug()<<BKname;
+                            }
+                        }
+             }
+
+     ui->treeWidgetCurGroup->takeTopLevelItem(curIndex);
+            ui->treeWidgetBooks->topLevelItem(index)->takeChild(curIndex);
+                   ui->treeWidgetCurBooks->clear();
+       //   on_comboBoxSection_activated(index);
         }
     }else{
         int reponse = QMessageBox::question(this, trUtf8("معلومات"), trUtf8("هل تريد بالفعل حذف المجموعة المحددة؟") , QMessageBox::Yes | QMessageBox::No);
         if (reponse == QMessageBox::Yes){
-
+    if (indexGroup==-1)return;
             ui->treeWidgetBooks->topLevelItem(index)->takeChild(indexGroup);
+            qDebug()<<"BKname"<<indexGroup;
             ui->treeWidgetCurGroup->takeTopLevelItem(indexGroup);
 
             ui->treeWidgetCurBooks->clear();
@@ -325,7 +385,7 @@ void DialogConfigBooks::on_toolButtonRemoveBooks_clicked()
     items.append(ui->treeWidgetCurBooks->selectedItems());
     //معرفة موقع المجموعة من الشجرة الاصلية
     if (items.count()==0)return;
-        int reponse = QMessageBox::warning(this, trUtf8("معلومات"), trUtf8(" هل تريد بالفعل حذف الكنب المحددة؟") , QMessageBox::Yes | QMessageBox::No);
+        int reponse = QMessageBox::warning(this, trUtf8("معلومات"), trUtf8(" هل تريد بالفعل حذف الكنب المحددة؟ \n سيتم حذفهم نهائيا من الجهاز") , QMessageBox::Yes | QMessageBox::No);
         if (reponse == QMessageBox::No){
             return;
         }
@@ -339,8 +399,29 @@ void DialogConfigBooks::on_toolButtonRemoveBooks_clicked()
         int index=ui->treeWidgetCurBooks->indexOfTopLevelItem(item);
         ui->treeWidgetCurBooks->takeTopLevelItem(index);//مسح العنصر من المحدد
         itemGroup->takeChild(index);//مسح العنصر من الاصل
-    }
+      //الحف من الجهاز
+        QString BKname=item->data(1,1).toString();
+        qDebug()<<BKname;
+        QString    pathbook=pathCostm;
+        QDir dir(pathCostm+"/" +BKname);
+         qDebug()<<pathCostm+"/" +BKname;
+        if (dir.exists()){
 
+
+        dir.setFilter(QDir::Files | QDir::Hidden );
+        QFileInfoList list = dir.entryInfoList();
+        for (int i = 0; i < list.size(); ++i) {
+            QFileInfo fileInfo = list.at(i);
+            if(dir.remove(fileInfo.fileName())==false){
+               qDebug()<<fileInfo.fileName();
+            }
+        }
+        QDir dirm(pathbook );
+        if(dirm.rmdir(BKname)==false){
+             qDebug()<<BKname;
+       }
+        }
+}
 }
 
 void DialogConfigBooks::on_pushButtonImg_clicked()
@@ -415,9 +496,10 @@ void DialogConfigBooks::on_toolButtonOPenGroup_clicked()
     QFileDialog dlg;
 QString homeDir=QDir::homePath () ;
     QString fn = dlg.getOpenFileName(0, tr("Open xml Files..."),
-                                              homeDir   , trUtf8("ملفات ارشفة (*xml );;xml (*.xml)"));
+                                              homeDir   , trUtf8("ملف قائمة الكتب (group.xml );;xml (group.xml)"));
+   qDebug()<<fn;
     if(!dlg.AcceptOpen)
-        return;
+     //   return;
 
     if (!fn.isEmpty())
     {
@@ -617,12 +699,12 @@ void DialogConfigBooks::addbook(QTreeWidgetItem *itemNew,QTreeWidgetItem *item,Q
 }
 
 
-void DialogConfigBooks::on_treeWidgetCurGroup_itemActivated(QTreeWidgetItem *item, int column)
+void DialogConfigBooks::on_treeWidgetCurGroup_itemActivated(QTreeWidgetItem , int )
 {
     on_treeWidgetCurGroup_itemSelectionChanged();
 }
 
-void DialogConfigBooks::on_treeWidgetCurGroup_itemClicked(QTreeWidgetItem *item, int column)
+void DialogConfigBooks::on_treeWidgetCurGroup_itemClicked(QTreeWidgetItem , int )
 {
     on_treeWidgetCurGroup_itemSelectionChanged();
 }

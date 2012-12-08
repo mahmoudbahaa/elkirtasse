@@ -32,16 +32,16 @@
 #include <QDialog>
 
 namespace Ui {
-    class Dialog;
+    class Dialogcdrom;
 }
 
-class Dialog : public QDialog
+class Dialogcdrom : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit Dialog(QWidget *parent = 0);
-    ~Dialog();
+    explicit Dialogcdrom(QWidget *parent = 0);
+    ~Dialogcdrom();
 
     QString pathMain;
     QString pathBooks;
@@ -66,7 +66,7 @@ private slots:
      void on_buttonBox_accepted();
 
 private:
-    Ui::Dialog *ui;
+    Ui::Dialogcdrom *ui;
 };
 
 #endif // DIALOG_H

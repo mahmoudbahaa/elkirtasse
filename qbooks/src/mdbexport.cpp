@@ -85,9 +85,9 @@ bool mdbexport::readMain(QString mdbSource)
 {
     if (mdbSource.contains(".bok")){
 
-
-        enum  { NumIndex = 40};
-        QString strHeaderName[NumIndex];
+ QList<QString> listHeader;
+//        enum  { NumIndex = 40};
+//        QString strHeaderName[NumIndex];
         //*********************************
         QFile fileCsv(m_tempDir+"/main.csv");
 
@@ -113,15 +113,17 @@ bool mdbexport::readMain(QString mdbSource)
         //QMessageBox::information(this,trUtf8("خطأ"),QString::number(tab));
         for (int i=1;i<tab+2;i++){
             if (i==tab+1){
-                strHeaderName[i]=line.section("|*|",-1);
+               listHeader.append(line.section("|*|",-1));
             }else{
-                strHeaderName[i]=line.section("|*|",i-1,i-1);
+                listHeader.append(line.section("|*|",i-1,i-1));
             }
         }
 
         line = textStream.readAll();//2 line
 
         for (int i=1;i<tab+2;i++){
+
+            QString headerName=listHeader.at(i-1);
             QString strValue;
             if (i==tab+1){
                 strValue=line.section("|*|",-1);
@@ -129,19 +131,19 @@ bool mdbexport::readMain(QString mdbSource)
                 strValue=line.section("|*|",i-1,i-1);
             }
             //   QMessageBox::information(this,trUtf8("خطأ"),strHeaderName[i]+"  : "+strValue);
-            if (strHeaderName[i]=="Bk"){
+            if (headerName=="Bk"){
                 //   ui->lineEdit_booknam->setText(strValue);
                 m_bookTitle=strValue;
             }
-            if (strHeaderName[i]=="Auth"){
+            if (headerName=="Auth"){
                 //                        ui->lineEdit_autor->setText(strValue);
                 m_bookAuthor=strValue;
             }
-            if (strHeaderName[i]=="Betaka"){
+            if (headerName=="Betaka"){
                 //                        ui->textEdit->setText(strValue);
                 m_bookBitaka=strValue;
             }
-            if (strHeaderName[i]=="BkId"){
+            if (headerName=="BkId"){
                 tableBook="b"+strValue;
                 tableTitle="t"+strValue;
             }
@@ -260,10 +262,10 @@ bool mdbexport::creatXmlFile(QString f,QString table,QString csv)
 {
 
 
-    enum  { NumIndex = 10};
+     QList<QString> listHeader;
     QXmlStreamWriter stream;
-
-    QString strHeaderName[NumIndex];
+//    enum  { NumIndex = 10};
+//    QString strHeaderName[NumIndex];
     //*********************************
     QFile fileCsv(m_tempDir+csv);
 
@@ -281,9 +283,9 @@ bool mdbexport::creatXmlFile(QString f,QString table,QString csv)
     int tab=  line.count("|*|");//nombre col
     for (int i=1;i<tab+2;i++){
         if (i==tab+1){
-            strHeaderName[i]=line.section("|*|",-1);
+          listHeader.append(line.section("|*|",-1));
         }else{
-            strHeaderName[i]=line.section("|*|",i-1,i-1);
+           listHeader.append(line.section("|*|",i-1,i-1));
         }
 
     }
@@ -312,6 +314,7 @@ if(!line.isEmpty()){
         //**************************************start book
 
         for (int i=1;i<tab+2;i++){
+            QString headerName=listHeader.at(i-1);
             QString strValue;
             if (i==tab+1){
                 strValue=line.section("|*|",-1);
@@ -319,9 +322,9 @@ if(!line.isEmpty()){
                 strValue=line.section("|*|",i-1,i-1);
             }
              if (strValue.isEmpty() || strValue==0){strValue="1";}
-            if (strHeaderName[i]=="hno" || strHeaderName[i]=="na" || strHeaderName[i]=="sub"){
+            if (headerName=="hno" || headerName=="na" || headerName=="sub"){
                 //*--
-            }else if(strHeaderName[i]=="id"){
+            }else if(headerName=="id"){
                 if (table=="book"){
                     listId.append(strValue);
                 }else{
@@ -331,10 +334,10 @@ if(!line.isEmpty()){
                     strValue=dd.toString();
                 }
 
-                stream.writeTextElement(strHeaderName[i], strValue);
+                stream.writeTextElement(headerName, strValue);
             }else{
 
-                stream.writeTextElement(strHeaderName[i], strValue);
+                stream.writeTextElement(headerName, strValue);
             }
         }
         stream.writeEndElement(); // book table
@@ -482,3 +485,40 @@ void mdbexport::on_toolButton_delet_clicked()
         ui->listWidget->takeItem(x);
     }
 }
+
+//-------------------EBOOK--------------------------------------
+
+void mdbexport::criateEbookContent()
+{
+    QString title;
+    QString author;
+    QString textConten=QString(
+" <?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+  "<package xmlns=\"http://www.idpf.org/2007/opf\" unique-identifier=\"BookID\" version=\"2.0\">"
+                         " <metadata xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:opf=\"http://www.idpf.org/2007/opf\">"
+                                    "<dc:title> 1% </dc:title>"
+                                    "  <dc:creator opf:role=\"aut\"> 2% </dc:creator>"
+                                    "<dc:publisher>http://elkirtasse.ws</dc:publisher>"
+                                    "<dc:language>ar</dc:language>"
+                                   "<dc:identifier id=\"BookID\" opf:scheme=\"UUID\">urn:uuid:52c0ee2aaf4ca262c96145e220f0cf67</dc:identifier>"
+                "</metadata>"
+                "<manifest>"
+                                 "<item id=\"ncx\" href=\"toc.ncx\" media-type=\"application/x-dtbncx+xml\"/>"
+                                  "<item id=\"stylesheet\" href=\"style.css\" media-type=\"text/css\"/>"
+                                 " <item id=\"logo\" href=\"img/logo.png\" media-type=\"image/png\"/>"
+                                  "<item id=\"info\" href=\"xhtml/info.xhtml\" media-type=\"application/xhtml+xml\"/>"
+                                  " <item id=\"P2\" href=\"xhtml/P2.xhtml\" media-type=\"application/xhtml+xml\"/>"
+                    "</manifest>"
+                   "<spine toc=\"ncx\">"
+                                    "<itemref idref=\"info\"/>"
+                                   "<itemref idref=\"P2\"/>"
+                "</spine>"
+ "</package>"    ).arg(title).arg(author);
+
+
+}
+
+ void mdbexport::criateEbookToc()
+ {
+
+ }

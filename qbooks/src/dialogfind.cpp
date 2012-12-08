@@ -171,9 +171,12 @@ void Dialogfind::on_treeWidget_itemChanged(QTreeWidgetItem* item, int )
 
             QString mydata=item->data(1,1).toString();
 QFile file;
+QDir appDir(qApp->applicationDirPath());
+appDir.cdUp();
+QString pathApp=  appDir.absolutePath()+"/share/elkirtasse";
          if (file.exists(bookPath+"/"+mydata+"/book.xml")){
              item->setData(2,2,"user");
-         }else if(file.exists(QApplication::applicationDirPath()+"/books/"+mydata+"/book.xml")){
+         }else if(file.exists(pathApp+"/books/"+mydata+"/book.xml")){
              item->setData(2,2,"apath");
          }else{
              QString mytxt=item->text(0);

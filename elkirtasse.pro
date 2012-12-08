@@ -6,10 +6,14 @@ SUBDIRS	    = qbooks \
               kirtassecdrom
 #! [0]
 
-# install
+TRANSLATIONS    =usr/share/elkirtasse/translat/kirtasse_fr.ts \
+                                   usr/share/elkirtasse/translat/kirtasse_en.ts \
+                                   usr/share/elkirtasse/translat/kirtasse_pk.ts
+CODECFORTR = UTF-8
 
  # install
     MKDIR = mkdir -p /usr/share/elkirtasse/data/images
+    MKDIR = mkdir -p /usr/share/elkirtasse/translat
     MKDIR = mkdir -p /usr/share/icons/hicolor/scalable/apps
     MKDIR = mkdir -p /usr/share/icons/hicolor/48x48/apps
 
@@ -17,13 +21,16 @@ SUBDIRS	    = qbooks \
     data.files = data/images*
 
 ajzaa.path=/usr/share/elkirtasse/data/
-ajzaa.files=data/ajzaa.xml
+ajzaa.files=usr/share/elkirtasse/data/ajzaa.xml
+
 curan.path=/usr/share/elkirtasse/data/
-curan.files=data/curan.xml
+curan.files=usr/share/elkirtasse/data/curan.xml
+
 group.path=/usr/share/elkirtasse/data/
-group.files=data/group.xml
+group.files=usr/share/elkirtasse/data/group.xml
+
 help.path=/usr/share/elkirtasse/data/
-help.files=data/help.html
+help.files=usr/share/elkirtasse/data/help.html
 
     applications.path = /usr/share/applications
     applications.files = usr/share/applications/elkirtasse.desktop
@@ -31,16 +38,22 @@ help.files=data/help.html
     icon.files = usr/share/icons/hicolor/scalable/apps/elkirtasse.png
     icon48.path = /usr/share/icons/hicolor/48x48/apps
     icon48.files = usr/share/icons/hicolor/48x48/apps/elkirtasse.png
-    bin.path = /usr/bin
-   bin.files = -m 755  usr/bin/elkirtasse
 
-   
+translat_pk.path=/usr/share/elkirtasse/translat
+translat_pk.files=usr/share/elkirtasse/translat/kirtasse_pk.qm
+translat_en.path=/usr/share/elkirtasse/translat
+translat_en.files=usr/share/elkirtasse/translat/kirtasse_en.qm
+translat_fr.path=/usr/share/elkirtasse/translat
+translat_fr.files=usr/share/elkirtasse/translat/kirtasse_fr.qm
+
     INSTALLS += data \
                icon \
         icon48 \
-        bin \
         applications \
 ajzaa \
 curan \
 group \
-help
+help\
+translat_pk\
+translat_en\
+translat_fr

@@ -124,7 +124,10 @@ void findbook::findInAllBook(bool inbooks)  //بحث في مجموعة كتب
         if (path=="user"){
             bookpath=pathCostum+"/"  + findName;
         }else{
-            bookpath=QApplication::applicationDirPath()+"/books/"+ findName;
+            QDir appDir(qApp->applicationDirPath());
+            appDir.cdUp();
+            QString pathApp=  appDir.absolutePath()+"/share/elkirtasse";
+            bookpath=pathApp+"/books/"+ findName;
         }
         if( inbooks==true){
              findOneBook(bookpath);

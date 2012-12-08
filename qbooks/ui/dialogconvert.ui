@@ -13,9 +13,6 @@
   <property name="windowTitle">
    <string>تحويل كتاب</string>
   </property>
-  <property name="layoutDirection">
-   <enum>Qt::RightToLeft</enum>
-  </property>
   <layout class="QVBoxLayout" name="verticalLayout_3">
    <item>
     <widget class="QGroupBox" name="groupBox">
@@ -128,6 +125,9 @@ p, li { white-space: pre-wrap; }
                 <iconset resource="images.qrc">
                  <normaloff>:/images/image/edit-delete.png</normaloff>:/images/image/edit-delete.png</iconset>
                </property>
+               <property name="arrowType">
+                <enum>Qt::UpArrow</enum>
+               </property>
               </widget>
              </item>
              <item>
@@ -147,6 +147,9 @@ p, li { white-space: pre-wrap; }
                <property name="icon">
                 <iconset resource="images.qrc">
                  <normaloff>:/images/image/edit-delete.png</normaloff>:/images/image/edit-delete.png</iconset>
+               </property>
+               <property name="arrowType">
+                <enum>Qt::DownArrow</enum>
                </property>
               </widget>
              </item>

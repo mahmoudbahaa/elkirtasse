@@ -13,9 +13,6 @@
   <property name="windowTitle">
    <string>استراد ملفات المكتبة الشاملة</string>
   </property>
-  <property name="layoutDirection">
-   <enum>Qt::RightToLeft</enum>
-  </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">

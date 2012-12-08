@@ -64,7 +64,7 @@ public slots:
 
 void insertPage(bool after);
 void removeCurPage();
-  void treeOrganizFahrass(QTreeWidget *view,QString Bname);
+void treeOrganizFahrass(QTreeWidget *view,QString Bname);
 private slots:
      QString noTechkile(QString text) const;
   bool chargeList();

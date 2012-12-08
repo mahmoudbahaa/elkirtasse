@@ -36,9 +36,6 @@ messages::messages()
     //m_path=QCoreApplication::applicationDirPath ();
     m_pathUser=QDir::homePath()+"/.kirtasse";
     // m_pathCostum=QDir::homePath()+"/.kirtasse/books";
-
-
-
     recentLoad();
 
 }
@@ -52,8 +49,10 @@ void messages::treeChargeJozaa(QTreeWidget *view)
     QTreeWidgetItem *item=new QTreeWidgetItem(view) ;
     QTreeWidgetItem *osloItem=new QTreeWidgetItem(item) ;
     QTreeWidgetItem *osloItem2 ;
-
-    QFile file(QCoreApplication::applicationDirPath() +"/data/ajzaa.xml");
+    QDir appDir(qApp->applicationDirPath());
+    appDir.cdUp();
+    QString pathApp=  appDir.absolutePath()+"/share/elkirtasse";
+    QFile file(pathApp +"/data/ajzaa.xml");
     file.open(QIODevice::ReadOnly);
     view->clear();
     QXmlStreamReader xml;
@@ -96,7 +95,10 @@ void messages::treeChargeSoura(QTreeWidget *view)
 
     QTreeWidgetItem *itemsora=new QTreeWidgetItem(view);
     QTreeWidgetItem *itemaya ;
-    QFile file(QCoreApplication::applicationDirPath() +"/data/curan.xml");
+    QDir appDir(qApp->applicationDirPath());
+    appDir.cdUp();
+    QString pathApp=  appDir.absolutePath()+"/share/elkirtasse";
+    QFile file(pathApp +"/data/curan.xml");
     file.open(QIODevice::ReadOnly);
 
     view->clear();
@@ -202,7 +204,10 @@ void messages::treeChargeGroupe(QTreeWidget *view,int checked,bool asCombobox)
             }
         }
     }
+    if (xml.hasError()) {
 
+        QMessageBox::information(0,"",xml.errorString());
+      }
 
     xml.clear();
     file.close();
@@ -585,12 +590,15 @@ void messages::recentSave()
 //***end recent***
 bool messages::fahrasSave(QTreeWidget *view,QString bkname)
 {
+    QDir appDir(qApp->applicationDirPath());
+    appDir.cdUp();
+    QString pathApp=  appDir.absolutePath()+"/share/elkirtasse";
     QFile file;
     QString path;
     if(file.exists(m_pathCostum+"/" +bkname+"/title.xml")){
         path=m_pathCostum+"/" +bkname+"/title.xml";
-    }else if (file.exists(QApplication::applicationDirPath()+"/books/" +bkname+"/title.xml")){
-        path=QApplication::applicationDirPath()+"/books/" +bkname+"/title.xml";
+    }else if (file.exists(pathApp+"/books/" +bkname+"/title.xml")){
+        path=pathApp+"/books/" +bkname+"/title.xml";
     }else{
         return false;
     }
@@ -640,6 +648,7 @@ bool messages::fahrasSave(QTreeWidget *view,QString bkname)
 
 bool messages::writeInDoc(QString tit,QString data,QString lvl)
 {
+    if(data.isEmpty()||data.isNull())data="1";
     QDomElement racine = m_doc.documentElement(); //renvoie la balise racine
     QDomNode noeud = racine.firstChild();
     QDomElement myel=m_doc.createElement("title");     //انشاء عنصر جديد
@@ -907,11 +916,14 @@ bool messages::treeviewItemDown(QTreeWidget *view)
         view->insertTopLevelItem(t+1,new_item); //اظافة العنصر المنسوخ في الذاكرة بعد العنصر التالي
     } else{//اذا كان العنصر ابنا
         QTreeWidgetItem *parent=curent_item->parent();
+
         t= parent->indexOfChild(curent_item);
         r=parent->childCount()-1;
         if(t==r){return false;  }//اذا كان العنصر اخر عنصر ابن
         parent->takeChild(t);
+
         parent->insertChild(t+1,new_item);
+
     }
     view->setCurrentItem(new_item); //تحديد العنصر الجديد
     return true;
@@ -1002,12 +1014,15 @@ QString messages::geniratNewBookName(QString groupParent)
 }
 bool messages::saveBookInfo(QString bookname,QString title,QString author,QString betaka)
 {
+    QDir appDir(qApp->applicationDirPath());
+    appDir.cdUp();
+    QString pathApp=  appDir.absolutePath()+"/share/elkirtasse";
     QFile file;
     QString path;
     if(file.exists(m_pathCostum+"/" +bookname+"/bookinfo.info")){
         path=m_pathCostum+"/" +bookname+"/bookinfo.info";
-    }else if (file.exists(QApplication::applicationDirPath()+"/books/" +bookname+"/bookinfo.info")){
-        path=QApplication::applicationDirPath()+"/books/" +bookname+"/bookinfo.info";
+    }else if (file.exists(pathApp+"/books/" +bookname+"/bookinfo.info")){
+        path=pathApp+"/books/" +bookname+"/bookinfo.info";
     }else{
         path=m_pathCostum+"/" +bookname+"/bookinfo.info";
     }

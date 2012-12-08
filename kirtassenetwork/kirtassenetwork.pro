@@ -2,7 +2,7 @@ TEMPLATE = lib
 CONFIG += plugin
 INCLUDEPATH += ../qbooks
 TARGET = $$qtLibraryTarget(kirtassenet)
-DESTDIR = ../plugins
+DESTDIR = ../usr/share/elkirtasse/plugins
 HEADERS += networkplugin.h \
     dialognet.h
 SOURCES += networkplugin.cpp \

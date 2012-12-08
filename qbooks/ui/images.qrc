@@ -19,7 +19,6 @@
         <file>image/config-background.png</file>
         <file>image/insert-link.png</file>
         <file>image/tab-new.png</file>
-        <file>image/bkg.png</file>
         <file>image/techkil.png</file>
         <file>image/listanim.png</file>
         <file>image/telled.png</file>
@@ -53,5 +52,7 @@
         <file>image/bot.png</file>
         <file>image/titlekirtasse.png</file>
         <file>image/draw-text.png</file>
+        <file>image/list-add.png</file>
+        <file>image/bkg.png</file>
     </qresource>
 </RCC>

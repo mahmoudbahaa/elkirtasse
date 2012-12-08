@@ -73,6 +73,7 @@ void databook::claerBook(int num)
     m_docBooK[num].clear();
     bookNass[num].clear();
     listId.clear();
+
 }
 bool databook::getIfTefsir()
 {

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>346</width>
-    <height>318</height>
+    <width>413</width>
+    <height>336</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,9 +16,6 @@
   <property name="windowIcon">
    <iconset resource="images.qrc">
     <normaloff>:/images/image/groupb.png</normaloff>:/images/image/groupb.png</iconset>
-  </property>
-  <property name="layoutDirection">
-   <enum>Qt::RightToLeft</enum>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_3">
    <item>
@@ -62,6 +59,11 @@
             <string>ملفات الطباعة المحمولة pdf</string>
            </property>
           </item>
+          <item>
+           <property name="text">
+            <string>ملفات epub</string>
+           </property>
+          </item>
          </widget>
         </item>
        </layout>
@@ -88,6 +90,27 @@
          <widget class="QToolButton" name="toolButton">
           <property name="text">
            <string>...</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <item>
+         <widget class="QLabel" name="label_4">
+          <property name="text">
+           <string>استخدم ارقام</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="comboBoxNumber">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
           </property>
          </widget>
         </item>
@@ -128,9 +151,6 @@
        <widget class="QCheckBox" name="checkBox">
         <property name="text">
          <string>ادراج ارقام الصفحات و الاجزاء</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
         </property>
        </widget>
       </item>
@@ -208,8 +228,8 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>208</x>
-     <y>182</y>
+     <x>217</x>
+     <y>326</y>
     </hint>
     <hint type="destinationlabel">
      <x>321</x>

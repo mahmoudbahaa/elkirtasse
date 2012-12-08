@@ -53,30 +53,13 @@ public:
     QComboBox *comboGroup;
     QTreeWidget *treeView;
 
-
-
     enum { MaxRecentFiles = 16 };
     QAction *recentFileActs[MaxRecentFiles];
-
-
-
     QString infoBookTitle;
     QString infoBookAutor;
     QString infoBookBetaka;
 
-
-
-
-
-
-
-
- // int d=1;مسار البرنامج
-
     QString m_pathCostum;
-
-
-
 
 public slots:
     void treeChargeSoura(QTreeWidget *view);
@@ -127,13 +110,8 @@ bool removeTempFiles(QString tempDir);
 
 
 private:
-    //  enum { NumRows };
-    // QTreeWidgetItem *item[NumRows];
-
 
  QString m_pathUser;
-
-
 QList<QString> listId;
 
     QDomDocument m_doc;

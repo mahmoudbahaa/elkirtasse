@@ -24,7 +24,11 @@ SOURCES += src/main.cpp \
     src/print.cpp \
     src/animation.cpp \
     src/dialoggoto.cpp \
-    src/findbook.cpp
+    src/findbook.cpp \
+    src/dialogconfigbooks.cpp \
+    src/dialogimportdvd.cpp\
+src/classepub.cpp
+
 HEADERS += src/mainwindow.h \
     src/dialogupdat.h \
     src/dialogfind.h \
@@ -41,7 +45,10 @@ HEADERS += src/mainwindow.h \
     src/dialoggoto.h \
     src/findbook.h \
     src/booksInterface.h \
-    src/booksInterface.h
+    src/booksInterface.h \
+    src/dialogconfigbooks.h \
+    src/dialogimportdvd.h\
+src/classepub.h
 FORMS += ui/mainwindow.ui \
     ui/dialogupdat.ui \
     ui/dialogfind.ui \
@@ -51,12 +58,11 @@ FORMS += ui/mainwindow.ui \
     ui/dialogoption.ui \
     ui/about.ui \
     ui/print.ui \
-    ui/dialoggoto.ui
+    ui/dialoggoto.ui \
+    ui/dialogconfigbooks.ui \
+    ui/dialogimportdvd.ui
 RESOURCES += ui/images.qrc
-TRANSLATIONS    = kirtasse_ar.ts \
-                   kirtasse_fr.ts \
-kirtasse_en.ts
-CODECFORTR = UTF-8
+
 win32 { 
     QT += sql
     SOURCES += src/dialogmdb.cpp
@@ -71,13 +77,19 @@ else {
     SOURCES += src/mdbexport.cpp
     HEADERS += src/mdbexport.h
     FORMS += ui/mdbexport.ui
-    TARGET = ../elkirtasse
+    TARGET = ../usr/bin/elkirtasse
    # install
     MKDIR = mkdir -p /usr/share/elkirtasse
    
 
-    target.path = /usr/share/elkirtasse
+    target.path = /usr/bin/
     INSTALLS += target
 
        
 }
+
+
+
+
+
+

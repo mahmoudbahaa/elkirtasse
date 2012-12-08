@@ -28,7 +28,7 @@ Release:	76.1
 License:	GPL3
 Group:		libriry/office
 Summary:	Elkirtasse librery for system x11
-URL:		http://elkirtasse.22web.net/
+URL:		http://www.elkirtasse.co.cc
 
 Source0:        %{name}-%{version}.tar.gz
 
@@ -176,7 +176,7 @@ install -D -m 644 -T %{name}.desktop $RPM_BUILD_ROOT%{_datadir}/applications/%{n
 %{_datadir}/%{name}/data/images/zakhrafa/top.png
 %{_datadir}/%{name}/data/images/zakhrafa/top_left.png
 %{_datadir}/%{name}/data/images/zakhrafa/top_right.png
-%{_datadir}/%{name}/%{name}
+
 %if 0%{?suse_version}
 %_libdir 
 %_libdir/%{name}
