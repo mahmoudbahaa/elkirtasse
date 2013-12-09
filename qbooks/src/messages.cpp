@@ -36,11 +36,7 @@ messages::messages()
     //m_path=QCoreApplication::applicationDirPath ();
     m_pathUser=QDir::homePath()+"/.kirtasse";
     // m_pathCostum=QDir::homePath()+"/.kirtasse/books";
-
-
-
     recentLoad();
-
 }
 messages::~messages()
 {
@@ -52,8 +48,10 @@ void messages::treeChargeJozaa(QTreeWidget *view)
     QTreeWidgetItem *item=new QTreeWidgetItem(view) ;
     QTreeWidgetItem *osloItem=new QTreeWidgetItem(item) ;
     QTreeWidgetItem *osloItem2 ;
-
-    QFile file(QCoreApplication::applicationDirPath() +"/data/ajzaa.xml");
+    QDir appDir(qApp->applicationDirPath());
+    appDir.cdUp();
+    QString pathApp=  appDir.absolutePath()+"/share/elkirtasse";
+    QFile file(pathApp +"/data/ajzaa.xml");
     file.open(QIODevice::ReadOnly);
     view->clear();
     QXmlStreamReader xml;
@@ -96,7 +94,10 @@ void messages::treeChargeSoura(QTreeWidget *view)
 
     QTreeWidgetItem *itemsora=new QTreeWidgetItem(view);
     QTreeWidgetItem *itemaya ;
-    QFile file(QCoreApplication::applicationDirPath() +"/data/curan.xml");
+    QDir appDir(qApp->applicationDirPath());
+    appDir.cdUp();
+    QString pathApp=  appDir.absolutePath()+"/share/elkirtasse";
+    QFile file(pathApp +"/data/curan.xml");
     file.open(QIODevice::ReadOnly);
 
     view->clear();
@@ -152,6 +153,7 @@ void messages::treeChargeGroupe(QTreeWidget *view,int checked,bool asCombobox)
     xml.setDevice(&file);
     while (!xml.atEnd()) {
         xml.readNext();
+        QString drbox;
         if (xml.name() == "root"){ //niveau 1
             QString textRoot=xml.attributes().value("Name").toString();
             if(!textRoot.isNull()){
@@ -171,6 +173,7 @@ void messages::treeChargeGroupe(QTreeWidget *view,int checked,bool asCombobox)
                 if (checked==1){
                     itemGroup->setCheckState(0,Qt::Unchecked);
                 }
+
             }
 
         }else if (xml.name() == "bk"){ //niveau 3
@@ -180,6 +183,7 @@ void messages::treeChargeGroupe(QTreeWidget *view,int checked,bool asCombobox)
             QString AutBook= xml.attributes().value("aut").toString();
             QString BetakaBook= xml.attributes().value("betaka").toString();
             QString curanBook= xml.attributes().value("tfsr").toString();
+
             if(!textBook.isNull()){
                 itemBook= new QTreeWidgetItem( itemGroup);
                 itemBook->setText(0,textBook);
@@ -188,6 +192,7 @@ void messages::treeChargeGroupe(QTreeWidget *view,int checked,bool asCombobox)
                 itemBook->setData(1,1,idBook);
                 itemBook->setIcon(0,icon);
                 itemBook->setData(2,1,curanBook);
+
                 if (checked==1){
                     itemBook->setCheckState(0,Qt::Unchecked);
                 }
@@ -202,7 +207,10 @@ void messages::treeChargeGroupe(QTreeWidget *view,int checked,bool asCombobox)
             }
         }
     }
+    if (xml.hasError()) {
 
+        QMessageBox::information(0,"",xml.errorString());
+      }
 
     xml.clear();
     file.close();
@@ -364,14 +372,17 @@ void messages::treeChargeFahrass(QTreeWidget *view,QString Bname)
     file.open(QIODevice::ReadOnly);
     view->clear();
     int d=1;
-    QTreeWidgetItem *item[d];
+ //   enum  { NumIndex = 10};
+    QTreeWidgetItem *item;
+
     QString tit;
     QString id;
     QString lvl;
 
-    item[1]= new QTreeWidgetItem(view);
-    item[1]->setText(0,trUtf8("بسم الله الرحمن الرحيم") );
-    item[1]->setData(1,1,1);
+    item= new QTreeWidgetItem(view);
+    item->setText(0,trUtf8("بسم الله الرحمن الرحيم") );
+    item->setData(1,1,1);
+
     QXmlStreamReader xml;
     xml.setDevice(&file);
     if (xml.readNextStartElement()) {
@@ -401,27 +412,37 @@ void messages::treeChargeFahrass(QTreeWidget *view,QString Bname)
                     bool ok;
                     d=lvl.toInt(&ok,0);
 
-                    if (ok==true){
+                 if (ok==true){
                         if (d<1){d=1;}
                         if (d==1){
-                            item[1]= new QTreeWidgetItem(view);
-                            item[1]->setText(0,tit );
-                            item[1]->setText(1,id );
-                            item[1]->setData(1,1,id);
+
+                            item= new QTreeWidgetItem(view);
+                            item->setText(0,tit );
+                            item->setText(1,id );
+                            item->setData(1,1,id);
+
+
+
                         }else{
-                            if (item[d-1]){
-                                item[d]= new QTreeWidgetItem( item[d-1]);
-                                item[d]->setText(0,tit );
-                                item[d]->setText(1,id );
-                                item[d]->setData(1,1,id);
+                            int index=view->topLevelItemCount()-1;
+                            QTreeWidgetItem *itemParent=(view->topLevelItem(index));
+
+                            for(int i=0;i<d-2;i++){
+                                if(itemParent)
+                                  itemParent= getItem(itemParent) ;
                             }
+
+                           item= new QTreeWidgetItem(itemParent);
+                           item->setText(0,tit );
+                           item->setText(1,id );
+                           item->setData(1,1,id);
 
                         }
                     }else{
-                        item[1]= new QTreeWidgetItem(view);
-                        item[1]->setText(0,tit );
-                        item[1]->setText(1,id );
-                        item[1]->setData(1,1,id);
+                        item= new QTreeWidgetItem(view);
+                        item->setText(0,tit );
+                        item->setText(1,id );
+                        item->setData(1,1,id);
                     }
                 }
             }
@@ -433,6 +454,18 @@ void messages::treeChargeFahrass(QTreeWidget *view,QString Bname)
     //listId.clear();
     xml.clear();
 }
+
+QTreeWidgetItem* messages::getItem(QTreeWidgetItem *item)
+{
+
+
+
+    int index=item->childCount()-1;
+ //   QTreeWidgetItem *itemParent=(item->child(index));
+    return item->child(index);
+}
+
+
 //حذف الكتاب المحدد
 bool messages::treeMenuRemoveBook(QString BKname,bool removall)
 {
@@ -585,12 +618,15 @@ void messages::recentSave()
 //***end recent***
 bool messages::fahrasSave(QTreeWidget *view,QString bkname)
 {
+    QDir appDir(qApp->applicationDirPath());
+    appDir.cdUp();
+    QString pathApp=  appDir.absolutePath()+"/share/elkirtasse";
     QFile file;
     QString path;
     if(file.exists(m_pathCostum+"/" +bkname+"/title.xml")){
         path=m_pathCostum+"/" +bkname+"/title.xml";
-    }else if (file.exists(QApplication::applicationDirPath()+"/books/" +bkname+"/title.xml")){
-        path=QApplication::applicationDirPath()+"/books/" +bkname+"/title.xml";
+    }else if (file.exists(pathApp+"/books/" +bkname+"/title.xml")){
+        path=pathApp+"/books/" +bkname+"/title.xml";
     }else{
         return false;
     }
@@ -640,6 +676,7 @@ bool messages::fahrasSave(QTreeWidget *view,QString bkname)
 
 bool messages::writeInDoc(QString tit,QString data,QString lvl)
 {
+    if(data.isEmpty()||data.isNull())data="1";
     QDomElement racine = m_doc.documentElement(); //renvoie la balise racine
     QDomNode noeud = racine.firstChild();
     QDomElement myel=m_doc.createElement("title");     //انشاء عنصر جديد
@@ -907,11 +944,14 @@ bool messages::treeviewItemDown(QTreeWidget *view)
         view->insertTopLevelItem(t+1,new_item); //اظافة العنصر المنسوخ في الذاكرة بعد العنصر التالي
     } else{//اذا كان العنصر ابنا
         QTreeWidgetItem *parent=curent_item->parent();
+
         t= parent->indexOfChild(curent_item);
         r=parent->childCount()-1;
         if(t==r){return false;  }//اذا كان العنصر اخر عنصر ابن
         parent->takeChild(t);
+
         parent->insertChild(t+1,new_item);
+
     }
     view->setCurrentItem(new_item); //تحديد العنصر الجديد
     return true;
@@ -1002,12 +1042,15 @@ QString messages::geniratNewBookName(QString groupParent)
 }
 bool messages::saveBookInfo(QString bookname,QString title,QString author,QString betaka)
 {
+    QDir appDir(qApp->applicationDirPath());
+    appDir.cdUp();
+    QString pathApp=  appDir.absolutePath()+"/share/elkirtasse";
     QFile file;
     QString path;
     if(file.exists(m_pathCostum+"/" +bookname+"/bookinfo.info")){
         path=m_pathCostum+"/" +bookname+"/bookinfo.info";
-    }else if (file.exists(QApplication::applicationDirPath()+"/books/" +bookname+"/bookinfo.info")){
-        path=QApplication::applicationDirPath()+"/books/" +bookname+"/bookinfo.info";
+    }else if (file.exists(pathApp+"/books/" +bookname+"/bookinfo.info")){
+        path=pathApp+"/books/" +bookname+"/bookinfo.info";
     }else{
         path=m_pathCostum+"/" +bookname+"/bookinfo.info";
     }

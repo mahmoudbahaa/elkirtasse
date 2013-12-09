@@ -376,19 +376,14 @@ bool Dialognet::treeSaveGroupe(QTreeWidget *view)
             items.setAttribute("Name",title);
             QString drbox;
             for(int b=1;b<36;b++){
-
                 if (id==QString::number(b))
                     drbox= "http://dl.dropbox.com/u/7206075/"+id+"/";
                 if (id=="27")
                     drbox= "http://dl.dropbox.com/u/13013844/"+id+"/";
-
             }
             for(int c=36;c<100;c++){
-
                 if (id==QString::number(c))
                     drbox= "http://dl.dropbox.com/u/13013844/"+id+"/";
-
-
             }
 
             for(int r=0;r<itemols->childCount();++r)

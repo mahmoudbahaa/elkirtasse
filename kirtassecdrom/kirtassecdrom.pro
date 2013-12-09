@@ -2,16 +2,16 @@ TEMPLATE = lib
 CONFIG += plugin
 INCLUDEPATH += ../qbooks
 TARGET = $$qtLibraryTarget(kirtassecdrom)
-DESTDIR = ../plugins
+DESTDIR = ../usr/share/elkirtasse/plugins
 HEADERS += \ 
     cdromshamila.h \
-    dialog.h
-   QT += xml
+    dialogcdrom.h
+     QT += xml sql
 SOURCES += \ 
     cdromshamila.cpp \
-    dialog.cpp
+    dialogcdrom.cpp
 FORMS += \
-    dialog.ui
+    Dialogcdrom.ui
     
 # install
 MKDIR = mkdir -p /usr/share/elkirtasse/plugins
@@ -19,6 +19,12 @@ target.path = /usr/share/elkirtasse/plugins
 
 INSTALLS += target 
    
+
+
+
+
+
+
 
 
 

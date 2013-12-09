@@ -42,6 +42,7 @@ findbook::findbook()
     findSawabik=true;
     findMultiFind=false;
     isNassToFind=true;
+    noHamza=false;
 }
 findbook::~findbook()
 {
@@ -124,7 +125,10 @@ void findbook::findInAllBook(bool inbooks)  //بحث في مجموعة كتب
         if (path=="user"){
             bookpath=pathCostum+"/"  + findName;
         }else{
-            bookpath=QApplication::applicationDirPath()+"/books/"+ findName;
+            QDir appDir(qApp->applicationDirPath());
+            appDir.cdUp();
+            QString pathApp=  appDir.absolutePath()+"/share/elkirtasse";
+            bookpath=pathApp+"/books/"+ findName;
         }
         if( inbooks==true){
              findOneBook(bookpath);
@@ -195,6 +199,12 @@ void  findbook::readXml()
             str.replace(trUtf8("\331\220"),"");
             str.replace(trUtf8("\331\221"),"");
             str.replace(trUtf8("\331\222"),"");
+            //نزع الهمزة
+            if(noHamza==true){
+                str.replace(trUtf8("أ"),trUtf8("ا"));
+                str.replace(trUtf8("إ"),trUtf8("ا"));
+
+            }
             if (findMultiFind==true){
                 readStrMultiFind();
             }else if (findFirst==true){

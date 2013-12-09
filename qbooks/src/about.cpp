@@ -66,7 +66,7 @@ About::About(QWidget *parent)
     anim->setEndValue(QPointF(0, ui->graphicsView->height()));
     anim->setDuration(1000);
     anim->setLoopCount(-1); // forever
-  anim->start();
+    anim->start();
 
 
  #endif

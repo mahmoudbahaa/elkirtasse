@@ -27,6 +27,7 @@
 **
 ****************************************************************************/
 #include "dialog.h"
+#include "classepub.h"
 #include  "ui_dialog.h"
 #include <QtXml>
 #include <QDomDocument>
@@ -38,7 +39,7 @@ Dialog::Dialog(QWidget *parent)
     ui->setupUi(this);
     ui->toolButtonInfo->setIcon(style()->standardPixmap(QStyle::SP_MessageBoxInformation));
     ui->toolButton_fileNam->setIcon(style()->standardPixmap(QStyle::SP_DirOpenIcon));
-    ui->toolButton_zipFileNam->setIcon( QIcon::fromTheme("tgz", QIcon(":/images/image/tar-gz.png")));
+  //  ui->toolButton_zipFileNam->setIcon( QIcon::fromTheme("tgz", QIcon(":/images/image/tar-gz.png")));
     ui->progressBar->setVisible(false);
     Messages = new messages();
 // m_path=QCoreApplication::applicationDirPath ();
@@ -82,23 +83,35 @@ void Dialog::on_buttonBox_clicked(QAbstractButton* button)
         if (countItem<1)
             this->reject();
 
-ui->progressBar->setMaximum(countItem-1);
-ui->progressBar->setVisible(true);
-QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+        ui->progressBar->setMaximum(countItem-1);
+        ui->progressBar->setVisible(true);
+        QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
         for(int i=0;i<countItem;i++){
-ui->progressBar->setValue(i);
+            ui->progressBar->setValue(i);
             QString filname= ui->listWidget->item(i)->text();
-            if (filname.contains(".tar.gz")||filname.contains(".krts")){              
-            Messages->removeTempDirs(QDir::homePath()+"/.kirtasse/download/");
+            QFileInfo fi(filname);
+            QString ext = fi.completeSuffix();
+            if (ext.toLower()=="tar.gz"||ext.toLower()=="krts"){
+                Messages->removeTempDirs(QDir::homePath()+"/.kirtasse/download/");
                 if(Messages->loadTarGz(filname)==true){
 
                     QString tempFile=QDir::homePath()+"/.kirtasse/download/";
                     loadBookInfo(tempFile);
                     if (copyDir(tempFile,countItem)==true)
                         msgTitle=msgTitle+"\n"+Add_Book_Name+"\n"+m_newPathDir;
-              //  archiveDir="";
+                    //  archiveDir="";
                 }
-
+            } else if(ext.toLower()==("epub")){
+                  Messages->removeTempDirs(QDir::homePath()+"/.kirtasse/download/");
+              classepub  *Classepub=new classepub;
+                  if  (Classepub->ebubUnzip(filname)==true) {
+                      Add_Book_Name=Classepub->infoBookTitle;
+                      Add_Autor_Name=Classepub->infoBookAutor;
+                      Add_Betaka=Classepub->infoBookBetaka;
+                    QString tempFile=QDir::homePath()+"/.kirtasse/download/";
+                      if (copyDir(tempFile,countItem)==true)
+                          msgTitle=msgTitle+"\n"+Add_Book_Name+"\n"+m_newPathDir;
+                 }
             }else{
 
                 loadBookInfo(filname);
@@ -106,7 +119,7 @@ ui->progressBar->setValue(i);
                     msgTitle=msgTitle+"\n"+Add_Book_Name+"\n"+m_newPathDir;
             }
             qApp->processEvents();
-             QApplication::restoreOverrideCursor();
+            QApplication::restoreOverrideCursor();
         }  //for
 
         if(!msgTitle.isEmpty()){
@@ -120,7 +133,7 @@ ui->progressBar->setValue(i);
             msgBox.setWindowTitle(trUtf8("تعليمات"));
             msgBox.setStandardButtons(QMessageBox::Ok);
             msgBox.exec();
-           Messages-> removeTempDirs(QDir::homePath()+"/.kirtasse/download/");
+            Messages-> removeTempDirs(QDir::homePath()+"/.kirtasse/download/");
             qApp->processEvents();
 
             this->accept();
@@ -255,7 +268,7 @@ void Dialog::on_toolButton_zipFileNam_clicked()
     QFileDialog dlg;
 
     QStringList fn = dlg.getOpenFileNames(this, tr("Open Archive Files..."),
-                                                 QString(), trUtf8("ملفات ارشفة (*tar.gz *.krts);;krts (*.krts);;tar.gz (*.tar.gz);;كل الملفات (*)"));
+                                                 QString(), trUtf8("ملفات ارشفة (*tar.gz *.krts *.epub);;krts (*.krts);;tar.gz (*.tar.gz);;epub (*.epub) ;;كل الملفات (*)"));
     if (!fn.isEmpty())
     {
       ui->listWidget->addItems(fn);

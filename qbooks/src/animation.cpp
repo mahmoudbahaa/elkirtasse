@@ -134,9 +134,9 @@ void View::animChargePixmape(int level,int index,int indexParent)
         for (int i=0;i<topItemCount;i++){
             itemCount=itemCount+  treeView->topLevelItem(i)->childCount();
         }
-        int rew=(itemCount/7)+1;
+        int rew=(itemCount/6)+1;
         int h=rew*128;
-        mscene->setSceneRect(0,0,896,h+30);
+        mscene->setSceneRect(0,0,768,h+30);
 
         for (int i = 0; i <topItemCount; ++i) {
             int nbr=treeView->topLevelItem(i)->childCount();
@@ -169,11 +169,11 @@ void View::animChargePixmape(int level,int index,int indexParent)
         }
     }else if (level==2){
 
-        this->setAlignment(Qt::AlignTop|Qt::AlignHCenter);
+       // this->setAlignment(Qt::AlignTop|Qt::AlignHCenter);
         int nbr= treeView->topLevelItem(indexParent)->child(index)->childCount();
-        int rew=(nbr/7)+1;
+        int rew=(nbr/6)+1;
         int h=rew*128;
-        mscene->setSceneRect(0,0,896,h+30);
+        mscene->setSceneRect(0,0,768,h+30);
 #if QT_VERSION >= 0x040600
 
 
@@ -334,7 +334,8 @@ void View::animTeled()
     if (index<20){
         index=index+20;
     }
-    curveType = (QEasingCurve::Type)index;
+    //curveType = (QEasingCurve::Type)index;
+    curveType =QEasingCurve::Linear;
     QParallelAnimationGroup *group = new QParallelAnimationGroup;
     QPropertyAnimation *anim ;
     for (int i = 0; i < items.count(); ++i) {
@@ -344,15 +345,15 @@ void View::animTeled()
         group->addAnimation(anim);
         anim->setStartValue( QPointF(cos((i / 63.0) * rndX) * this->width()/2,
                                      sin((i / 63.0) *  rndY) * this->height()/2));
-        anim->setEndValue( QPointF(((i % 7)) * 128,
-                                   ((i / 7)) * 128+20));
+        anim->setEndValue( QPointF(((i % 6)) * 128,
+                                   ((i / 6)) * 128+20));
     }
     group->start();
     itemCurant=0;
 #else
     for (int i = 0; i < items.count(); ++i) {
         items[i]->setPos( QPointF(((i % 7)) * 128,
-                                  ((i / 7)) * 128+20));
+                                  ((i / 6)) * 128+20));
 
     }
 #endif
@@ -706,7 +707,7 @@ void View::keyReleaseEvent(QKeyEvent *event)
         m_timer->stop();
 }
 
-void View::chargeEnrto()
+/*void View::chargeEnrto()
 {
     for (int i = 0; i <items.count(); ++i) {
         mscene->removeItem(items.at(i));
@@ -837,6 +838,100 @@ void View::chargeEnrto()
      sequentGroup->start();
     items[9]->setCursor(Qt::PointingHandCursor);
     connect( items[9], SIGNAL(release()), this, SLOT(chargeLevelOne()));
+    QGraphicsDropShadowEffect *efet=new QGraphicsDropShadowEffect;
+    efet->setOffset(8,8);
+   efet->setColor(QColor(0, 0, 0, 80));
+   efet->setBlurRadius(12);
+    itemTitle->setGraphicsEffect(efet);
+
+    //          anim->start();
+}*/
+void View::chargeEnrto()
+{
+    for (int i = 0; i <items.count(); ++i) {
+        mscene->removeItem(items.at(i));
+    }
+    items.clear();
+    mscene->clear();
+    this->setAlignment(Qt::AlignHCenter|Qt::AlignHCenter);
+    mscene->setSceneRect(0,0,500,500);
+    mscene->setBackgroundBrush(Qt::white);
+
+    QLabel *labBasmala=new QLabel;
+    QLabel *labHadith=new QLabel;
+    labBasmala->setAlignment(Qt::AlignCenter);
+    labBasmala->setStyleSheet("background-color: rgba(255, 255, 255, 0);");
+    labBasmala->setGeometry(0,0,500,36);
+    labBasmala->setText("<span style=\" font-family:'arial,KacstLetter,DejaVu Serif'; font-size:18pt; font-weight:600; color:#ff5500;\">"+trUtf8("بسم الله الرحمن الرحيم")+"</span>");
+
+    QString text="<p align=\"center\" dir='rtl' style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'arial,KacstLetter,DejaVu Serif'; font-size:16pt; color:#000000;\">"+trUtf8("أخرج البخاري في صحيحه")+"</span><span style=\" font-family:'KacstLetter'; font-size:10pt;\"> </span></p>"
+                 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'arial,KacstLetter,DejaVu Serif'; font-size:16pt; color:#0000ff;\">"+trUtf8("في كتاب بدء الوحي")+"</span><span style=\" font-family:'KacstLetter'; font-size:16pt;\"> </span></p>"
+                 "<p align=\"center\" dir='rtl' style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'arial,KacstLetter,DejaVu Serif'; font-size:16pt; color:#008000;\">"+trUtf8("باب: كيف كان بدء الوحي")+"</span></p>"
+                 "<p dir='rtl' style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'arial,KacstLetter,DejaVu Serif'; font-size:14pt; color:#000000;\">"
+                 +trUtf8("حدثنا الحميدي عبد الله بن الزبير قال: حدثنا سفيان قال: حدثنا يحيى بن سعيد الأنصاري قال : أخبرني محمد بن إبراهيم التيمي: أنه سمع علقمة بن وقاص الليثي يقول: سمعت عمر بن الخطاب رضي الله عنه على المنبر قال: سمعت رسول الله صلى الله عليه وسلم يقول: إنما الأعمال بالنيات، وإنما لكل امرىء ما نوى، فمن كانت هجرته إلى دنيا يصيبها، أو إلى امرأة ينكحها، فهجرته إلى ما هاجر إليه")+"</span></p></td></tr></table></body></html>";
+    //  labHadith->setAlignment(Qt::AlignCenter);
+    labHadith->setStyleSheet("background-color: rgba(255, 255, 255, 0);");
+    labHadith->setGeometry(0,500,500,300);
+    labHadith->setWordWrap(true);
+    labHadith->setText(text);
+
+    mscene->addWidget(labBasmala);
+    mscene->addWidget(labHadith);
+
+
+    QParallelAnimationGroup *paralleGroup=new QParallelAnimationGroup;
+
+
+
+    QPixmap   mypixmap(QPixmap(":/images/image/groupbook.png")) ;
+    QPixmap   pixtitle(QPixmap(":/images/image/titlekirtasse.png")) ;
+
+
+    qreal real=0.0;
+    for(int i=0;i <1; ++i){
+        real=real+0.05;
+        Pixmap *item = new Pixmap(mypixmap);
+        item->setGeometry(QRect(200,30,128.0,128.0));
+        item->setOpacity(0.0);
+        mscene->addItem(item);
+        items << item;
+    }
+
+
+    QPropertyAnimation * animBook = new QPropertyAnimation(items[0], "opacity");
+    animBook->setDuration(1000);
+   // animBook->setStartValue(QPointF(200,200));
+    animBook->setEndValue(1.0);
+    animBook->setEasingCurve(QEasingCurve::InCirc);
+
+    Pixmap *itemTitle = new Pixmap(pixtitle);
+    itemTitle->setGeometry(QRect(130,150,266,1117));
+    itemTitle->setOpacity(0.0);
+    mscene->addItem(itemTitle);
+    //! [5]
+    QPropertyAnimation * animTitle = new QPropertyAnimation(itemTitle, "opacity");
+    animTitle->setDuration(1000);
+    animTitle->setStartValue(0.0);
+    animTitle->setEndValue(1.0);
+    animTitle->setEasingCurve(QEasingCurve::InCirc);
+     connect( animTitle, SIGNAL(finished()), this, SLOT(animEtoileTitle()));
+    //! [6]
+    QPropertyAnimation * animHadith = new QPropertyAnimation(labHadith, "pos");
+    animHadith->setDuration(700);
+    animHadith->setStartValue(QPointF(0,500));
+    animHadith->setEndValue(QPointF(0,200));
+    animHadith->setEasingCurve(QEasingCurve::Linear);
+paralleGroup->addAnimation(animBook);
+    paralleGroup->addAnimation(animTitle);
+    paralleGroup->addAnimation(animHadith);
+
+
+    connect( paralleGroup, SIGNAL(finished()), this, SLOT(animEtoileBook()));
+ //   sequentGroup->addAnimation(groupReflet);
+
+     paralleGroup->start();
+    items[0]->setCursor(Qt::PointingHandCursor);
+    connect( items[0], SIGNAL(release()), this, SLOT(chargeLevelOne()));
     QGraphicsDropShadowEffect *efet=new QGraphicsDropShadowEffect;
     efet->setOffset(8,8);
    efet->setColor(QColor(0, 0, 0, 80));

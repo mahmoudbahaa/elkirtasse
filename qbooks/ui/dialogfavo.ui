@@ -17,9 +17,6 @@
    <iconset resource="images.qrc">
     <normaloff>:/images/image/groupb.png</normaloff>:/images/image/groupb.png</iconset>
   </property>
-  <property name="layoutDirection">
-   <enum>Qt::RightToLeft</enum>
-  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QLabel" name="label_2">

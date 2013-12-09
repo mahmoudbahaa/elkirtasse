@@ -19,7 +19,6 @@
         <file>image/config-background.png</file>
         <file>image/insert-link.png</file>
         <file>image/tab-new.png</file>
-        <file>image/bkg.png</file>
         <file>image/techkil.png</file>
         <file>image/listanim.png</file>
         <file>image/telled.png</file>
@@ -53,5 +52,32 @@
         <file>image/bot.png</file>
         <file>image/titlekirtasse.png</file>
         <file>image/draw-text.png</file>
+        <file>image/list-add.png</file>
+        <file>image/bkg.png</file>
+        <file>image/gohome.png</file>
+        <file>image/edit-select.png</file>
+        <file>image/exportBook.png</file>
+        <file>image/fahrasa-exact.png</file>
+        <file>image/help-about.png</file>
+        <file>image/help-contents.png</file>
+        <file>image/import-cdrom.png</file>
+        <file>image/import-Shamila.png</file>
+        <file>image/importTxt.png</file>
+        <file>image/mail-receive.png</file>
+        <file>image/newBlanBook.png</file>
+        <file>image/printer.png</file>
+        <file>image/printerPreview.png</file>
+        <file>image/quit.png</file>
+        <file>image/zoom-in.png</file>
+        <file>image/zoom-out.png</file>
+        <file>image/edit-clear.png</file>
+        <file>image/import-ShamilaCdrom.png</file>
+        <file>image/preferences-other.png</file>
+        <file>image/view-books.png</file>
+        <file>image/view-curan.png</file>
+        <file>image/view-fahrasse.png</file>
+        <file>image/view-favo.png</file>
+        <file>image/view-find.png</file>
+        <file>image/configure-toolbars.png</file>
     </qresource>
 </RCC>

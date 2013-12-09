@@ -64,15 +64,17 @@ public slots:
 
 void insertPage(bool after);
 void removeCurPage();
-  void treeOrganizFahrass(QTreeWidget *view,QString Bname);
+void treeOrganizFahrass(QTreeWidget *view,QString Bname);
+
 private slots:
      QString noTechkile(QString text) const;
+     QTreeWidgetItem* getItem(QTreeWidgetItem *item);
   bool chargeList();
    int getPositionID(QString id);
 private:
   QString m_currentBookName[NumRows];
     QDomDocument m_docBooK[NumRows];
-
+//QList<QDomDocument *> *listBook;
 QList<QString> listId;
 
 };

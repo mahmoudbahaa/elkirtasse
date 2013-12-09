@@ -37,8 +37,6 @@ dialoggoto::dialoggoto(QWidget *parent)
 {
     ui->setupUi(this);
 
-
-
 }
 dialoggoto::~dialoggoto()
 {

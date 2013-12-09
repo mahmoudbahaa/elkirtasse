@@ -13,9 +13,6 @@
   <property name="windowTitle">
    <string>استراد ملفات الشاملة</string>
   </property>
-  <property name="layoutDirection">
-   <enum>Qt::RightToLeft</enum>
-  </property>
   <layout class="QVBoxLayout" name="verticalLayout_3">
    <item>
     <widget class="QLabel" name="label">
@@ -50,7 +47,7 @@
           <string>...</string>
          </property>
          <property name="icon">
-          <iconset>
+          <iconset resource="images.qrc">
            <normaloff>:/images/image/edit-delete.png</normaloff>:/images/image/edit-delete.png</iconset>
          </property>
          <property name="iconSize">
@@ -186,7 +183,9 @@ p, li { white-space: pre-wrap; }
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="images.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>buttonBox</sender>

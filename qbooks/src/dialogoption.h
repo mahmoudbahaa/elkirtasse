@@ -42,32 +42,30 @@ class Dialogoption : public QDialog
 public:
     Dialogoption(QWidget *parent = 0);
     ~Dialogoption();
-    QFont  fontName;
- QString fontTitleName;
- QString fontTitleSize;
-   QString  fontHachiaName;
-   QString    fontKhasse;
-    QString colorFont;
-    QString colorTitle;
-    QString colorPrefer;
-    QString colorFind;
-    QString colorBack;
-    QString themesStyle;
-    QString pathCostm;
-    QString cadreFolder;
-    bool webCadre;
-    bool iconsThemes;
-    int recentNbr;
+
+
 private:
     Ui::Dialogoption *ui;
 
     QString m_btnStyleDown;
     QString m_btnStyleUp;
-
+    QFont  fontName;
+    QString fontTitleName;
+    QString colorBack;
+    QString colorFont;
+    QString fontTitleSize;
+    QString fontHachiaName;
+    QString fontKhasse;
+    QString colorTitle;
+    QString colorPrefer;
+    QString colorFind;
+    QString themesStyle;
+    QString pathCostm;
+    QString cadreFolder;
 
 private slots:
     void on_toolButton_10_clicked();
-    void on_comboBoxCadre_currentIndexChanged(QString img );
+//    void on_comboBoxCadre_currentIndexChanged(QString img );
     void on_toolButton_3_clicked();
     void on_toolButton_2_clicked();
     void on_toolButton_costmPath_clicked();
@@ -79,7 +77,69 @@ private slots:
     void on_pushButton_prefercolor_clicked();
     void on_pushButton_titlecolor_clicked();
     void on_pushButton_fontcolor_clicked();
+
+
+    void on_checkBoxStandardTool_clicked();
+
+    void on_toolButtonStyleCostum_clicked();
+
 public slots:
-    void recharge();
+    //-------------set------------
+
+    void setArabicNumber(int arg);
+    int getArabicNumber();
+    void setFontName(QFont f);
+    void setFontTitleName(QString arg);
+    void setLayouDir(bool arg);
+    void setColorBack(QString arg);
+    void setColorFont(QString arg);
+    void setFontTitleSize(QString arg);
+    void setFontHachiaName(QString arg);
+    void setFontKhasse(QString arg);
+    void setcolorTitle(QString arg);
+    void setColorPrefer(QString arg);
+    void setColorFind(QString arg);
+    void setThemesStyle(QString arg);
+    void setPathCostm(QString arg);
+    void setCadreFolder(QString arg);
+    void setWebCadre(bool arg);
+    void setIconsThemes(bool arg);
+    void setRecentNbr(int arg);
+     void setLng(int arg);
+     void setStandardTool(bool st);
+ void setTxtUnderIcon(bool istxt);
+ bool getTxtUnderIcon();
+ void setIconSize(int s);
+ int getIconSize();
+ void setStyleType(bool arg);
+ bool getStyleType();
+ void setStyleSheetName(QString arg);
+ QString getStyleSheetName();
+    //---------get----------
+    QFont  getFontName();
+    QString getFontTitleName();
+    QString getColorBack();
+    bool getLayouDir();
+    QString getColorFont();
+    QString getFontTitleSize();
+    QString getFontHachiaName();
+    QString getFontKhasse();
+    QString getcolorTitle();
+    QString getColorPrefer();
+    QString getColorFind();
+    QString getThemesStyle();
+    QString getPathCostm();
+    QString getCadreFolder();
+    bool getWebCadre();
+  bool getsetStandardTool();
+    bool getIconsThemes();
+    int getRecentNbr();
+
+    int getLng();
+    /*
+
+
+
+ */
 };
 #endif // DIALOGOPTION_H

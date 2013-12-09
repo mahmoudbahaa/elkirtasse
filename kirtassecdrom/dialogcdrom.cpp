@@ -26,24 +26,24 @@
 ** $elkirtasse_END_LICENSE$
 **
 ****************************************************************************/
-#include "dialog.h"
-#include "ui_dialog.h"
+#include "dialogcdrom.h"
+#include "ui_Dialogcdrom.h"
 #include <QFile>
 #include <QFileDialog>
 
-Dialog::Dialog(QWidget *parent) :
+Dialogcdrom::Dialogcdrom(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::Dialog)
+    ui(new Ui::Dialogcdrom)
 {
     ui->setupUi(this);
 }
 
-Dialog::~Dialog()
+Dialogcdrom::~Dialogcdrom()
 {
     delete ui;
 }
 
-void Dialog::on_lineEditPathMain_textChanged(const QString &arg1)
+void Dialogcdrom::on_lineEditPathMain_textChanged(const QString &arg1)
 {
     QFile file(arg1);
     if(file.exists()){
@@ -55,7 +55,7 @@ void Dialog::on_lineEditPathMain_textChanged(const QString &arg1)
     }
 }
 
-void Dialog::on_lineEditBooks_textChanged(const QString &arg1)
+void Dialogcdrom::on_lineEditBooks_textChanged(const QString &arg1)
 {
     QFile file(arg1);
     if(file.exists()){
@@ -67,7 +67,7 @@ void Dialog::on_lineEditBooks_textChanged(const QString &arg1)
     }
 }
 
-void Dialog::on_lineEditPathBooksNew_textChanged(const QString &arg1)
+void Dialogcdrom::on_lineEditPathBooksNew_textChanged(const QString &arg1)
 {
     QFile file(arg1);
     if(file.exists()){
@@ -79,7 +79,7 @@ void Dialog::on_lineEditPathBooksNew_textChanged(const QString &arg1)
     }
 }
 
-void Dialog::on_toolButtonMain_clicked()
+void Dialogcdrom::on_toolButtonMain_clicked()
 {
     QString fn = QFileDialog::getOpenFileName(this, tr("Open File..."),
                                               QString(), tr("main.mdb (*.mdb *.MDB)"));
@@ -90,7 +90,7 @@ void Dialog::on_toolButtonMain_clicked()
         ui->lineEditPathMain->setText(fn);
 }
 
-void Dialog::on_toolButtonBooks_clicked()
+void Dialogcdrom::on_toolButtonBooks_clicked()
 {
     QString dirName = QFileDialog::getExistingDirectory(this, tr("Open Directory"),
                                                     QString(),
@@ -102,7 +102,7 @@ void Dialog::on_toolButtonBooks_clicked()
      }
 }
 
-void Dialog::on_toolButtonBooksNew_clicked()
+void Dialogcdrom::on_toolButtonBooksNew_clicked()
 {
     QString dirName = QFileDialog::getExistingDirectory(this, tr("Open Directory"),
                                                     QString(),
@@ -114,7 +114,7 @@ void Dialog::on_toolButtonBooksNew_clicked()
      }
 }
 
-void Dialog::on_buttonBox_accepted()
+void Dialogcdrom::on_buttonBox_accepted()
 {
     if(pathMain.isEmpty() || pathBooks.isEmpty() || pathBooksNew.isEmpty()){
         acceptedPath=false;

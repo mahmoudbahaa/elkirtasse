@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Dialog</class>
- <widget class="QDialog" name="Dialog">
+ <class>Dialogcdrom</class>
+ <widget class="QDialog" name="Dialogcdrom">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -316,7 +316,7 @@ p, li { white-space: pre-wrap; }
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>Dialog</receiver>
+   <receiver>Dialogcdrom</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -332,7 +332,7 @@ p, li { white-space: pre-wrap; }
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>Dialog</receiver>
+   <receiver>Dialogcdrom</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">

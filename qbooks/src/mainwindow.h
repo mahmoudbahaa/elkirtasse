@@ -34,7 +34,7 @@
 #include "classwizard.h"
 //#include "rowat.h"
 #include "booksInterface.h"
-
+#include "toolrubon.h"
 #if QT_VERSION >= 0x040600
     #include "animation.h"
 #endif
@@ -78,12 +78,14 @@ public:
 protected:
     virtual void closeEvent(QCloseEvent *e);
      bool eventFilter(QObject *obj, QEvent *ev);
+         void changeEvent(QEvent *e);
 signals:
     void bookAvailable(bool );
 private:
     Ui::MainWindowClass *ui;
     //BooksInterface *booksInterface;
-    QGraphicsScene m_scene;
+    //QGraphicsScene m_scene;
+    toolrubon *toolRubon;
 
     int m_currentIndex  ;
    // enum  { NumIndex = 10};
@@ -113,6 +115,7 @@ private:
     QAction *AC_bookRemove;                    //قائمة حذف الكتاب
     QAction *AC_bookOpenInNewTab;
     QAction *AC_bookRename;
+      QAction *AC_bookDownload;
     QAction *AC_bookOpen;                      //قائمة فتح كتاب
     QAction *AC_bookUpdat;                     //قائمة تعديل معلومات الكتاب
     QAction *AC_bookPath;
@@ -129,7 +132,7 @@ private:
     QLabel *labelProgressInfo;                //معلومات عن الكتاب المفتوح
     QLabel *labelProgress;                     //عنوان شريط المعلومات
     QLabel *labelProgressImg;
-    QLabel *labelBetaka;
+   // QLabel *labelBetaka;
     QLabel *labelAnim;
     QLabel *labelTextFind;
 
@@ -145,6 +148,8 @@ private:
     QString m_bookBetaka[NumIndex];
     QString m_bookPath[NumIndex];
     QString m_myStyleName;                            //السمة الحالية
+bool m_isStyleCostum;
+QString m_styleCostum;
     QString m_WebColorBack;                           //لون خلفية النص
     QString m_WebFont;                            //نوع النص
     QString m_WebFontTitle;
@@ -171,7 +176,15 @@ QList<QString > listLineEditName;
     bool m_findIsTitle;
 bool m_iconsThemes;
     bool m_isCadre;
+int m_lng;
+bool     m_layouDir;
+int m_arabicNmber;
+ bool  m_isStandardToolBar;
+ int m_toolIconSize;
+ bool m_textUnderIcon;
 
+ QList<QAction *>*m_listActions;
+ QList<QVariant >m_listActToAdd;
 public slots:
 
 private slots:
@@ -244,7 +257,8 @@ private slots:
     void menu_Add(bool categorie);           //
     void menu_GroupeRemove();                //حذف المجموعة
     void menu_GroupeRename();                //تسمية المجموعة
-//**treeViewFahras**
+    void menu_downloadBook();
+    //**treeViewFahras**
     void fahras_itemActivated(QTreeWidgetItem* item);    //تفعيل عنصر شجرة الفهرسة
     void fahras_itemClicked(QTreeWidgetItem* item);       //النقر على عنوان الفهرسة
     void on_pushButtonEditClose_clicked();
@@ -284,8 +298,8 @@ private slots:
     void on_actionAnimHistorie_triggered();
     void on_actionAnimGroup_triggered();
     void on_lineEdit_textChanged(QString );
-    void startAnimationBitaka();
-    void startAnimationPixmap();
+  //  void startAnimationBitaka();
+    //void startAnimationPixmap();
 
 //**tabs**
     void on_tabWidget_tabCloseRequested(int index);
@@ -312,6 +326,7 @@ void historieNext();
 void historiePrev();
 void openRecentFile();
 void findInCurrentBook();              //البحث في الكتاب الحالي
+void addToolRubonBar(bool rubon);
 void chargeIconsThemes();
 bool loadPlugin();
 bool loadPluginRowat();
@@ -336,6 +351,7 @@ bool loadPluginCdrom();
     //عمليات السمات والموضع والاحجام
     void saveLayou();                     //حفظ البيانات للموضع والسمة
     void loadLayout();                    //تحميل بيانات
+    void creatStyle();
 
     void bookValueChanged(int pos);          //تغير رقم السبين للتنقل بين الصفحات
 
@@ -354,6 +370,9 @@ bool loadPluginCdrom();
 
     void on_actionShamilaCdrom_triggered();
 
+    void on_actionControle_triggered();
+    void on_actionDvd_triggered();
+    void on_actionCostumActions_triggered();
 };
 
 #endif // MAINWINDOW_H

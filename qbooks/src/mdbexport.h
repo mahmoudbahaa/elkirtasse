@@ -74,6 +74,9 @@ bool creatmdbTempFiles(QString mdbSource);
  void on_comboBox_currentIndexChanged(int index);
     void on_buttonBox_clicked(QAbstractButton* button);
     void on_toolButton_fileNam_clicked();
+    //--------------------ebook------------
+    void criateEbookContent();
+    void criateEbookToc();
 };
 
 

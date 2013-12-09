@@ -1,6 +1,4 @@
-#include "dialogfavo.h"
 
-#include  "ui_dialogfavo.h"
 /****************************************************************************
 //   elkirtasse Copyright (C) 2010 yahia abouzakaria <yahiaui@gmail.com>
 //
@@ -29,6 +27,8 @@
 ** $elkirtasse_END_LICENSE$
 **
 ****************************************************************************/
+#include "dialogfavo.h"
+#include  "ui_dialogfavo.h"
 #include <QtGui>
 dialogfavo::dialogfavo(QWidget *parent)
     : QDialog(parent), ui(new Ui::dialogfavo)

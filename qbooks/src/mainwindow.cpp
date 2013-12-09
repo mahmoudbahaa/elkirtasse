@@ -36,6 +36,8 @@
 #include  "dialogconvert.h"
 #include  "dialogupdat.h"
 #include  "dialogfavo.h"
+#include  "dialogconfigbooks.h"
+#include  "dialogactions.h"
 #ifdef   Q_WS_WIN
 #include  "dialogmdb.h"
 #else
@@ -44,7 +46,7 @@
 #include  "dialoggoto.h"
 #include  "dialogoption.h"
 #include  "print.h"
-
+#include "dialogimportdvd.h"
 //تحميل البرنامج
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindowClass)
@@ -59,7 +61,10 @@ MainWindow::MainWindow(QWidget *parent)
 #endif
 
     m_pathUser=QDir::homePath()+"/.kirtasse";
-    m_pathApp=QApplication::applicationDirPath();
+    QDir appDir(qApp->applicationDirPath());
+    appDir.cdUp();
+    m_pathApp=  appDir.absolutePath()+"/share/elkirtasse";
+    //m_pathApp=QApplication::applicationDirPath();
     m_currentIndex=0;
     for(int r=0;r<10;++r)
     {
@@ -75,14 +80,27 @@ MainWindow::MainWindow(QWidget *parent)
     m_listTab.append("0");
     m_findIsTitle=true;
     txtBrowserBook = ui->tabWidget->currentWidget()->findChild<QTextBrowser *>();
-    updateIconEndAction();
-    tabCreatFahrass();
     //تحميل ملف السمة وبيانات الطول و العرض ووو
     //**********************عمليات التحميل*******
     loadLayout();
+    updateIconEndAction();
+    tabCreatFahrass();
+
     if(m_iconsThemes==true){
         chargeIconsThemes();
     }
+    m_listActions=new   QList<QAction *>;
+    m_listActions->append(ui->menu_file->actions());
+    m_listActions->append(ui->menuEdit->actions());
+    m_listActions->append(ui->menuView->actions());
+    m_listActions->append(ui->menuTools->actions());
+    m_listActions->append(ui->menuHelp->actions());
+    m_listActions->append(AC_prevHistorie);
+    m_listActions->append(AC_nextHistorie);
+    toolRubon =new toolrubon();
+    addToolRubonBar(m_isStandardToolBar);
+    ui->menuBar->setVisible(m_isStandardToolBar);
+
     //   Messages->m_pathCostum=m_pathCostm;
     Messages->favorite_charge(ui->treeWidget_fav,m_icondir,m_icondfile);
     Messages->treeChargeJozaa(ui->treeWidget_curaan);       //تحميل اجزاء القرءان
@@ -93,19 +111,28 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->actionDownloadBooks->setEnabled(loadPlugin());
     ui->actionShamilaCdrom->setEnabled(loadPluginCdrom());
-        
+
     const QStringList args = QCoreApplication::arguments();
+    if (args.count() == 2){
+        QString   temeIndex = args.at(1);
 
-        if (args.count() == 2){
-         QString   temeIndex = args.at(1);
+        if (temeIndex=="-f"){
 
-         if (temeIndex=="-f"){
-
-              this->showFullScreen();
-         }
-
-
+            this->showFullScreen();
         }
+    }else if(args.count() == 3){
+        QString   arg = args.at(1);
+        QString  argStyle=args.at(2);
+        qDebug()<<"arg :"<<argStyle;
+        if(arg.toLower()=="-s"){
+            m_isStyleCostum=true;
+            m_styleCostum=argStyle;
+            qDebug()<<"arg :"<<m_styleCostum;
+            creatStyle();
+        }
+    }
+
+
 
 }
 //عند خروج البرنامج
@@ -184,45 +211,70 @@ bool MainWindow::closeMessages(QString title,int index)
     return true;
 }
 bool MainWindow::eventFilter(QObject *obj, QEvent *event)
- {
-
-int b=listLineEditName.indexOf(obj->objectName());
-
-     if (obj->objectName() == listLineEditName.at(b)) {
-
-         if (event->type() == QEvent::FocusIn && obj->property("text")==trUtf8("بحث")) {
-             obj->setProperty("text","");
-             obj->setProperty("styleSheet","");
-             return true;
-         }else if (event->type() == QEvent::FocusOut && obj->property("text").toString().isEmpty()){
-               obj->setProperty("text",trUtf8("بحث"));
-               obj->setProperty("styleSheet","QLineEdit {font: italic;color: rgb(115, 115, 115);}");
-               return true;
-         }
-
-     }
- return QMainWindow::eventFilter(obj, event);
- }
-void MainWindow::updateIconEndAction()
 {
 
+    int b=listLineEditName.indexOf(obj->objectName());
+
+    if (obj->objectName() == listLineEditName.at(b)) {
+
+        if (event->type() == QEvent::FocusIn && obj->property("text")==trUtf8("بحث")) {
+            obj->setProperty("text","");
+            obj->setProperty("styleSheet","");
+            return true;
+        }else if (event->type() == QEvent::FocusOut && obj->property("text").toString().isEmpty()){
+            obj->setProperty("text",trUtf8("بحث"));
+            obj->setProperty("styleSheet","QLineEdit {font: italic;color: rgb(115, 115, 115);}");
+            return true;
+        }
+
+    }
+    return QMainWindow::eventFilter(obj, event);
+}
+void MainWindow::changeEvent(QEvent *e)
+{
+    QMainWindow::changeEvent(e);
+    switch (e->type()) {
+
+    case QEvent::LanguageChange:
+        ui->retranslateUi(this);
+        if(m_layouDir==true){
+            QApplication::setLayoutDirection(Qt::LeftToRight);
+            QLocale::setDefault(QLocale(QLocale::Latin));
+        }else{
+            QApplication::setLayoutDirection(Qt::RightToLeft);
+            QLocale::setDefault(QLocale(QLocale::Arabic));
+        }
+        //  qDebug()<<m_layouDir;
+        break;
+
+    default:
+        break;
+    }
+}
+void MainWindow::updateIconEndAction()
+{
 
     //*******************menu tool**************
     ui->menuDockTooBar->addAction(ui->dockWidget_books->toggleViewAction());
     ui->dockWidget_books->toggleViewAction()->setShortcut(QKeySequence(tr("Ctrl+Shift+b")));
+    ui->dockWidget_books->toggleViewAction()->setIcon(QIcon(":/images/image/view-books.png"));
     ui->menuDockTooBar->addAction(ui->dockWidget_curaan->toggleViewAction());
     ui->dockWidget_curaan->toggleViewAction()->setShortcut(QKeySequence(tr("Ctrl+Shift+c")));
+      ui->dockWidget_curaan->toggleViewAction()->setIcon(QIcon(":/images/image/view-curan.png"));
     ui->menuDockTooBar->addAction(ui->dockWidget_fahras->toggleViewAction());
     ui->dockWidget_fahras->toggleViewAction()->setShortcut(QKeySequence(tr("Ctrl+Shift+l")));
+     ui->dockWidget_fahras->toggleViewAction()->setIcon(QIcon(":/images/image/view-fahrasse.png"));
     ui->menuDockTooBar->addAction(ui->dockWidget_favorite->toggleViewAction());
     ui->dockWidget_favorite->toggleViewAction()->setShortcut(QKeySequence(tr("Ctrl+Shift+v")));
+         ui->dockWidget_favorite->toggleViewAction()->setIcon(QIcon(":/images/image/view-favo.png"));
     ui->menuDockTooBar->addAction(ui->dockWidget_find->toggleViewAction());
     ui->dockWidget_find->toggleViewAction()->setShortcut(QKeySequence(tr("Ctrl+Shift+f")));
+     ui->dockWidget_find->toggleViewAction()->setIcon(QIcon(":/images/image/view-find.png"));
     ui->menuDockTooBar->addSeparator();
-    ui->menuDockTooBar->addAction(ui->mainToolBar->toggleViewAction());
-    ui->mainToolBar->toggleViewAction()->setShortcut(QKeySequence(tr("Ctrl+Shift+t")));
-    ui->menuDockTooBar->addAction(ui->toolBar_navegator->toggleViewAction());
-    ui->toolBar_navegator->toggleViewAction()->setShortcut(QKeySequence(tr("Ctrl+Shift+n")));
+    //ui->menuDockTooBar->addAction(ui->mainToolBar->toggleViewAction());
+ //   ui->mainToolBar->toggleViewAction()->setShortcut(QKeySequence(tr("Ctrl+Shift+t")));
+    //ui->menuDockTooBar->addAction(ui->toolBar_navegator->toggleViewAction());
+    //ui->toolBar_navegator->toggleViewAction()->setShortcut(QKeySequence(tr("Ctrl+Shift+n")));
     //*******************icons******************
 
 
@@ -273,6 +325,7 @@ void MainWindow::updateIconEndAction()
     AC_bookUpdat= new QAction(trUtf8("تحرير بيانات الكتاب المحدد"), this);
     AC_bookPath= new QAction(trUtf8("مسار الكتاب المحدد"), this);
     AC_bookRename= new QAction(trUtf8("اعادة تسمية دليل الكتاب"), this);
+    AC_bookDownload= new QAction(trUtf8(" تحميل الكتاب المحدد"), this);
     AC_groupeRemove = new QAction(style()->standardPixmap(QStyle::SP_DialogCancelButton),trUtf8("حذف العنصر المحدد"), this);
     AC_groupeAdd = new QAction(style()->standardPixmap(QStyle::SP_FileDialogNewFolder),trUtf8("إظافة مجموعةالى القسم المحدد"), this);
     AC_categorieAdd = new QAction(style()->standardPixmap(QStyle::SP_FileDialogNewFolder),trUtf8("إظافة قسم جديد"), this);
@@ -284,13 +337,14 @@ void MainWindow::updateIconEndAction()
     ui->toolBarAnim->addWidget(labelAnim);
     ui->frame_5->layout()->addWidget(ui->toolBarAnim);
     //*******شريط ادوات الرئيسي
-    lineEditSearchInDoc=new QLineEdit(this);
-    AC_GoSearchInDoc=new QAction(QIcon(":/images/image/arrow-left.png"),trUtf8("البحث في الصفحة"), this);
+    lineEditSearchInDoc=new QLineEdit();
+    lineEditSearchInDoc->setMaximumWidth(250);
+            AC_GoSearchInDoc=new QAction(QIcon(":/images/image/arrow-left.png"),trUtf8("البحث في الصفحة"), this);
     AC_GoSearchInCurBook=new QAction(QIcon(":/images/image/FIN_book.png"),trUtf8("البحث في الكتاب الحالي"), this);
-    ui->mainToolBar->addWidget(lineEditSearchInDoc);
-    ui->mainToolBar->addAction(AC_GoSearchInDoc);
-    ui->mainToolBar->addSeparator();
-    ui->mainToolBar->addAction(AC_GoSearchInCurBook);
+//    ui->mainToolBar->addWidget(lineEditSearchInDoc);
+//    ui->mainToolBar->addAction(AC_GoSearchInDoc);
+//    ui->mainToolBar->addSeparator();
+//    ui->mainToolBar->addAction(AC_GoSearchInCurBook);
     //**القوائم المنسدلة للكتب السابقة combobox recent**
     for (int i = 0; i < MaxRecentFiles; ++i) {
         recentFileActs[i] = new QAction(this);
@@ -299,30 +353,30 @@ void MainWindow::updateIconEndAction()
         ui->menuRecent->addAction(recentFileActs[i]);
         Messages->recentFileActs[i]=recentFileActs[i];
     }
-    ui->mainToolBar->addSeparator();
-    ui->mainToolBar->addAction(ui->menuRecent->menuAction());
+//    ui->mainToolBar->addSeparator();
+//    ui->mainToolBar->addAction(ui->menuRecent->menuAction());
     //**********شريط ادوات التنقل بين الصفحات
     labelPagePart = new QLabel("");
-    ui->toolBar_navegator->addWidget(labelPagePart);
+    //ui->toolBar_navegator->addWidget(labelPagePart);
     AC_nextHistorie= new QAction(QIcon(":/images/image/undo-next.png"),trUtf8("التنقل التالي"), this);
     AC_prevHistorie=new QAction(QIcon(":/images/image/undo-back.png"),trUtf8("التنقل السابق"), this);
     AC_prevHistorie->setEnabled(false);
     AC_nextHistorie->setEnabled(false);
-    ui->toolBar_navegator->addAction(AC_prevHistorie);
-    ui->toolBar_navegator->addAction(AC_nextHistorie);
+    //ui->toolBar_navegator->addAction(AC_prevHistorie);
+    //ui->toolBar_navegator->addAction(AC_nextHistorie);
     //***********************الممؤثرات الحركيةanimation*****************************
-    labelBetaka=new QLabel();
-    labelBetaka->setLayoutDirection(Qt::RightToLeft);
+    //    labelBetaka=new QLabel();
+    //    labelBetaka->setLayoutDirection(Qt::RightToLeft);
 
-    m_scene.addWidget(labelBetaka);
-    m_scene.setBackgroundBrush(labelBetaka->palette().base());
-    labelBetaka->setBackgroundRole(QPalette::Base);
-    ui->graphicsView->setScene(&m_scene);
-    labelBetaka->setFixedWidth(400);
-    labelBetaka->setFixedHeight(400);
-    labelBetaka->setAlignment(Qt::AlignTop);
-    labelBetaka->setAutoFillBackground(true);
-    startAnimationPixmap();
+    //    m_scene.addWidget(labelBetaka);
+    //    m_scene.setBackgroundBrush(labelBetaka->palette().base());
+    //    labelBetaka->setBackgroundRole(QPalette::Base);
+    //    ui->graphicsView->setScene(&m_scene);
+    //    labelBetaka->setFixedWidth(400);
+    //    labelBetaka->setFixedHeight(400);
+    //    labelBetaka->setAlignment(Qt::AlignTop);
+    //    labelBetaka->setAutoFillBackground(true);
+    //    startAnimationPixmap();
 #if QT_VERSION >= 0x040600
     view->treeView=ui->treeWidget_books;
     view->lineEdit=ui->lineEdit;
@@ -359,7 +413,6 @@ void MainWindow::updateIconEndAction()
     connect(btnAddtab, SIGNAL(clicked()), this, SLOT(tabCreatTabNew()));
     ui->tabWidget->setCornerWidget(btnAddtab,Qt::TopLeftCorner);
 
-    //**********************************
     //**************whatsthis**************
 #ifndef QT_NO_WHATSTHIS
     AC_prevHistorie ->setWhatsThis(trUtf8("الرجوع الى التنقلات التي قمت بها سابقا وليس الى الصفحة السابقة"));
@@ -377,6 +430,7 @@ void MainWindow::updateIconEndAction()
     connect(AC_bookUpdat, SIGNAL(triggered()), this, SLOT(menu_BookUpdat()));
     connect(AC_bookPath, SIGNAL(triggered()), this, SLOT(menu_BookPath()));
     connect(AC_bookRename, SIGNAL(triggered()), this, SLOT(menu_renameBook()));
+    connect(AC_bookDownload, SIGNAL(triggered()), this, SLOT(menu_downloadBook()));
     connect(AC_groupeRemove, SIGNAL(triggered()), this, SLOT(menu_GroupeRemove()));
     connect(AC_groupeAdd, SIGNAL(triggered()), this, SLOT(menu_GroupeAdd()));
     connect(AC_categorieAdd, SIGNAL(triggered()), this, SLOT(menu_CategorieAdd()));
@@ -418,7 +472,7 @@ void MainWindow::updateIconEndAction()
     connect(this, SIGNAL(bookAvailable(bool)),ui->actionExport, SLOT(setEnabled(bool)));
     // connect(this, SIGNAL(bookAvailable(bool)),AC_GoSearchInDoc, SLOT(setEnabled(bool)));
     listLineEditName <<lineEditSearchInDoc->objectName() << ui->lineEdit_find_cur->objectName()<< ui->lineEdit_FindRowat->objectName()
-            << lineEditFindFah->objectName()<< lineEditFindFavo->objectName()<< lineEditFind->objectName();
+                    << lineEditFindFah->objectName()<< lineEditFindFavo->objectName()<< lineEditFind->objectName();
     lineEditSearchInDoc->installEventFilter(this);
     lineEditSearchInDoc->setText(trUtf8("بحث"));
     lineEditSearchInDoc->setStyleSheet("QLineEdit {font: italic;color: rgb(115, 115, 115);}");
@@ -451,29 +505,119 @@ void MainWindow::updateIconEndAction()
     ui->btnRowaInfo->setIcon(style()->standardPixmap(QStyle::SP_MessageBoxInformation));
     ui->action_stopFind->setIcon(style()->standardPixmap(QStyle::SP_MediaStop));
 
-    ui->actionBookInfo->setIcon(style()->standardPixmap(QStyle::SP_MessageBoxInformation));
+
     ui->actionFavItemDown->setIcon(style()->standardPixmap(QStyle::SP_ArrowDown));
     ui->actionFavItemUp->setIcon(style()->standardPixmap(QStyle::SP_ArrowUp));
     ui->actionFindItemDown->setIcon(style()->standardPixmap(QStyle::SP_ArrowDown));
     ui->actionFindItemUp->setIcon(style()->standardPixmap(QStyle::SP_ArrowUp));
     ui->actionFindLoad->setIcon(style()->standardPixmap(QStyle::SP_DirOpenIcon));
-    labelBetaka->setPixmap(QPixmap(QString::fromUtf8(":/images/image/groupbook.png")));
+    //    labelBetaka->setPixmap(QPixmap(QString::fromUtf8(":/images/image/groupbook.png")));
     ui->actionItemFahUp->setIcon(style()->standardPixmap(QStyle::SP_ArrowUp));
     ui->actionItemDown->setIcon(style()->standardPixmap(QStyle::SP_ArrowDown));
     //m_icondir= QIcon(style()->standardPixmap(QStyle::SP_DirIcon));
+    ui->actionBookInfo->setIcon(style()->standardPixmap(QStyle::SP_MessageBoxInformation));
+    if(this->layoutDirection()==Qt::LeftToRight){
+        ui->action_first->setIcon( QIcon(":/images/image/go-last.png"));
+        ui->action_prev->setIcon( QIcon(":/images/image/go-next.png"));
+        ui->action_next->setIcon(QIcon(":/images/image/go-back.png"));
+        ui->action_last->setIcon(QIcon(":/images/image/go-first.png"));
+
+    }
+
+}
+
+void MainWindow::addToolRubonBar(bool rubon)
+{
+
+    this->addToolBar(Qt::TopToolBarArea,toolRubon);
+    toolRubon->setToolIconSize(m_toolIconSize,m_textUnderIcon);
+    if(rubon==true){
+        toolRubon->clear();
+        int count=  m_listActToAdd.count();
+        for(int i=0;i<count;i++){
+            int indx=m_listActToAdd.at(i).toInt();
+            if(indx==1000){
+                toolRubon->addSeparator();
+            }else if (indx==2000){
+                toolRubon->addSeparator();
+                toolRubon->addWidget(lineEditSearchInDoc);
+                toolRubon->addAction(AC_GoSearchInDoc);
+                toolRubon->addAction(AC_GoSearchInCurBook);
+                toolRubon->addAction(ui->actionFind_all);
+
+            }else{
+                toolRubon->addAction(m_listActions->at(indx));
+            }
+        }
+        /*
+        toolRubon->addAction(ui->actionOption);
+        toolRubon->addAction(ui->action_fulscreen);
+        toolRubon->addAction(ui->menuRecent->menuAction());
+        toolRubon->addSeparator();
+        toolRubon->addActions(ui->menuEdit->actions());
+        toolRubon->addWidget(labelPagePart);
+        toolRubon->addAction(AC_prevHistorie);
+        toolRubon->addAction(AC_nextHistorie);
+        toolRubon->removeAction(ui->actionFind_all);
+        toolRubon->addSeparator();
+        toolRubon->addWidget(lineEditSearchInDoc);
+        toolRubon->addAction(AC_GoSearchInDoc);
+        toolRubon->addAction(AC_GoSearchInCurBook);
+        toolRubon->addAction(ui->actionFind_all);
+        */
+        return;
+    }
+
+    toolRubon->setRubonStyle();
+
+    toolRubon->toolFile->addActions(ui->menu_file->actions());
+    //  toolRubon->toolView->addActions(ui->menuView->actions());
+    QWidget *widget=new QWidget;
+    QHBoxLayout *horizontalLayoutTool = new QHBoxLayout(widget);
+    QSpacerItem *horizontalSpacer=new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum);
+    horizontalLayoutTool->addItem(horizontalSpacer);
+    toolRubon->toolFile->insertWidget(ui->action_close,widget);
+
+    ui->action_last->setIcon(QIcon(":/images/image/go-first.png"));
+
+    toolRubon->toolEdit->addActions(ui->menuEdit->actions());
+    //    toolRubon->toolEdit->addWidget(labelPagePart);
+    toolRubon->toolEdit->addSeparator();
+    toolRubon->toolEdit->addAction(AC_prevHistorie);
+    toolRubon->toolEdit->addAction(AC_nextHistorie);
+    toolRubon->toolEdit->addSeparator();
+    toolRubon->toolEdit->addAction(ui->actionZoumIn);
+    toolRubon->toolEdit->addAction(ui->actionZoomOut);
+    toolRubon->toolEdit->removeAction(ui->actionFind_all);
+
+    toolRubon->tooTools->addAction(ui->actionOption);
+    toolRubon->tooTools->addAction(ui->actionControle);
+    toolRubon->tooTools->addSeparator();
+    toolRubon->tooTools->addActions(ui->menuTools->actions());
+
+    toolRubon->toolFind->addAction(ui->actionFind_all);
+    toolRubon->toolFind->addSeparator();
+    toolRubon->toolFind->addWidget(lineEditSearchInDoc);
+    toolRubon->toolFind->addAction(AC_GoSearchInDoc);
+    toolRubon->toolFind->addSeparator();
+    toolRubon->toolFind->addAction(AC_GoSearchInCurBook);
+    toolRubon->toolView->addAction(ui->action_fulscreen);
+    toolRubon->toolView->addSeparator();
+    toolRubon->toolView->addActions(ui->menuDockTooBar->actions());
+
+    toolRubon->toolHelp->addActions(ui->menuHelp->actions());
 
 
 }
 
-
 void MainWindow::chargeIconsThemes()
 {
-    ui->pushButtonEditClose->setIcon(QIcon::fromTheme("stock_close",QIcon(style()->standardPixmap(QStyle::SP_TitleBarCloseButton))));
+    ui->pushButtonEditClose->setIcon(QIcon::fromTheme("edit-delete",QIcon(style()->standardPixmap(QStyle::SP_TitleBarCloseButton))));
     ui->actionNewPageAfter->setIcon(QIcon::fromTheme("document-new",QIcon(style()->standardPixmap(QStyle::SP_FileIcon))));
     ui->actionNewPageBefor->setIcon(QIcon::fromTheme("document-new",QIcon(style()->standardPixmap(QStyle::SP_FileIcon))));
     AC_nextHistorie->setIcon( QIcon::fromTheme("edit-undo", QIcon(":/images/image/undo-back.png")));
     AC_prevHistorie->setIcon( QIcon::fromTheme("edit-redo", QIcon(":/images/image/undo-next.png")));
-    AC_GoSearchInDoc->setIcon(QIcon::fromTheme("gtk-ok", QIcon(":/images/image/arrow-left.png")));
+    AC_GoSearchInDoc->setIcon(QIcon::fromTheme("dialog-ok", QIcon(":/images/image/arrow-left.png")));
     AC_groupeRename->setIcon(QIcon::fromTheme("edit-rename", QIcon(":/images/image/edit-rename.png")));
     AC_GoSearchInCurBook->setIcon(QIcon::fromTheme("edit-find", QIcon(":/images/image/FIN_book.png")));
     AC_expandTreeFah->setIcon(QIcon::fromTheme("view-sort-ascending", QIcon(":/images/image/btnfolder.png")));
@@ -481,18 +625,27 @@ void MainWindow::chargeIconsThemes()
     ui->actionBookExpAll->setIcon(QIcon::fromTheme("view-sort-ascending", QIcon(":/images/image/btnfolder.png")));
     ui->actionBookColpAll->setIcon(QIcon::fromTheme("view-sort-descending", QIcon(":/images/image/colapse.png")));
     ui->action_fulscreen->setIcon(QIcon::fromTheme("view-fullscreen", QIcon(":/images/image/view-fullscreen.png")));
-    ui->actionOption->setIcon(QIcon::fromTheme("gtk-properties", QIcon(":/images/image/config-background.png")));
+    ui->actionOption->setIcon(QIcon::fromTheme("document-properties", QIcon(":/images/image/config-background.png")));
     ui->actionHiperlink->setIcon(QIcon::fromTheme("insert-link", QIcon(":/images/image/insert-link.png")));
     ui->action_favorit->setIcon(QIcon::fromTheme("bookmark-new", QIcon(":/images/image/bookmark-new.png")));
     ui->actionNewTab->setIcon(QIcon::fromTheme("tab-new", QIcon(":/images/image/tab-new.png")));
-    ui->action_edit->setIcon(QIcon::fromTheme("gtk-edit", QIcon(":/images/image/bookEdit.png")));
+    ui->action_edit->setIcon(QIcon::fromTheme("document-edit", QIcon(":/images/image/bookEdit.png")));
     ui->menuRecent->setIcon(QIcon::fromTheme("document-open-recent", QIcon(":/images/image/recent.png")));
-    ui->action_first->setIcon(QIcon::fromTheme("gtk-goto-first-rtl", QIcon(":/images/image/go-first.png")));
-    ui->action_first->setIcon(QIcon::fromTheme("gtk-goto-first-rtl", QIcon(":/images/image/go-first.png")));
-    ui->action_prev->setIcon(QIcon::fromTheme("gtk-go-back-rtl", QIcon(":/images/image/go-back.png")));
-    ui->action_next->setIcon(QIcon::fromTheme("gtk-go-forward-rtl", QIcon(":/images/image/go-next.png")));
-    ui->action_last->setIcon(QIcon::fromTheme("gtk-goto-last-rtl", QIcon(":/images/image/go-last.png")));
-    ui->actionGotoPage->setIcon(QIcon::fromTheme("gtk-goto-top", QIcon(":/images/image/go-page.png")));
+    if(this->layoutDirection()==Qt::RightToLeft){
+        ui->action_first->setIcon(QIcon::fromTheme("go-last", QIcon(":/images/image/go-first.png")));
+        ui->action_prev->setIcon(QIcon::fromTheme("go-next", QIcon(":/images/image/go-back.png")));
+        ui->action_next->setIcon(QIcon::fromTheme("go-previous", QIcon(":/images/image/go-next.png")));
+        ui->action_last->setIcon(QIcon::fromTheme("go-first", QIcon(":/images/image/go-last.png")));
+
+    }else{
+        ui->action_first->setIcon(QIcon::fromTheme("go-first", QIcon(":/images/image/go-last.png")));
+        ui->action_prev->setIcon(QIcon::fromTheme("go-previous", QIcon(":/images/image/go-next.png")));
+        ui->action_next->setIcon(QIcon::fromTheme("go-next", QIcon(":/images/image/go-back.png")));
+        ui->action_last->setIcon(QIcon::fromTheme("go-last", QIcon(":/images/image/go-first.png")));
+
+    }
+
+    ui->actionGotoPage->setIcon(QIcon::fromTheme("go-top", QIcon(":/images/image/go-page.png")));
     ui->action_import->setIcon(QIcon::fromTheme("stock_new-text", QIcon(":/images/image/address-book-new.png")));
     ui->actionMdb->setIcon(QIcon::fromTheme("stock_new-dir", QIcon(":/images/image/address-book-new.png")));
     ui->action_addBoook->setIcon(QIcon::fromTheme("stock_new-dir", QIcon(":/images/image/address-book-new.png")));
@@ -502,13 +655,14 @@ void MainWindow::chargeIconsThemes()
     ui->actionPrintPreview->setIcon(QIcon::fromTheme("gtk-print-preview"));
     ui->actionZoumIn->setIcon(QIcon::fromTheme("zoom-in"));
     ui->actionZoomOut->setIcon(QIcon::fromTheme("zoom-out"));
-    ui->btnGoFindFah->setIcon(QIcon::fromTheme("gtk-ok", QIcon(":/images/image/arrow-left.png")));
+    ui->btnGoFindFah->setIcon(QIcon::fromTheme("dialog-ok", QIcon(":/images/image/arrow-left.png")));
     ui->actionFontCostum->setIcon(QIcon::fromTheme("format-text-underline",QIcon(":/images/image/draw-text.png")));
-
+    ui->actionBookInfo->setIcon(QIcon::fromTheme("documentinfo",QIcon(style()->standardPixmap(QStyle::SP_MessageBoxInformation))));
 }
+
 bool MainWindow::loadPlugin()
 {
-    QDir pluginsDir(qApp->applicationDirPath());
+    QDir pluginsDir(m_pathApp);
 #if defined(Q_OS_WIN)
 
     if (pluginsDir.dirName().toLower() == "debug" || pluginsDir.dirName().toLower() == "release")
@@ -520,7 +674,7 @@ bool MainWindow::loadPlugin()
         pluginsDir.cdUp();
     }
 #endif
-    if (!QFile::exists(qApp->applicationDirPath()+"/plugins")){
+    if (!QFile::exists(m_pathApp+"/plugins")){
         if(QFile::exists("/usr/lib/elkirtasse")){
             pluginsDir.setPath("/usr/lib/elkirtasse");
         }else if(QFile::exists("/usr/lib64/elkirtasse")){
@@ -543,14 +697,13 @@ bool MainWindow::loadPlugin()
 
             }
 
-
         }
     }
     return false;
 }
 bool MainWindow::loadPluginCdrom()
 {
-    QDir pluginsDir(qApp->applicationDirPath());
+    QDir pluginsDir(m_pathApp);
 #if defined(Q_OS_WIN)
     if (pluginsDir.dirName().toLower() == "debug" || pluginsDir.dirName().toLower() == "release")
         pluginsDir.cdUp();
@@ -561,7 +714,7 @@ bool MainWindow::loadPluginCdrom()
         pluginsDir.cdUp();
     }
 #endif
-    if (!QFile::exists(qApp->applicationDirPath()+"/plugins")){
+    if (!QFile::exists(m_pathApp+"/plugins")){
         if(QFile::exists("/usr/lib/elkirtasse")){
             pluginsDir.setPath("/usr/lib/elkirtasse");
         }else if(QFile::exists("/usr/lib64/elkirtasse")){
@@ -574,14 +727,14 @@ bool MainWindow::loadPluginCdrom()
         QObject *plugin = pluginLoader.instance();
 
 
-       if (plugin) {
+        if (plugin) {
 
 
-          shamilaInterface = qobject_cast<ShamilaInterface *>(plugin);
+            shamilaInterface = qobject_cast<ShamilaInterface *>(plugin);
 
-           if (shamilaInterface){
-                 return true;
-           }
+            if (shamilaInterface){
+                return true;
+            }
 
         }
     }
@@ -590,7 +743,7 @@ bool MainWindow::loadPluginCdrom()
 }
 bool MainWindow::loadPluginRowat()
 {
-    QDir pluginsDir(qApp->applicationDirPath());
+    QDir pluginsDir(m_pathApp);
 #if defined(Q_OS_WIN)
     if (pluginsDir.dirName().toLower() == "debug" || pluginsDir.dirName().toLower() == "release")
         pluginsDir.cdUp();
@@ -601,7 +754,7 @@ bool MainWindow::loadPluginRowat()
         pluginsDir.cdUp();
     }
 #endif
-    if (!QFile::exists(qApp->applicationDirPath()+"/plugins")){
+    if (!QFile::exists(m_pathApp+"/plugins")){
         if(QFile::exists("/usr/lib/elkirtasse")){
             pluginsDir.setPath("/usr/lib/elkirtasse");
         }else if(QFile::exists("/usr/lib64/elkirtasse")){
@@ -614,12 +767,12 @@ bool MainWindow::loadPluginRowat()
         QObject *plugin = pluginLoader.instance();
 
 
-       if (plugin) {
+        if (plugin) {
 
-          rowatInterface    = qobject_cast<RowatInterface *>(plugin);
+            rowatInterface    = qobject_cast<RowatInterface *>(plugin);
 
-          if (rowatInterface){
-             return true;
+            if (rowatInterface){
+                return true;
 
             }
 
@@ -656,19 +809,47 @@ void MainWindow:: open_dataBase(QString name,QString title,QString Autor,int pos
         return;
     }
     //التأكد من وجود الكتاب في المسار
-    QString bkpath;           //مسار الكتاب    
+    QString bkpath;           //مسار الكتاب
+    QString idparent=name.section("_",0,0);
+    idparent=idparent.remove("bk");
     QFile file;
     if( file.exists( m_pathCostm + "/" + name +"/book.xml")){
         if (m_currentIndex==0){tabCreatTabNew();}
         bkpath=m_pathCostm + "/" + name +"/book.xml";
         m_bookPath[m_currentIndex]=m_pathCostm + "/" + name;
+    }else if( file.exists( m_pathCostm + "/" + idparent+"/" + name +"/book.xml")){
+
+        if (m_currentIndex==0){tabCreatTabNew();}
+        bkpath=m_pathCostm + "/" + idparent+"/" + name +"/book.xml";
+        m_bookPath[m_currentIndex]=m_pathCostm+ "/" + idparent+"/" + name;
+
     }else if(file.exists( m_pathApp + "/books/" + name +"/book.xml")){
         if (m_currentIndex==0){tabCreatTabNew();}
         bkpath=m_pathApp + "/books/" + name +"/book.xml";
         m_bookPath[m_currentIndex]=m_pathApp + "/books/" + name;
 
     }else{
-        QMessageBox::information(this,trUtf8("خطأ"),m_pathCostm + "/" + name +trUtf8( "غير موجود ") );
+       // QMessageBox::information(this,trUtf8("خطأ"),m_pathCostm + "/" + name +trUtf8( "غير موجود ") );
+
+        QMessageBox msgBox;
+        msgBox.setIcon(QMessageBox::Question);
+        msgBox.setText(trUtf8( "  الكتب غير موجود في هذا الدليل \n ")+m_pathCostm + "/" + name);
+        msgBox.setInformativeText(trUtf8( "هل تريد تحميله من الانترنت ؟  "));
+        msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::Cancel);
+        msgBox.setDefaultButton(QMessageBox::Cancel);
+        int ret = msgBox.exec();
+        switch (ret) {
+
+        case QMessageBox::Yes:
+            menu_downloadBook();
+               break;
+           case QMessageBox::Cancel:
+               // Cancel was clicked
+               break;
+           default:
+               // should never be reached
+               break;
+         }
         return;
     }
     //***********************************
@@ -736,6 +917,7 @@ void MainWindow::on_action_import_triggered()//استراد ملفات نصية
     if ( dlgc->exec() == QDialog::Accepted ){
         chargeGroupe();
     }
+    delete dlgc;
 }
 
 void MainWindow::on_actionMdb_triggered()
@@ -754,6 +936,7 @@ void MainWindow::on_actionMdb_triggered()
         chargeGroupe();
     }
 #endif
+    delete dlg;
 }
 
 void MainWindow::on_action_addBoook_triggered()//اظافة كتاب
@@ -763,6 +946,7 @@ void MainWindow::on_action_addBoook_triggered()//اظافة كتاب
     if ( dlg->exec() == QDialog::Accepted ){
         chargeGroupe();
     }
+    delete dlg;
 }
 
 void MainWindow::on_actionExport_triggered()//تصدير الكتاب
@@ -772,16 +956,19 @@ void MainWindow::on_actionExport_triggered()//تصدير الكتاب
     }
     Print* dlg=new Print(this);
     dlg->treeviw=treeViewFahras[m_currentIndex];
-    dlg->curentPath=m_bookPath[m_currentIndex];
-    dlg->m_WebColorBack=m_WebColorBack;                           //لون خلفية النص
-    dlg->m_WebFontTitle=m_WebFontTitle;
-    dlg-> m_WebFont=m_WebFont;                            //نوع النص
-    dlg-> m_WebFontColor=m_WebFontColor;
-    dlg-> m_WebFontTitleColor=m_WebFontTitleColor;
-    dlg-> m_WebFontPrefertColor=m_WebFontPrefertColor;
-    dlg-> m_bookTitle=m_bookTitle[m_currentIndex];
-    dlg-> m_bookAuthor=m_bookAuthor[m_currentIndex];
+    dlg->setpathApp(m_pathApp);
+    dlg->setBookCurentPath(m_bookPath[m_currentIndex]);
+    dlg->setBookColorBack(m_WebColorBack);                           //لون خلفية النص
+    dlg->setBookFontTitle(m_WebFontTitle);
+    dlg-> setBookFont(m_WebFont);                            //نوع النص
+    dlg-> setBookFontColor(m_WebFontColor);
+    dlg-> setBookFontTitleColor(m_WebFontTitleColor);
+    dlg-> setBookFontPrefertColor(m_WebFontPrefertColor);
+    dlg-> setBookTitle(m_bookTitle[m_currentIndex]);
+    dlg-> setBookAuthor(m_bookAuthor[m_currentIndex]);
+    dlg->setBookBetaka(m_bookBetaka[m_currentIndex]);
     dlg->exec();
+    delete dlg;
 }
 
 void MainWindow::on_actionArchive_triggered()
@@ -825,8 +1012,8 @@ void MainWindow::on_actionArchive_triggered()
         qApp->processEvents();
         progress.setValue(progress.value()+1);
     }
-QDir mydir(QDir::homePath());
-mydir.remove(title+".tar");
+    QDir mydir(QDir::homePath());
+    mydir.remove(title+".tar");
 #else
     QDir::setCurrent(dirParent);
     prosses.execute("tar -cvzf "+ QDir::homePath()+"/"+title+".tar.gz "+ dirName);
@@ -845,7 +1032,7 @@ void MainWindow::on_actionBookInfo_triggered()
 
     QString imgScreenPath= m_pathCostm + "/" +m_bookName[m_currentIndex]+"/screenshot.png";
     if(!QFile::exists(imgScreenPath)){
-       imgScreenPath=":/images/image/groupbook.png";
+        imgScreenPath=":/images/image/groupbook.png";
     }
     QPixmap   pixmapG(imgScreenPath) ;
     QMessageBox msgBox(this);
@@ -875,7 +1062,7 @@ void MainWindow::on_actionPrint_triggered()
         dlg->addEnabledOption(QAbstractPrintDialog::PrintSelection);
     dlg->setWindowTitle(tr("Print Document"));
     if (dlg->exec() == QDialog::Accepted) {
-     txtBrowserBook->print(&printer);
+        txtBrowserBook->print(&printer);
 
     }
     delete dlg;
@@ -932,6 +1119,7 @@ void MainWindow::on_actionGotoPage_triggered()
         int id=dlggo->counter-1;
         bookValueChanged(id);
     }
+    delete dlggo;
 }
 
 void MainWindow::on_actionFind_all_triggered()  // تنفيذ البحث في مجموعة الكتب
@@ -943,13 +1131,13 @@ void MainWindow::on_actionFind_all_triggered()  // تنفيذ البحث في م
         m_textfind=dlg->findString;
         if ( m_textfind.length()<3){ return;}
 
-         showfind(false);
+        showfind(false);
 
         labelTextFind->setText(trUtf8("نص البحث  : ")+m_textfind);
         labelProgress->setVisible(true);
         labelProgressImg->setVisible(true);
-      //  BtnStopFind->setVisible(true);
-ui->action_stopFind->setVisible(true);
+        //  BtnStopFind->setVisible(true);
+        ui->action_stopFind->setVisible(true);
         Findbook->pathCostum=m_pathCostm;
         Findbook->findFirst=dlg->findFirst;
         Findbook->findToList=dlg->findList;
@@ -959,19 +1147,21 @@ ui->action_stopFind->setVisible(true);
         Findbook->findText= m_textfind;
         Findbook->resultCount=0;
         Findbook->progressBar1=  progressBarFind;
-      //  Findbook->pushButtonStop=BtnStopFind;
+        //  Findbook->pushButtonStop=BtnStopFind;
         Findbook->buttonStop= ui->action_stopFind;
         Findbook->treeView=ui->treeWidgetFind;
         Findbook->labelProgress=labelProgress;
         Findbook->label_progressImg=labelProgressImg;
-       Findbook->isNassToFind=dlg->findIsNass;
-       this->isNassToFind=dlg->findIsNass;
-//m_isRawiToFind=false;
-ui->treeWidgetFind->clear();
+        Findbook->isNassToFind=dlg->findIsNass;
+       Findbook->noHamza=dlg->noHamza;
+        this->isNassToFind=dlg->findIsNass;
+        //m_isRawiToFind=false;
+        ui->treeWidgetFind->clear();
         Findbook->findInAllBook(dlg->findIsNass);
 
 
     }
+    delete dlg;
 }
 
 void MainWindow::on_action_edit_triggered()  //تحرير الفهرسة
@@ -981,7 +1171,7 @@ void MainWindow::on_action_edit_triggered()  //تحرير الفهرسة
         txtBrowserBook->setUndoRedoEnabled(true);
         ui->tabWidget->setTabText(ui->tabWidget->currentIndex(),trUtf8("تحرير : ")+m_bookTitle[m_currentIndex]);
         ui->frameEdit->setVisible(true);//اظهار ادوات التحرير
-         ui->widgetEditBook->setVisible(true);
+        ui->widgetEditBook->setVisible(true);
         treeViewFahras[m_currentIndex]->setDragDropMode(QAbstractItemView::InternalMove);//تفعيل عملية النقل بالفأرة
         treeViewFahras[m_currentIndex]->setSelectionMode(QAbstractItemView::ExtendedSelection);
         m_toolEditFahrass[m_currentIndex]=true;
@@ -1002,6 +1192,7 @@ void MainWindow::on_action_favorit_triggered()
     dlg->bookId=idbk.toString();
     dlg->charge_combo();
     dlg->exec() ;
+    delete dlg;
 }
 
 void MainWindow::on_actionHiperlink_triggered()
@@ -1051,7 +1242,8 @@ void MainWindow::on_action_fulscreen_triggered()//ملأ الشاشة
         ui->menuBar->setParent(this);
         this->setMenuBar(ui->menuBar);
         ui->menuBar->setStyleSheet("");
-        ui->menuBar->setVisible(true);
+        ui->menuBar->setVisible(m_isStandardToolBar);
+
         loadLayout();
 
         this->showNormal();
@@ -1062,15 +1254,14 @@ void MainWindow::on_action_fulscreen_triggered()//ملأ الشاشة
         ui->dockWidget_fahras->setVisible(false);
         ui->dockWidget_favorite->setVisible(false);
         ui->dockWidget_find->setVisible(false);
-        ui->toolBar_navegator->setVisible(false);
-        ui->mainToolBar->setVisible(false);
+        toolRubon->setVisible(false);
+      //  ui->mainToolBar->setVisible(false);
         ui->statusBar->setVisible(false);
 
-  ui->menuBar->setParent(ui->tabWidget);
-ui->menuBar->setVisible(true);
-ui->menuBar->setStyleSheet("QMenuBar {background-color: rgba(255, 255, 255, 0);}");
- ui->menuBar->setGeometry(0,0,23,23);
-
+        ui->menuBar->setParent(ui->tabWidget);
+        ui->menuBar->setVisible(true);
+        ui->menuBar->setStyleSheet("QMenuBar {background-color: rgba(255, 255, 255, 0);}");
+        ui->menuBar->setGeometry(0,0,23,23);
 
         this->showFullScreen();
     }
@@ -1079,44 +1270,69 @@ ui->menuBar->setStyleSheet("QMenuBar {background-color: rgba(255, 255, 255, 0);}
 void MainWindow::on_actionOption_triggered()
 {
     Dialogoption *dlgop=new Dialogoption(this);
-    dlgop->colorBack=m_WebColorBack;
-    dlgop->colorFont=m_WebFontColor;
-    dlgop->colorFind=m_WebFontFindColor;
-    dlgop->colorPrefer=m_WebFontPrefertColor;
-    dlgop->colorTitle=m_WebFontTitleColor;
-    dlgop->recentNbr=m_recentNbr;
-    dlgop->pathCostm=m_pathCostm;
-    dlgop->webCadre=m_isCadre;
+    dlgop->setColorBack(m_WebColorBack);
+    dlgop->setColorFont(m_WebFontColor);
+    dlgop->setColorFind(m_WebFontFindColor);
+    dlgop->setColorPrefer(m_WebFontPrefertColor);
+    dlgop->setcolorTitle(m_WebFontTitleColor);
+    dlgop->setRecentNbr(m_recentNbr);
+    dlgop->setPathCostm(m_pathCostm);
+    dlgop->setWebCadre(m_isCadre);
     QFont font;
     font.fromString(m_WebFont);
-    dlgop->fontName=font;
-    dlgop->fontTitleName=m_WebFontTitle;
-    dlgop->fontTitleSize=m_WebFontTitleSize;
-    dlgop->fontHachiaName=m_WebFontHachia;
-    dlgop->fontKhasse=m_WebFontKhase;
-    dlgop->themesStyle=m_myStyleName;
-    dlgop->cadreFolder=m_CadrFolder;
-    dlgop->iconsThemes=m_iconsThemes;
-    dlgop->recharge();
+    dlgop->setFontName(font);
+    dlgop->setFontTitleSize(m_WebFontTitleSize);
+    dlgop->setFontTitleName(m_WebFontTitle);
+
+    dlgop->setFontHachiaName(m_WebFontHachia);
+    dlgop->setFontKhasse(m_WebFontKhase);
+    dlgop->setThemesStyle(m_myStyleName);
+    dlgop->setCadreFolder(m_CadrFolder);
+    dlgop->setIconsThemes(m_iconsThemes);
+    dlgop->setLng(m_lng);
+    dlgop->setLayouDir(m_layouDir);
+    dlgop->setArabicNumber(m_arabicNmber);
+    dlgop->setStandardTool(m_isStandardToolBar);
+dlgop->setTxtUnderIcon(m_textUnderIcon);
+dlgop->setIconSize(m_toolIconSize);
+dlgop->setStyleSheetName(m_styleCostum);
+dlgop->setStyleType(m_isStyleCostum);
     if ( dlgop->exec() == QDialog::Accepted ){
-        m_WebColorBack=   dlgop->colorBack;
-        m_WebFontColor=  dlgop->colorFont;
-        m_WebFontFindColor=dlgop->colorFind;
-        m_WebFontPrefertColor= dlgop->colorPrefer;
-        m_WebFontTitleColor = dlgop->colorTitle;
-        txtBrowserBook->setFont(dlgop->fontName);
-        m_WebFont= dlgop->fontName.toString();
-        m_isCadre=dlgop->webCadre;
-        m_myStyleName=  dlgop->themesStyle;
-        m_recentNbr= dlgop->recentNbr;
-        m_pathCostm=dlgop->pathCostm;
-        m_WebFontTitle=dlgop->fontTitleName;
-        m_WebFontTitleSize=dlgop->fontTitleSize;
-        m_WebFontHachia=   dlgop->fontHachiaName;
-        m_WebFontKhase=   dlgop->fontKhasse;
-        m_CadrFolder=dlgop->cadreFolder;
-       m_iconsThemes=dlgop->iconsThemes;
-        QApplication::setStyle(QStyleFactory::create( m_myStyleName));
+        m_WebColorBack=   dlgop->getColorBack();
+        m_WebFontColor=  dlgop->getColorFont();
+        m_WebFontFindColor=dlgop->getColorFind();
+        m_WebFontPrefertColor= dlgop->getColorPrefer();
+        m_WebFontTitleColor = dlgop->getcolorTitle();
+        txtBrowserBook->setFont(dlgop->getFontName());
+        m_WebFont= dlgop->getFontName().toString();
+        m_isCadre=dlgop->getWebCadre();
+        m_myStyleName=  dlgop->getThemesStyle();
+        m_recentNbr= dlgop->getRecentNbr();
+        m_pathCostm=dlgop->getPathCostm();
+        m_WebFontTitle=dlgop->getFontTitleName();
+        m_WebFontTitleSize=dlgop->getFontTitleSize();
+        m_WebFontHachia=   dlgop->getFontHachiaName();
+        m_WebFontKhase=   dlgop->getFontKhasse();
+        m_CadrFolder=dlgop->getCadreFolder();
+        m_iconsThemes=dlgop->getIconsThemes();
+        m_arabicNmber=dlgop->getArabicNumber();
+
+        m_lng=dlgop->getLng();
+        m_isStandardToolBar=dlgop->getsetStandardTool();
+m_textUnderIcon=dlgop->getTxtUnderIcon();
+m_toolIconSize=dlgop->getIconSize();
+        m_layouDir=dlgop->getLayouDir();
+m_styleCostum=dlgop->getStyleSheetName();
+m_isStyleCostum=dlgop->getStyleType();
+            toolRubon->setToolIconSize(m_toolIconSize,m_textUnderIcon);
+
+
+        if(m_layouDir==false) {
+            qApp->setLayoutDirection(Qt::RightToLeft);
+        }else{
+            qApp->setLayoutDirection(Qt::LeftToRight);
+        }
+      creatStyle();
         if (m_currentIndex>0){
             convertTextToHtml(DataBook->bookNass[m_currentIndex]);
         }
@@ -1124,6 +1340,8 @@ void MainWindow::on_actionOption_triggered()
             chargeIconsThemes();
         }
     }
+
+    delete dlgop;
 }
 
 void MainWindow::on_actionRemoveTechkil_triggered()
@@ -1166,6 +1384,7 @@ void MainWindow::on_action_about_triggered()//حول البرنامج
 
     if ( dlg->exec() == QDialog::Accepted|| QDialog::Rejected){
     }
+    delete dlg;
 }
 
 void MainWindow::on_actionHelp_triggered()
@@ -1176,7 +1395,7 @@ void MainWindow::on_actionHelp_triggered()
         ui->stackedWidget->insertWidget(0,ui->pageIntro);
     }
     ui->stackedWidget_intro->setCurrentWidget(ui->page_text);
-     ui->treeWidget_rowatFind->setVisible(false);
+    ui->treeWidget_rowatFind->setVisible(false);
 
     ui->tabWidget->setCurrentWidget(ui->tabIntro);
     labelAnim->setText(trUtf8("التعليمات"));
@@ -1212,18 +1431,26 @@ void MainWindow::on_treeWidget_books_itemSelectionChanged()//تحديد عنصر
     if (!item->data(1,1).isNull()){
         QString imgScreenPath= m_pathCostm + "/" +item->data(1,1).toString()+"/screenshot.png";
         if(!QFile::exists(imgScreenPath)){
-           imgScreenPath=":/images/image/booki.png";
+            imgScreenPath=":/images/image/booki.png";
         }
-        QString imgScreen=QString("<p align=\"right\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><img src= %1 /></p>").arg(imgScreenPath);
+        QString imgScreen=QString("<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><img src= %1 /></p>").arg(imgScreenPath);
 
-        QString   m_txtAnim=imgScreen
-              +  trUtf8("الكتاب :") +  item->text(0) +"<br>"
-                            + trUtf8("المؤلف :") +  item->text(1) +"<br>"
-                            +   item->text(2);
-        labelBetaka->setText(m_txtAnim);
-        startAnimationBitaka();
+        QString   txtBookInfo=imgScreen
+                +  trUtf8("الكتاب :") +  item->text(0) +"<br>"
+                + trUtf8("المؤلف :") +  item->text(1) +"<br>"
+                +   item->text(2);
+
+        ui->textEditInfoBook->setText(txtBookInfo);
+        //   startAnimationBitaka();
     }else{
-        startAnimationPixmap();
+
+        QString txtGroupInfo=  "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">"+item->text(0)+"</p>"
+                "<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"></p>"
+                "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><img src=\":/images/image/groupbook.png\" /></p>";
+        ui->textEditInfoBook->setText(txtGroupInfo);
+        //   labelBetaka->setPixmap(QPixmap(QString::fromUtf8(":/images/image/groupbook.png")));
+
+        //           startAnimationPixmap();
     }
 }
 
@@ -1233,8 +1460,8 @@ void MainWindow::on_treeWidget_books_itemActivated(QTreeWidgetItem* item)//تف�
     if (!x.isEmpty())
     {
         open_dataBase(x,item->text(0),item->text(1),0);
-       // QVariant tf = item->data(2,1).toString();
-      //  m_isTefsir[m_currentIndex]=tf.toBool();
+        // QVariant tf = item->data(2,1).toString();
+        //  m_isTefsir[m_currentIndex]=tf.toBool();
     }
 }
 
@@ -1243,7 +1470,7 @@ void MainWindow::on_treeWidget_books_customContextMenuRequested()//قائمة م
     QTreeWidgetItem *item=ui->treeWidget_books->currentItem();
     if (!item->data(1,1).isNull()){
         QMenu menu(this);
-        menu.setLayoutDirection(Qt::RightToLeft);
+        //     menu.setLayoutDirection(Qt::RightToLeft);
         menu.addAction(AC_bookOpen);
         menu.addAction(AC_bookOpenInNewTab);
         menu.addAction(AC_bookUpdat);
@@ -1252,10 +1479,12 @@ void MainWindow::on_treeWidget_books_customContextMenuRequested()//قائمة م
         menu.addSeparator();
         menu.addAction(AC_bookPath);
         menu.addAction(AC_bookRename);
+        menu.addAction(AC_bookDownload);
+
         menu.exec(QCursor::pos());
     }else {
         QMenu menu(this);
-        menu.setLayoutDirection(Qt::RightToLeft);
+        //      menu.setLayoutDirection(Qt::RightToLeft);
         menu.addAction(AC_categorieAdd);
         menu.addAction(AC_groupeAdd);
         menu.addAction(AC_groupeRename);
@@ -1283,7 +1512,7 @@ void MainWindow::menu_BookRemove()//حذف الكتاب
         msgBox.setInformativeText(trUtf8("انقر على نعم لحذفه من المكتبة فقط \n")+trUtf8("او نعم للكل لحذفه من المكتبة ومن جهازك"));
         msgBox.setDetailedText(trUtf8("اذا نقرت على نعم للكل سيتم حذف الكتاب من الدليل التالي ومن المكتبة\n")+m_pathCostm+myiddata);
         msgBox.setIcon(QMessageBox::Question);
-        msgBox.setLayoutDirection(Qt::RightToLeft);
+        //   msgBox.setLayoutDirection(Qt::RightToLeft);
         msgBox.setWindowTitle(trUtf8("تأكيد الحذف"));
         msgBox.setStandardButtons(QMessageBox::YesAll | QMessageBox::Yes | QMessageBox::Cancel);
         msgBox.setDefaultButton(QMessageBox::YesAll);
@@ -1309,7 +1538,7 @@ void MainWindow::menu_BookUpdat()  //تغيير بيانات الكتاب
 {
     QTreeWidgetItem *item=ui->treeWidget_books->currentItem();
     dialogupdat *dlgc=new dialogupdat(this);
-   dlgc->creatNewBook="update";
+    dlgc->creatNewBook="update";
     dlgc->m_pathCostum=m_pathCostm;
     dlgc->BookName=item->data(1,1).toString();
     dlgc->addGroupId=item->parent()->data(2,1).toString();
@@ -1322,6 +1551,7 @@ void MainWindow::menu_BookUpdat()  //تغيير بيانات الكتاب
     if ( dlgc->exec() == QDialog::Accepted ){
         chargeGroupe();
     }
+    delete dlgc;
 }
 void MainWindow::menu_BookPath()//معرفة مسار الكتاب
 {
@@ -1329,9 +1559,13 @@ void MainWindow::menu_BookPath()//معرفة مسار الكتاب
     if (!item->data(1,1).isNull()){
         QString name=item->data(1,1).toString();
         QString path;
+        QString idparent=name.section("_",0,0);
+        idparent=idparent.remove("bk");
         QFile file;
         if(file.exists(m_pathCostm + "/" + name)){
             path=m_pathCostm + "/" + name;
+        }else if(file.exists(m_pathCostm + "/"+idparent+ "/"  + name)){
+            path=m_pathCostm + "/"+idparent+ "/"  + name;
         }else if(file.exists(m_pathApp + "/books/" + name)){
             path=m_pathApp + "/books/" + name;
         }else{
@@ -1339,6 +1573,71 @@ void MainWindow::menu_BookPath()//معرفة مسار الكتاب
         }
         QMessageBox::information(this,trUtf8("مسار الكتاب"),path);
     }
+}
+void MainWindow::menu_downloadBook()
+{
+    QTreeWidgetItem *item=ui->treeWidget_books->currentItem();
+
+    QString name=item->data(1,1).toString();
+
+    QFile file;
+    if(file.exists(m_pathCostm + "/" + name)){
+        QMessageBox::information(this,"",trUtf8("الكتاب موجود في جهازك\n")+m_pathCostm + "/" + name);
+        return;
+    }else if(file.exists(m_pathApp + "/books/" + name)){
+        QMessageBox::information(this,"",trUtf8("الكتاب موجود في جهازك\n")+m_pathApp + "/books/"+ "/" + name);
+        return;
+    }
+
+    int idGroup= item->parent()->data(2,1).toInt();
+    QString     drbox;
+    if (idGroup<36){
+        if (idGroup==27){
+            drbox= "http://dl.dropbox.com/u/13013844/"+QString::number(idGroup)+"/";
+        }else{
+            drbox= "http://dl.dropbox.com/u/7206075/"+QString::number(idGroup)+"/";
+        }
+    }else if  (idGroup>35){
+        drbox= "http://dl.dropbox.com/u/13013844/"+QString::number(idGroup)+"/";
+    }
+
+    QString idurl= drbox+name+".tar.gz";
+    //   QMessageBox::information(this,"",idurl);
+
+    //---------------------------
+    if(loadPlugin()==false)
+        return;
+
+
+    QString targzName= netInterface->loadFile(idurl);
+    if (targzName.isEmpty())
+        return;
+    //   QString targzName=name+".tar.gz";
+
+    QString orgPath=QDir::homePath()+"/.kirtasse/download/"+targzName;
+    // QMessageBox::information(0,"orgPath",orgPath);
+
+    QFile filex;
+    if(!filex.exists(orgPath)){
+
+        return;
+    }
+    if( Messages->loadTarGz(orgPath)==false)
+        return;
+    if(!filex.exists(QDir::homePath()+"/.kirtasse/download/bookinfo.info"))
+        return;
+    QDir dir(m_pathCostm);
+    if(dir.mkdir(name)==true){
+        QFile file;
+        file.copy(QDir::homePath()+"/.kirtasse/download/book.xml",m_pathCostm+ "/" + name+"/book.xml");
+        file.copy(QDir::homePath()+"/.kirtasse/download/title.xml",m_pathCostm+ "/" + name+"/title.xml");
+        file.copy(QDir::homePath()+"/.kirtasse/download/bookinfo.info",m_pathCostm+ "/" + name+"/bookinfo.info");
+    }
+    if(filex.exists(m_pathCostm+ "/" + name+"/book.xml"))
+        QMessageBox::information(this,"",trUtf8("تمت العملية بنجاح \n")+m_pathCostm + "/" + name);
+
+    Messages->removeTempDirs(QDir::homePath()+"/.kirtasse/download");
+    open_dataBase(name,item->text(0),item->text(1),0);
 }
 
 void MainWindow:: menu_renameBook()
@@ -1356,7 +1655,7 @@ void MainWindow:: menu_renameBook()
     QDir dir(path);
     QInputDialog *dff=new QInputDialog(this);
     dff->setOkButtonText(trUtf8("موافق"));
-    dff->setLayoutDirection(Qt::RightToLeft);
+    //    dff->setLayoutDirection(Qt::RightToLeft);
     dff->setCancelButtonText(trUtf8("الغاء"));
     dff->setLabelText(trUtf8("الاسم القديم : ")+name+"\n"+trUtf8("يحبذ ان لا يحتوي الاسم على فراغات"));
     dff->setWindowTitle(trUtf8("اعادة تسمية دليل الكتاب"));
@@ -1672,10 +1971,10 @@ void MainWindow::on_treeWidget_curaan_itemActivated(QTreeWidgetItem* item)//تف
 void MainWindow::on_pushButton_gofind_clicked()
 {
     if (ui->lineEdit_find_cur->text()!=trUtf8("بحث")){
-    ui->pushButton_gofind->setCursor(QCursor(Qt::WaitCursor));
-    Findbook->searchInTreeview(ui->treeWidget_curaan,ui->lineEdit_find_cur->text(),0);
-    ui->pushButton_gofind->setCursor(QCursor(Qt::ArrowCursor));
-}
+        ui->pushButton_gofind->setCursor(QCursor(Qt::WaitCursor));
+        Findbook->searchInTreeview(ui->treeWidget_curaan,ui->lineEdit_find_cur->text(),0);
+        ui->pushButton_gofind->setCursor(QCursor(Qt::ArrowCursor));
+    }
 }
 
 void MainWindow::on_lineEdit_find_cur_textChanged(QString searchString)
@@ -1780,11 +2079,13 @@ void MainWindow::on_actionAnimGroup_triggered()
 
     view->chargeLevelOne();
     view->setFocus();
+    //ui->stackedWidget_intro->setCurrentWidget(ui->page_configure);
+
 }
 
 void MainWindow::on_actionAnimHistorie_triggered()
 {
-     ui->stackedWidget_intro->setCurrentWidget(ui->page_anim);
+    ui->stackedWidget_intro->setCurrentWidget(ui->page_anim);
     int count=0;
     for (int i=0;i<16;i++){
         if (recentFileActs[i]->isVisible()){
@@ -1814,34 +2115,34 @@ void MainWindow::on_lineEdit_textChanged(QString )
     }
 }
 
-void MainWindow::startAnimationBitaka()
-{
-#if QT_VERSION >= 0x040600
-    QPropertyAnimation *anim = new QPropertyAnimation(labelBetaka, "pos");
-    anim->setEasingCurve(QEasingCurve::OutCirc);
-    labelBetaka->setWordWrap(true);
+//void MainWindow::startAnimationBitaka()
+//{
+//#if QT_VERSION >= 0x040600
+////    QPropertyAnimation *anim = new QPropertyAnimation(labelBetaka, "pos");
+////    anim->setEasingCurve(QEasingCurve::OutCirc);
+////    labelBetaka->setWordWrap(true);
 
-    anim->setStartValue(QPointF(0, 0));
-    anim->setEndValue(QPointF(300, 0));
-    anim->setDuration(500);
-    anim->setLoopCount(1); // forever
-    anim->start();
-#endif
-}
+////    anim->setStartValue(QPointF(0, 0));
+////    anim->setEndValue(QPointF(300, 0));
+////    anim->setDuration(500);
+////    anim->setLoopCount(1); // forever
+////    anim->start();
+//#endif
+//}
 
-void MainWindow::startAnimationPixmap()
-{
-#if QT_VERSION >= 0x040600
-    QPropertyAnimation *anim = new QPropertyAnimation(labelBetaka, "pos");
-    anim->setEasingCurve(QEasingCurve::OutBounce);
-    labelBetaka->setPixmap(QPixmap(QString::fromUtf8(":/images/image/groupbook.png")));
-    anim->setStartValue(QPointF(300,300));
-    anim->setEndValue(QPointF(300,0));
-    anim->setDuration(1000);
-    anim->setLoopCount(1);
-    anim->start();
-#endif
-}
+//void MainWindow::startAnimationPixmap()
+//{
+//#if QT_VERSION >= 0x040600
+////    QPropertyAnimation *anim = new QPropertyAnimation(labelBetaka, "pos");
+////    anim->setEasingCurve(QEasingCurve::OutBounce);
+////    labelBetaka->setPixmap(QPixmap(QString::fromUtf8(":/images/image/groupbook.png")));
+////    anim->setStartValue(QPointF(300,300));
+////    anim->setEndValue(QPointF(300,0));
+////    anim->setDuration(1000);
+////    anim->setLoopCount(1);
+////    anim->start();
+//#endif
+//}
 
 //tabs---------------------------
 void MainWindow::on_tabWidget_tabCloseRequested(int index)
@@ -1901,11 +2202,11 @@ void MainWindow::on_tabWidget_currentChanged(int )
 
     if (m_toolEditFahrass[m_currentIndex]==true){
         ui->frameEdit->setVisible(true);//اظهار ادوات التحرير
-    ui->widgetEditBook->setVisible(true);
+        ui->widgetEditBook->setVisible(true);
 
     }else{
         ui->frameEdit->setVisible(false);
-         ui->widgetEditBook->setVisible(false);
+        ui->widgetEditBook->setVisible(false);
     }
     ui->stackedWidget->setCurrentIndex(ui->tabWidget->currentIndex());
 
@@ -1913,11 +2214,11 @@ void MainWindow::on_tabWidget_currentChanged(int )
 
     QFont font;
     font.fromString(m_WebFont);
-  if (txtBrowserBook->objectName()!="textBrowser_0"){
-    //  QMessageBox::information(this,"",txtBrowserBook->objectName());
-    txtBrowserBook->setFont(font);
+    if (txtBrowserBook->objectName()!="textBrowser_0"){
+        //  QMessageBox::information(this,"",txtBrowserBook->objectName());
+        txtBrowserBook->setFont(font);
 
-}
+    }
 
 
 
@@ -1940,20 +2241,20 @@ void MainWindow::tabCreatTabNew()
     QVBoxLayout *horizontalLayout;
     QGridLayout *gridLayout;
 
-   // QTextBrowser *textBrowser;
+    // QTextBrowser *textBrowser;
     tab = new QWidget();
-   tab->setLayoutDirection(Qt::RightToLeft);
+    tab->setLayoutDirection(Qt::RightToLeft);
     horizontalLayout = new QVBoxLayout(tab);
     horizontalLayout->setSpacing(3);
     horizontalLayout->setContentsMargins(3, 3, 3, 3);
     gridLayout = new QGridLayout();
     gridLayout->setSpacing(0);
- txtBrowserBook = new QTextBrowser(tab);
+    txtBrowserBook = new QTextBrowser(tab);
 
 
     if (m_isCadre==true){
         txtBrowserBook->setFrameShape(QFrame::NoFrame);
-       tabCreatCadre(gridLayout);
+        tabCreatCadre(gridLayout);
     }
 
 
@@ -1984,9 +2285,9 @@ void MainWindow::tabCreatTabNew()
 
     txtBrowserBook->setContextMenuPolicy(Qt::CustomContextMenu);
 
-connect(txtBrowserBook, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(textBrewserCustomMenu()));
+    connect(txtBrowserBook, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(textBrewserCustomMenu()));
 
-connect(txtBrowserBook, SIGNAL(highlighted(const QUrl)), this, SLOT(textBookHighlighted(QUrl)));
+    connect(txtBrowserBook, SIGNAL(highlighted(const QUrl)), this, SLOT(textBookHighlighted(QUrl)));
     connect(txtBrowserBook, SIGNAL(anchorClicked(const QUrl)), this, SLOT(textBookAnchorClicked(QUrl)));
 
     connect(txtBrowserBook, SIGNAL(copyAvailable(bool)), ui->actionFahAddChild, SLOT(setEnabled(bool)));
@@ -2022,8 +2323,8 @@ void MainWindow:: tabCreatCadre(QGridLayout *gridLayout)
     }else{
         QFile file;
         if (!file.exists(imgPath+"/top.png") || !file.exists(imgPath+"/top_right.png")||!file.exists(imgPath+"/left.png")||
-            !file.exists(imgPath+"/right.png")||!file.exists(imgPath+"/bot.png")||!file.exists(imgPath+"/bot_right.png")||
-            !file.exists(imgPath+"/top_left.png")||!file.exists(imgPath+"/bot_left.png"))
+                !file.exists(imgPath+"/right.png")||!file.exists(imgPath+"/bot.png")||!file.exists(imgPath+"/bot_right.png")||
+                !file.exists(imgPath+"/top_left.png")||!file.exists(imgPath+"/bot_left.png"))
         {  m_CadrFolder=trUtf8("الافتراضي"); imgPath=":/images/image";}
 
     }
@@ -2119,6 +2420,18 @@ void MainWindow::saveLayou()//حفظ البيانات الى ملف
     settings.setValue("iconsThemes",m_iconsThemes);
 
     settings.setValue("CadrFolder",m_CadrFolder);
+    settings.setValue("lng",m_lng);
+    settings.setValue("layouDir",m_layouDir);
+    settings.setValue("arabicNmber",m_arabicNmber);
+
+    settings.setValue("isStandardToolBar",m_isStandardToolBar);
+
+          settings.setValue("toolIconSize",m_toolIconSize);
+  settings.setValue("textUnderIcon",m_textUnderIcon);
+  settings.setValue("listActToAdd", m_listActToAdd);
+  settings.setValue("styleCostum",m_styleCostum);
+  settings.setValue("isStyleCostum", m_isStyleCostum);
+
     settings.setValue("geo_data", saveGeometry());
     settings.setValue("layout_data", saveState(0));
 
@@ -2139,22 +2452,23 @@ void MainWindow::loadLayout()//load layou
                                              "01000000020000000300000016006d00610069006e0054006f006f006c0042006100720100000000ffffffff00000000000000000000"
                                              "00220074006f006f006c004200610072005f006e006100760065006700610074006f00720100000203ffffffff000000000000000000"
                                              "00001a0074006f006f006c0042006100720072006500630065006e007401000002a9ffffffff0000000000000000)");
-      QSettings settings(m_pathUser+"/data/setting.ini",QSettings::IniFormat);
+    QSettings settings(m_pathUser+"/data/setting.ini",QSettings::IniFormat);
 
     //****************************
     // QSettings settings("Kirtasse", "setting");
     settings.beginGroup("MainWindow");
     m_myStyleName=settings.value("style","").toString();
+    m_WebFont=settings.value("font",trUtf8("Traditional Arabic,20,-1,5,50,0,0,0,0,0")).toString();
 #ifdef  Q_WS_X11
-    m_WebFont=settings.value("font","KacstBook,20,-1,5,50,0,0,0,0,0").toString();
+
     m_WebFontTitle=settings.value("fontTitle","KacstTitle").toString();
     m_WebFontHachia=settings.value("fontHachia","KacstBook").toString();
 #else
-    m_WebFont=settings.value("font","Traditional Arabic,20,-1,5,50,0,0,0,0,0").toString();
+
     m_WebFontTitle=settings.value("fontTitle","Andalus").toString();
     m_WebFontHachia=settings.value("fontHachia","Traditional Arabic").toString();
 #endif
-     m_WebFontKhase=settings.value("FontKhase","Jameel Noori Nastaleeq").toString();
+    m_WebFontKhase=settings.value("FontKhase","Jameel Noori Nastaleeq").toString();
     m_WebFontTitleSize=settings.value("fontTitleSize","20").toString();
 
     m_WebColorBack=settings.value("bcolor","#F9F9B9").toString();
@@ -2167,26 +2481,55 @@ void MainWindow::loadLayout()//load layou
     Messages->m_pathCostum=settings.value("pathCostm",m_pathUser+"/books").toString();
 
     ui->actionTreeD->setChecked(settings.value("isThreeD",false).toBool())   ;
-
+    m_lng=settings.value("lng",0).toInt();
     m_isCadre=settings.value("WebCadre",true).toBool();
     m_CadrFolder=settings.value("CadrFolder","default").toString();
-   m_iconsThemes=settings.value("iconsThemes",false).toBool();
+    m_iconsThemes=settings.value("iconsThemes",false).toBool();
+    m_layouDir=settings.value("layouDir",false).toBool();
+    m_arabicNmber=settings.value("arabicNmber",0).toInt();
+    m_isStandardToolBar=settings.value("isStandardToolBar",true).toBool();
+    m_toolIconSize=settings.value("toolIconSize",22).toInt();
+    m_textUnderIcon=settings.value("textUnderIcon",false).toBool();
+    m_styleCostum=settings.value("styleCostum","").toString();
+    m_isStyleCostum=settings.value("isStyleCostum",false).toBool();
+ m_listActToAdd=settings.value("listActToAdd",m_listActToAdd<<
+                               29<<28<<12<<1000<<15<<16<<17<<18<<1000<<20<<21<<22<<23<<24<<1000<<26<<48<<49<<2000).toList();
+    if(m_layouDir==false) {
+        qApp->setLayoutDirection(Qt::RightToLeft);
+    }else{
+        qApp->setLayoutDirection(Qt::LeftToRight);
+    }
 #if QT_VERSION >= 0x040600
     view->threeD=settings.value("isThreeD",false).toBool();
 #endif
-   this->restoreGeometry(settings.value("geo_data").toByteArray());
-  this->restoreState( settings.value("layout_data",layo_data).toByteArray());
-  settings.endGroup();
+    this->restoreGeometry(settings.value("geo_data").toByteArray());
+    this->restoreState( settings.value("layout_data",layo_data).toByteArray());
+    settings.endGroup();
     QFont font;
     font.fromString(m_WebFont);
-  if (txtBrowserBook->objectName()!="textBrowser_0"){
-    txtBrowserBook->setFont(font);
-}else{
-    ui->textBrowser_0->setFontFamily(font.family());
-}
-    settings.beginGroup("MainWindow");
-    QApplication::setStyle(QStyleFactory::create( m_myStyleName));
+    if (txtBrowserBook->objectName()!="textBrowser_0"){
+        txtBrowserBook->setFont(font);
+    }else{
+        ui->textBrowser_0->setFontFamily(font.family());
+    }
 
+    creatStyle();
+
+}
+void MainWindow::creatStyle()
+{
+    if(m_isStyleCostum==true){
+      qApp->setStyle(("Cleanlooks" ));
+        QFile qss(m_styleCostum);
+        qss.open(QFile::ReadOnly);
+        qApp->setStyleSheet(qss.readAll());
+        qss.close();
+qDebug()<<m_styleCostum;
+    }else{
+    qApp->setStyleSheet("");
+    QApplication::setStyle(QStyleFactory::create( m_myStyleName));
+    qDebug()<<m_myStyleName;
+    }
 }
 
 //fahrrase ***  تحرير الفهرسةوالكتاب**********************************
@@ -2253,7 +2596,7 @@ void MainWindow::textBookAnchorClicked(QUrl txtUrl)
     if (textCode.isEmpty()) {return;}
     if (textCode.contains("javascript")){
         ui->textBrowser_0->setOpenLinks(true);
-return;
+        return;
     }
     if (textCode.contains("#*")){
         textCode.remove("#*");
@@ -2264,10 +2607,10 @@ return;
             textCode.remove(d,textCode.length());
         }
 
-    rowatInterface->rawiFind(textCode.trimmed(),ui->treeWidget_rowat,ui->treeWidget_rowatFind);
-    showfind(true);
+        rowatInterface->rawiFind(textCode.trimmed(),ui->treeWidget_rowat,ui->treeWidget_rowatFind);
+        showfind(true);
 
-//    m_isRawiToFind=true;
+        //    m_isRawiToFind=true;
 
         return;
     }
@@ -2304,12 +2647,12 @@ void MainWindow::textBookHighlighted(QUrl txtUrl)
     if (textCode.isEmpty()|| textCode.contains("www.intro")) {
         ui->statusBar->showMessage("");
         return;
-    }  
-     if (textCode.contains("#*")){
-         ui->statusBar->showMessage(textCode.remove("#*"));
-         return;
-     }
-    if (textCode.contains("http://")){     
+    }
+    if (textCode.contains("#*")){
+        ui->statusBar->showMessage(textCode.remove("#*"));
+        return;
+    }
+    if (textCode.contains("http://")){
         ui->textBrowser_0->setOpenExternalLinks(false);
         ui->textBrowser_0->setOpenLinks(false);
         ui->statusBar->showMessage(txtUrl.toString());
@@ -2328,10 +2671,13 @@ void MainWindow::textBookHighlighted(QUrl txtUrl)
 
 void MainWindow::convertTextToHtml(QString txt)//تحويل بيانات النص
 {
-    QLocale::setDefault(QLocale(QLocale::Arabic, QLocale::Egypt));
+    //  QLocale::setDefault(QLocale(QLocale::Arabic));
     QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
-    txtBrowserBook->setLocale(QLocale(QLocale::Arabic, QLocale::Egypt));
-
+    if(m_arabicNmber==1){
+        txtBrowserBook->setLocale(QLocale(QLocale::Latin));
+    }else if(m_arabicNmber==2){
+        txtBrowserBook->setLocale(QLocale(QLocale::Arabic));
+    }
     txt.replace(QByteArray("\n"), QByteArray("<br>"));
     txt.replace(QByteArray("\r"), QByteArray("<br>"));
     txt.insert(txt.length(),"</font></body>");
@@ -2342,8 +2688,21 @@ void MainWindow::convertTextToHtml(QString txt)//تحويل بيانات الن�
     QTreeWidgetItem *item=new QTreeWidgetItem;
     QList<QTreeWidgetItem *> found =
             treeViewFahras[m_currentIndex]->findItems(
-                    dd.toString(),Qt::MatchExactly | Qt::MatchRecursive,1);//تنشاء قائمة بكل العناصر
+                dd.toString(),Qt::MatchExactly | Qt::MatchRecursive,1);//تنشاء قائمة بكل العناصر
+    QLocale lc(txtBrowserBook->locale().name());
+    lc.setNumberOptions(QLocale::OmitGroupSeparator);
+    QRegExp rxD("(\\d+)");
 
+    int pos = 0;
+
+    while ((pos = rxD.indexIn(txt, pos)) != -1) {
+
+        txt.remove(pos,rxD.matchedLength());
+        txt.insert(pos,lc.toString(rxD.cap(1).toInt()));
+
+
+        pos += rxD.matchedLength();
+    }
     foreach (item, found){
         treeViewFahras[m_currentIndex]->setCurrentItem(item);
         QString title= " <span style='font-family:"+m_WebFontTitle+";  font-size:"+m_WebFontTitleSize+"pt; color:"+m_WebFontTitleColor+";'>"+item->text(0)+"</span>";
@@ -2367,9 +2726,9 @@ void MainWindow::convertTextToHtml(QString txt)//تحويل بيانات الن�
     }
     //********************************************xtToHtml
     //-************
-     txt.replace("begen!§"," < font face='"+m_WebFontKhase+"'>");
-     txt.replace("end!§","</font>");
-     //-***************
+    txt.replace("begen!§"," < font face='"+m_WebFontKhase+"'>");
+    txt.replace("end!§","</font>");
+    //-***************
     QRegExp rxi("_____+");
     QRegExp rxd("ـــــ+");
     txt.replace(rxi," < font face='"+m_WebFontHachia+"' size='1'><br>__________");
@@ -2399,18 +2758,21 @@ void MainWindow::convertTextToHtml(QString txt)//تحويل بيانات الن�
     txt.replace("<br><br>","<br>");
     txt.replace("<br> <br>","<br>");
     txt.replace("<br>  <br>","<br>");
+
+
+
     QString bgrcolor = "<body bgcolor='"+m_WebColorBack+"'>< font color='"+m_WebFontColor+"' >";
 
     if (txtBrowserBook->objectName()!="textBrowser_0"){
-       txtBrowserBook->setHtml(bgrcolor+ txt.trimmed() );
-  }
+        txtBrowserBook->setHtml(bgrcolor+ txt.trimmed() );
+    }
 }
 
 void MainWindow::saveCurrentBook(int index)
 {
     DataBook->boocNumIndex=index;
     if (DataBook->saveBook()==true){
-        QMessageBox::information(this,trUtf8("معلومات"), trUtf8("تمت عملية حفظ الكتاب بنجاح"));     
+        QMessageBox::information(this,trUtf8("معلومات"), trUtf8("تمت عملية حفظ الكتاب بنجاح"));
     }
     m_bookIsModified[index]=false;
 }
@@ -2504,12 +2866,12 @@ void MainWindow::historiePrev()
 void MainWindow::find_favo_textChanged(QString searchString)//البحث في شجرة المفضلة
 {
     if (searchString!=trUtf8("بحث"))
-    Findbook->searchInTreeview(ui->treeWidget_fav,searchString,0);
+        Findbook->searchInTreeview(ui->treeWidget_fav,searchString,0);
 }
 void MainWindow::searchInTreeFah(QString searchString)//البحث في شجرة الفهرسة
 {
     if (searchString!=trUtf8("بحث"))
-    Findbook->searchInTreeview(treeViewFahras[m_currentIndex],searchString,0);
+        Findbook->searchInTreeview(treeViewFahras[m_currentIndex],searchString,0);
 }
 void MainWindow::searchInTreeBook(QString searchString)//البحث في شجرة الكتب
 {
@@ -2518,7 +2880,7 @@ void MainWindow::searchInTreeBook(QString searchString)//البحث في شجر�
         colum=1;
     }
     if (searchString!=trUtf8("بحث"))
-    Findbook->searchInTreeview(ui->treeWidget_books,searchString,colum);
+        Findbook->searchInTreeview(ui->treeWidget_books,searchString,colum);
 }
 void MainWindow::showResultFind(QTreeWidgetItem* item)//تفعيل عناصر شجرة البحث
 {
@@ -2527,7 +2889,7 @@ void MainWindow::showResultFind(QTreeWidgetItem* item)//تفعيل عناصر ش
 
     QString x = item->data(3,1).toString();
     open_dataBase(x,item->text(3),item->text(4),bkpage.toInt()-1);
-     bookValueChanged(bkpage.toInt()-1);
+    bookValueChanged(bkpage.toInt()-1);
     m_isTefsir[m_currentIndex]=item->data(2,1).toBool();
 
     if(isNassToFind==true){
@@ -2544,15 +2906,16 @@ void MainWindow::findInCurrentBook()//البحث في الكتاب الحالي
     if (Findbook->isFindRuned==true){ return;}
     if (m_bookName[m_currentIndex].isEmpty())  { return;}
     if (lineEditSearchInDoc->text().isEmpty()){ return;}
+    if (lineEditSearchInDoc->text()==trUtf8("بحث")){ return;}
     m_textfind=lineEditSearchInDoc->text();
 
-     showfind(false);
+    showfind(false);
 
     labelTextFind->setText(trUtf8("نص البحث  : ")+m_textfind);
     progressBarFind->setMaximum(DataBook->rowsCount[m_currentIndex]);
     progressBarFind->setVisible(true);
-  //  BtnStopFind->setVisible(true);
-     ui->action_stopFind->setVisible(true);
+    //  BtnStopFind->setVisible(true);
+    ui->action_stopFind->setVisible(true);
     Findbook->findMultiFind=false;
     Findbook->findSawabik=true;
     Findbook->findToList=false;
@@ -2564,17 +2927,17 @@ void MainWindow::findInCurrentBook()//البحث في الكتاب الحالي
     Findbook->findText=m_textfind;
     Findbook->progressBar1=progressBarFind;
     Findbook->label_progressImg=labelProgressImg;
-   // Findbook->pushButtonStop=BtnStopFind;
+    // Findbook->pushButtonStop=BtnStopFind;
     Findbook->buttonStop= ui->action_stopFind;
     Findbook->treeView=ui->treeWidgetFind;
-   Findbook->isNassToFind=true;
-   isNassToFind=true;
+    Findbook->isNassToFind=true;
+    isNassToFind=true;
 
-ui->treeWidgetFind->clear();
-   // QToolTip::showText(QPoint (ui->statusBar->width(),ui->statusBar->pos().y()),trUtf8("يمكنك ايقاف عملية البحث هنا"),BtnStopFind);
-//  m_isRawiToFind=false;
-   Findbook->findOneBook(m_bookPath[m_currentIndex]);
-  
+    ui->treeWidgetFind->clear();
+    // QToolTip::showText(QPoint (ui->statusBar->width(),ui->statusBar->pos().y()),trUtf8("يمكنك ايقاف عملية البحث هنا"),BtnStopFind);
+    //  m_isRawiToFind=false;
+    Findbook->findOneBook(m_bookPath[m_currentIndex]);
+
 }
 void MainWindow::findBookOrHautor()//البحث عن كتاب
 {
@@ -2594,6 +2957,7 @@ void MainWindow::stopFind()//توقيف عملية البحث
 
 void MainWindow::searchIndoc()
 {
+        if (lineEditSearchInDoc->text()==trUtf8("بحث")){ return;}
     if (!lineEditSearchInDoc->text().isEmpty())
     {
         Findbook->findToList=false;
@@ -2642,7 +3006,7 @@ void MainWindow::on_comboBox_rowat_currentIndexChanged(int index)
         QMessageBox::information(this,trUtf8("تعليمات"),trUtf8("تأكد من ان الاضافة موجودة في دليل البرنامج"));
         return;
     }
-    QFile file(QCoreApplication::applicationDirPath() +"/data/rowaInfo.xml");
+    QFile file(m_pathApp+"/data/rowaInfo.xml");
 
     if (index==1){
         if(!file.exists()){
@@ -2669,14 +3033,14 @@ void MainWindow::on_comboBox_rowat_currentIndexChanged(int index)
 void MainWindow::on_lineEdit_FindRowat_textChanged(QString searchString)
 {
     if (searchString!=trUtf8("بحث"))
-    Findbook->searchInTreeview(ui->treeWidget_rowat,searchString,0);
+        Findbook->searchInTreeview(ui->treeWidget_rowat,searchString,0);
 }
 
 
 void MainWindow::on_treeWidget_rowat_itemActivated(QTreeWidgetItem* item, int )
 {
-     ui->treeWidget_rowatFind->setVisible(false);
-     openRawi(item,true);
+    ui->treeWidget_rowatFind->setVisible(false);
+    openRawi(item,true);
 
 }
 void MainWindow::openRawi(QTreeWidgetItem* item,bool addToTataboa)
@@ -2702,7 +3066,7 @@ void MainWindow::openRawi(QTreeWidgetItem* item,bool addToTataboa)
         QTreeWidgetItem *itemR=new QTreeWidgetItem;
         QList<QTreeWidgetItem *> foundR =
                 ui->treeWidget_rowatTabia->findItems(
-                        item->text(0),Qt::MatchExactly,0);//تنشاء قائمة بكل العناصر
+                    item->text(0),Qt::MatchExactly,0);//تنشاء قائمة بكل العناصر
 
         foreach (itemR, foundR){
             ui->treeWidget_rowatTabia->setCurrentItem(itemR);
@@ -2723,26 +3087,26 @@ void MainWindow::on_treeWidget_rowatTabia_itemActivated(QTreeWidgetItem* item, i
 }
 void MainWindow::showfind(bool isrowat)
 {
-      //  ui->treeWidgetFind->clear();
+    //  ui->treeWidgetFind->clear();
     if (isrowat==true){
         if (ui->treeWidget_rowatFind->topLevelItemCount()==1){
-             openRawi(ui->treeWidget_rowatFind->topLevelItem(0),true);
-             ui->treeWidget_rowatFind->setVisible(false);
-              ui->treeWidget_rowatFind->clear();
-         }else if  (ui->treeWidget_rowatFind->topLevelItemCount()>1){
-             ui->treeWidget_rowatFind->setVisible(true);
-         }else{
-              ui->treeWidget_rowatFind->setVisible(false);
-              ui->treeWidget_rowatFind->clear();
-//              سعيد بن أبى هلال الليثى مولاهم//
-              QMessageBox::information(this,trUtf8("تراجم"),trUtf8("ربما لم يترجم له في التهذيبين \n حاول البحث عنه في مربع البحث اعلى قائمة الرواة"));
-         }
+            openRawi(ui->treeWidget_rowatFind->topLevelItem(0),true);
+            ui->treeWidget_rowatFind->setVisible(false);
+            ui->treeWidget_rowatFind->clear();
+        }else if  (ui->treeWidget_rowatFind->topLevelItemCount()>1){
+            ui->treeWidget_rowatFind->setVisible(true);
+        }else{
+            ui->treeWidget_rowatFind->setVisible(false);
+            ui->treeWidget_rowatFind->clear();
+            //              سعيد بن أبى هلال الليثى مولاهم//
+            QMessageBox::information(this,trUtf8("تراجم"),trUtf8("ربما لم يترجم له في التهذيبين \n حاول البحث عنه في مربع البحث اعلى قائمة الرواة"));
+        }
     }else{
         ui->treeWidgetFind->setColumnWidth(0,500);
         ui->treeWidgetFind->setColumnWidth(1,30);
         ui->treeWidgetFind->setColumnWidth(2,50);
-ui->toolBarFind->setVisible(true);
- ui->dockWidget_find->setShown(true);
+        ui->toolBarFind->setVisible(true);
+        ui->dockWidget_find->setShown(true);
     }
 
 }
@@ -2750,25 +3114,23 @@ ui->toolBarFind->setVisible(true);
 void MainWindow::on_treeWidget_rowatFind_itemActivated(QTreeWidgetItem* item, int )
 {
 
-        openRawi(item,true);
+    openRawi(item,true);
 
 }
-
-
 
 void MainWindow::on_btnRowaInfo_clicked()
 {
     QString romoz=trUtf8(
-                         "<span style=\"color:#ff0000;\">خ</span>=البخاري , <span style=\"color:#ff0000;\">م</span>=مسلم , <span style=\"color:#ff0000;\">د</span>=أبو داود , <span style=\"color:#ff0000;\">ت</span>=الترمذي , <span style=\"color:#ff0000;\">س</span> =النسائي , <span style=\"color:#ff0000;\"><span style=\"color:#ff0000;\">ق</span></span>=ابن ماجه<br>"
-                         "<span style=\"color:#ff0000;\">بخ</span> =البخاري في الأدب المفرد , <span style=\"color:#ff0000;\">عخ</span> =البخاري في خلق أفعال العباد<br>"
-                         "<span style=\"color:#ff0000;\">سي</span>=النسائي في عمل اليوم والليلة, <span style=\"color:#ff0000;\">ي</span> =البخاري في جزء رفع اليدين<br>"
-                         "<span style=\"color:#ff0000;\">عس</span>= النسائي في مسند علي                      , <span style=\"color:#ff0000;\">مد</span>=أبو داود في المراسيل<br>"
-                         "<span style=\"color:#ff0000;\">تمييز</span>=لم يخرج له أحد من الستة                 , <span style=\"color:#ff0000;\">فق</span>=ابن ماجه في التفسير<br>"
-                         "<span style=\"color:#ff0000;\">خت</span> = البخاري تعليقا                     ,  <span style=\"color:#ff0000;\">صد</span>=أبو داود في فضائل الأنصار<br>"
-                         "<span style=\"color:#ff0000;\">خد</span>=أبو داود في الناسخ والمنسوخ                ,  <span style=\"color:#ff0000;\">ل</span>=أبو داود في المسائل<br>"
-                         "<span style=\"color:#ff0000;\">ص</span>=النسائي في خصائص علي            , <span style=\"color:#ff0000;\">ر</span>=البخاري في جزء القراءة خلف الإمام<br>"
-                         "<span style=\"color:#ff0000;\">كن</span>=النسائي في مسند مالك , <span style=\"color:#ff0000;\">تم</span>=الترمذي في الشمائل , <span style=\"color:#ff0000;\">قد</span>=أبو داود في القدر"
-);
+                "<span style=\"color:#ff0000;\">خ</span>=البخاري , <span style=\"color:#ff0000;\">م</span>=مسلم , <span style=\"color:#ff0000;\">د</span>=أبو داود , <span style=\"color:#ff0000;\">ت</span>=الترمذي , <span style=\"color:#ff0000;\">س</span> =النسائي , <span style=\"color:#ff0000;\"><span style=\"color:#ff0000;\">ق</span></span>=ابن ماجه<br>"
+                "<span style=\"color:#ff0000;\">بخ</span> =البخاري في الأدب المفرد , <span style=\"color:#ff0000;\">عخ</span> =البخاري في خلق أفعال العباد<br>"
+                "<span style=\"color:#ff0000;\">سي</span>=النسائي في عمل اليوم والليلة, <span style=\"color:#ff0000;\">ي</span> =البخاري في جزء رفع اليدين<br>"
+                "<span style=\"color:#ff0000;\">عس</span>= النسائي في مسند علي                      , <span style=\"color:#ff0000;\">مد</span>=أبو داود في المراسيل<br>"
+                "<span style=\"color:#ff0000;\">تمييز</span>=لم يخرج له أحد من الستة                 , <span style=\"color:#ff0000;\">فق</span>=ابن ماجه في التفسير<br>"
+                "<span style=\"color:#ff0000;\">خت</span> = البخاري تعليقا                     ,  <span style=\"color:#ff0000;\">صد</span>=أبو داود في فضائل الأنصار<br>"
+                "<span style=\"color:#ff0000;\">خد</span>=أبو داود في الناسخ والمنسوخ                ,  <span style=\"color:#ff0000;\">ل</span>=أبو داود في المسائل<br>"
+                "<span style=\"color:#ff0000;\">ص</span>=النسائي في خصائص علي            , <span style=\"color:#ff0000;\">ر</span>=البخاري في جزء القراءة خلف الإمام<br>"
+                "<span style=\"color:#ff0000;\">كن</span>=النسائي في مسند مالك , <span style=\"color:#ff0000;\">تم</span>=الترمذي في الشمائل , <span style=\"color:#ff0000;\">قد</span>=أبو داود في القدر"
+                );
     QMessageBox::information(this,trUtf8("رموز كتب السنة"),romoz);
 }
 
@@ -2786,12 +3148,12 @@ void MainWindow::textBrewserCustomMenu()
     }else{
         menu->addAction(ui->actionFahAddItem);
         menu->addAction(ui->actionFahAddChild);
-         menu->addSeparator();
-         menu->addAction(ui->actionNewPageAfter);
-         menu->addAction(ui->actionNewPageBefor);
-         menu->addAction(ui->actionRemovePage);
-         menu->addSeparator();
-         menu->addAction(ui->actionFontCostum);
+        menu->addSeparator();
+        menu->addAction(ui->actionNewPageAfter);
+        menu->addAction(ui->actionNewPageBefor);
+        menu->addAction(ui->actionRemovePage);
+        menu->addSeparator();
+        menu->addAction(ui->actionFontCostum);
     }
 
     menu->exec(QCursor::pos());
@@ -2820,11 +3182,11 @@ void MainWindow::on_actionRemovePage_triggered()
 
 void MainWindow::on_actionFontCostum_triggered()
 {
- QString text=txtBrowserBook->textCursor().selectedText();
-txtBrowserBook->setText( txtBrowserBook->document()->toPlainText().replace(text,"begen!§"+text+"end!§"));
-DataBook->updatPage("",txtBrowserBook->toPlainText(),true);
- convertTextToHtml(DataBook->bookNass[m_currentIndex]);
- m_bookIsModified[m_currentIndex]=true;
+    QString text=txtBrowserBook->textCursor().selectedText();
+    txtBrowserBook->setText( txtBrowserBook->document()->toPlainText().replace(text,"begen!§"+text+"end!§"));
+    DataBook->updatPage("",txtBrowserBook->toPlainText(),true);
+    convertTextToHtml(DataBook->bookNass[m_currentIndex]);
+    m_bookIsModified[m_currentIndex]=true;
 }
 
 void MainWindow::on_actionCreatNewBook_triggered()
@@ -2840,21 +3202,20 @@ void MainWindow::on_actionCreatNewBook_triggered()
     if ( dlgc->exec() == QDialog::Accepted ){
         chargeGroupe();
     }
+    delete dlgc;
 }
 
 void MainWindow::on_actionDownloadBooks_triggered()
 {
+    if(loadPlugin()==false)
+        return;
 
-
-if(loadPlugin()==false)
-    return;
-
-   QString targzName= netInterface->execPlugin();
- //  QMessageBox::information(0,"",targzName);
-if (targzName.isEmpty())
-    return;
+    QString targzName= netInterface->execPlugin();
+    //  QString targzName= netInterface->loadFile("http://dl.dropbox.com/u/7206075/9/bk9_4639.tar.gz");
+    if (targzName.isEmpty())
+        return;
     QString orgPath=QDir::homePath()+"/.kirtasse/download/"+targzName;
- // QMessageBox::information(0,"orgPath",orgPath);
+    // QMessageBox::information(0,"orgPath",orgPath);
 
     QFile file;
     if(!file.exists(orgPath)){
@@ -2880,15 +3241,18 @@ if (targzName.isEmpty())
         chargeGroupe();
         Messages->removeTempDirs(QDir::homePath()+"/.kirtasse/download");
     }else{
-         Messages->removeTempDirs(QDir::homePath()+"/.kirtasse/download");
+        Messages->removeTempDirs(QDir::homePath()+"/.kirtasse/download");
     }
+
+    delete dlgc;
+
 }
 
 
 
 void MainWindow::on_actionShamilaCdrom_triggered()
 {
-     Messages->removeTempDirs(QDir::homePath()+"/.kirtasse/temp");
+    Messages->removeTempDirs(QDir::homePath()+"/.kirtasse/temp");
     if(loadPluginCdrom()==false)
         return;
     QString newBooksPath= shamilaInterface->execPlugin();
@@ -2899,18 +3263,47 @@ void MainWindow::on_actionShamilaCdrom_triggered()
     QMessageBox::information(this,trUtf8("معلومات"),trUtf8("لقد تم تحويل كتب الشاملة بنجاح\n"
                                                            "كما تم اعادة تسمية القائمة السابقة في المسار التالي اذا احتجت لاسترجاعها"
                                                            )+QDir::homePath()+trUtf8("/.kirtasse/data/group.xml.old\n"
-                                                           " كما سيتم استخدام المسار التالي للكتب \n"
-                                                           )+newBooksPath);
+                                                                                     " كما سيتم استخدام المسار التالي للكتب \n"
+                                                                                     )+newBooksPath);
 
     m_pathCostm=newBooksPath;
     chargeGroupe();
 
-/*
-     if(this->layoutDirection()==Qt::LeftToRight) {
-         this->setLayoutDirection(Qt::RightToLeft);
-     }else{
-          this->setLayoutDirection(Qt::LeftToRight);
-     }*/
 }
 
+void MainWindow::on_actionControle_triggered()
+{
+    DialogConfigBooks *dlgc=new DialogConfigBooks(this);
+    dlgc->setPathCostum(m_pathCostm);
+    if ( dlgc->exec() == QDialog::Accepted ){
+        m_pathCostm=dlgc->pathCostm;
+        chargeGroupe();
+    }
+    delete dlgc;
+}
 
+void MainWindow::on_actionDvd_triggered()
+{
+    DialogImportDvd *dlgc=new DialogImportDvd(this);
+    dlgc->setBooksPath(m_pathCostm);
+    dlgc->setAppPath(m_pathApp);
+    if ( dlgc->exec() == QDialog::Accepted ){
+        m_pathCostm=dlgc->getBooksPath();
+        chargeGroupe();
+
+    }
+    delete dlgc;
+}
+
+void MainWindow::on_actionCostumActions_triggered()
+{
+    DialogActions *dlg=new DialogActions(this);
+  dlg->setListActions(m_listActions,m_listActToAdd);
+     if ( dlg->exec() == QDialog::Accepted ){
+    m_listActToAdd=dlg->listActToAdd;
+    if(m_isStandardToolBar==true){
+          addToolRubonBar(true);
+    }
+     }
+delete dlg;
+}

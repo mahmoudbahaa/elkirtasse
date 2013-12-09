@@ -72,6 +72,7 @@ bool isTefsir;
     bool findMultiFind;
     bool findAnd;
     bool findSawabik;
+    bool noHamza;
 private:
     int m_listbkfind;
     QList<QString> m_listStrToFind;

@@ -27,8 +27,8 @@
 **
 ****************************************************************************/
 #include "cdromshamila.h"
-#include "dialog.h"
-#include "ui_dialog.h"
+#include "dialogcdrom.h"
+#include "ui_Dialogcdrom.h"
 #include <QMessageBox>
 #ifdef   Q_WS_WIN
 #include <QtSql>
@@ -49,7 +49,7 @@ QString cdromShamila::execPlugin()
 //    prosses.execute(QString("mkdir -p %1").arg("\""+m_tempDir+"\""));
 
     ///dialog pour les path
-    Dialog *dlg =new Dialog();
+    Dialogcdrom *dlg =new Dialogcdrom();
     if ( dlg->exec() == QDialog::Accepted ){
         if (dlg->acceptedPath==false)
             return "";
@@ -518,10 +518,8 @@ bool cdromShamila::creatBooksInfo()
     if (!m_doc.setContent(&file)){return false;}
     file.close();
 
+ QList<QString> listHeader;
 
-    enum  { NumIndex = 20};
-
-    QString strHeaderName[NumIndex];
     //*********************************
     QFile fileCsv(m_tempDir+"/0bok.csv");
 
@@ -539,9 +537,9 @@ bool cdromShamila::creatBooksInfo()
     int tab=  line.count("RRR");//nombre col
     for (int i=1;i<tab+2;i++){
         if (i==tab+1){
-            strHeaderName[i]=line.section("RRR",-1);
+          listHeader.append(line.section("RRR",-1));
         }else{
-            strHeaderName[i]=line.section("RRR",i-1,i-1);
+           listHeader.append(line.section("RRR",i-1,i-1));
 
         }
 
@@ -581,26 +579,26 @@ bool cdromShamila::creatBooksInfo()
             }else{
                 strValue=linecsv.section("RRR",i-1,i-1);
             }
-
-            if(strHeaderName[i]=="id"){
+ QString headerName=listHeader.at(i-1);
+            if(headerName=="id"){
                 bkId=strValue;
 
-            }else if(strHeaderName[i]=="bk"){
+            }else if(headerName=="bk"){
 
                 bkName=strValue;
 
-            }else if(strHeaderName[i]=="auth"){
+            }else if(headerName=="auth"){
 
                 bkAut=strValue;
 
 
-            }else if(strHeaderName[i]=="betaka"){
+            }else if(headerName=="betaka"){
 
                 bkBetaka=strValue;
-            }else if(strHeaderName[i]=="cat"){
+            }else if(headerName=="cat"){
 
                 bkCat=strValue;
-            }else if(strHeaderName[i]=="bkid"){
+            }else if(headerName=="bkid"){
 
                 bkId=strValue;
             }
@@ -611,13 +609,21 @@ bool cdromShamila::creatBooksInfo()
         if (progress.wasCanceled())
                      break;
 
+        QString dirName=bkId.right(1);
+        QString fileMdb=m_pathBooks+"/"+dirName+"/"+bkId+".mdb";
+
+
+        progress.setLabelText(bkName);
+        qApp->processEvents();
+        if(file.exists(fileMdb)){
+             progress.setLabelText(trUtf8("الرجاء الانتظار..جاري انشاء :")+bkName);
         if( creatBook(bkId,bkCat)==true){
-            progress.setLabelText(trUtf8("الرجاء الانتظار..جاري انشاء :")+bkName);
 
             addNewBook(bkId,bkName,bkAut,bkBetaka,bkCat);
             saveBookInfo("bk"+bkCat+"_"+ bkId,bkName,bkAut,bkBetaka);
 
         }
+         }
 
         // line = textStream.readLine();
 
@@ -707,7 +713,7 @@ bool cdromShamila::creatBook(QString id,QString cat){
         prosses.waitForFinished();
         QDir dir;
         QString newBookPath=m_pathBooksNew+"/bk"+cat+"_"+id;
-        //QMessageBox::information(0,"",newBookPath);
+       //QMessageBox::information(0,"",newBookPath);
         dir.mkdir(newBookPath);
         qApp->processEvents();
         if(  creatXmlFile(newBookPath+"/book.xml","book",m_tempDir+"/tempbk.csv")==false)
@@ -718,7 +724,7 @@ bool cdromShamila::creatBook(QString id,QString cat){
 
 
     }else{
-     return false;
+   return false;
     }
      return true;
 }
@@ -746,11 +752,11 @@ bool cdromShamila::creatXmlFile(QString f,QString table,QString csv)
 {
 
 
+ QList<QString> listHeader;
 
-    enum  { NumIndex = 10};
     QXmlStreamWriter stream;
-
-    QString strHeaderName[NumIndex];
+//   enum  { NumIndex = 10};
+ //QString strHeaderName[NumIndex];
     //*********************************
     QFile fileCsv(csv);
 
@@ -768,9 +774,9 @@ bool cdromShamila::creatXmlFile(QString f,QString table,QString csv)
     int tab=  line.count("RRR");//nombre col
     for (int i=1;i<tab+2;i++){
         if (i==tab+1){
-            strHeaderName[i]=line.section("RRR",-1);
+          listHeader.append(line.section("RRR",-1));
         }else{
-            strHeaderName[i]=line.section("RRR",i-1,i-1);
+        listHeader.append(line.section("RRR",i-1,i-1));
         }
 
     }
@@ -806,11 +812,12 @@ bool cdromShamila::creatXmlFile(QString f,QString table,QString csv)
                     strValue=line.section("RRR",i-1,i-1);
                 }
                 if (strValue.isEmpty() || strValue==0){strValue="1";}
-                if (strHeaderName[i]=="hno" || strHeaderName[i]=="na" || strHeaderName[i]=="sub"){
+       QString headerName=      listHeader.at(i-1);
+                if( headerName=="hno" || headerName=="na" || headerName=="sub"){
                     //*--
 
 
-                }else if(strHeaderName[i]=="id"){
+                }else if(headerName=="id"){
                     if (table=="book"){
                         listId.append(strValue);
                     }else{
@@ -820,14 +827,14 @@ bool cdromShamila::creatXmlFile(QString f,QString table,QString csv)
                         strValue=dd.toString();
                     }
 
-                    stream.writeTextElement(strHeaderName[i], strValue);
+                    stream.writeTextElement(headerName, strValue);
                 }else{
-                     if(strHeaderName[i]=="Sora"){
+                     if(headerName=="Sora"){
                          stream.writeTextElement("sora", strValue);
-                     }else if(strHeaderName[i]=="Aya"){
+                     }else if(headerName=="Aya"){
                           stream.writeTextElement("aya", strValue);
                      }else{
-                          stream.writeTextElement(strHeaderName[i], strValue);
+                          stream.writeTextElement(headerName, strValue);
                      }
 
                 }

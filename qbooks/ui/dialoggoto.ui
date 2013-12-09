@@ -13,9 +13,6 @@
   <property name="windowTitle">
    <string>انتقال الى صفحة معينة</string>
   </property>
-  <property name="layoutDirection">
-   <enum>Qt::RightToLeft</enum>
-  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
@@ -107,9 +104,6 @@
    </item>
    <item>
     <widget class="QDialogButtonBox" name="buttonBox">
-     <property name="layoutDirection">
-      <enum>Qt::LeftToRight</enum>
-     </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>

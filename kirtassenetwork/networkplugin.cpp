@@ -43,6 +43,16 @@ if ( dlg->exec() == QDialog::Accepted ){
 }
 return "";
 }
+QString networkplugin::loadFile(QString urlPath)
+{
+
+Dialognet *dlg =new Dialognet();
+if (dlg->downloadFile(urlPath,QDir::homePath()+"/.kirtasse/download/")==true){
+
+    return dlg->mypath;
+}
+return "";
+}
 //! [1]
 QString networkplugin::pluginTitle()
 {

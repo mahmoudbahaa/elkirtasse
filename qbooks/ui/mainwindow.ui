@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>507</width>
-    <height>583</height>
+    <width>800</width>
+    <height>605</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -23,18 +23,15 @@
    <iconset resource="images.qrc">
     <normaloff>:/images/image/groupbook.png</normaloff>:/images/image/groupbook.png</iconset>
   </property>
-  <property name="layoutDirection">
-   <enum>Qt::RightToLeft</enum>
-  </property>
   <property name="styleSheet">
-   <string notr="true">QToolBar {
+   <string notr="true">/*
+QToolBar {
                         background-color: qlineargradient(spread:pad, x1:1, y1:0, x2:1, y2:1, stop:0 rgba(255, 255, 255, 100), stop:0.431694 rgba(231, 231, 231, 100), stop:0.469945 rgba(183, 183, 183, 100), stop:1 rgba(255, 255, 255, 100));
                           spacing: 3px;
 border-width: 0px;
-                         }</string>
-  </property>
-  <property name="locale">
-   <locale language="Arabic" country="Egypt"/>
+                         }
+*/
+</string>
   </property>
   <property name="documentMode">
    <bool>true</bool>
@@ -46,18 +43,9 @@ border-width: 0px;
    <set>QMainWindow::AllowNestedDocks|QMainWindow::AllowTabbedDocks|QMainWindow::AnimatedDocks|QMainWindow::ForceTabbedDocks|QMainWindow::VerticalTabs</set>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QGridLayout" name="gridLayout">
-    <property name="margin">
-     <number>2</number>
-    </property>
-    <property name="spacing">
-     <number>2</number>
-    </property>
-    <item row="2" column="0">
+   <layout class="QVBoxLayout" name="verticalLayout_13">
+    <item>
      <widget class="QTabWidget" name="tabWidget">
-      <property name="tabPosition">
-       <enum>QTabWidget::North</enum>
-      </property>
       <property name="tabShape">
        <enum>QTabWidget::Rounded</enum>
       </property>
@@ -131,7 +119,7 @@ border-width: 0px;
         <item>
          <widget class="QStackedWidget" name="stackedWidget_intro">
           <property name="currentIndex">
-           <number>0</number>
+           <number>1</number>
           </property>
           <widget class="QWidget" name="page_anim">
            <layout class="QVBoxLayout" name="verticalLayout_10">
@@ -219,7 +207,7 @@ border-width: 0px;
       </widget>
      </widget>
     </item>
-    <item row="3" column="0">
+    <item>
      <widget class="QWidget" name="widgetEditBook" native="true">
       <layout class="QVBoxLayout" name="verticalLayout_12">
        <property name="spacing">
@@ -245,6 +233,12 @@ border-width: 0px;
    </property>
   </widget>
   <widget class="QDockWidget" name="dockWidget_fahras">
+   <property name="minimumSize">
+    <size>
+     <width>189</width>
+     <height>200</height>
+    </size>
+   </property>
    <property name="sizeIncrement">
     <size>
      <width>1</width>
@@ -256,9 +250,6 @@ border-width: 0px;
      <width>1</width>
      <height>1</height>
     </size>
-   </property>
-   <property name="styleSheet">
-    <string notr="true"/>
    </property>
    <property name="windowTitle">
     <string>فهرسة الكتاب</string>
@@ -559,6 +550,12 @@ p, li { white-space: pre-wrap; }
    </widget>
   </widget>
   <widget class="QDockWidget" name="dockWidget_books">
+   <property name="minimumSize">
+    <size>
+     <width>141</width>
+     <height>76</height>
+    </size>
+   </property>
    <property name="sizeIncrement">
     <size>
      <width>1</width>
@@ -688,36 +685,18 @@ p, li { white-space: pre-wrap; }
              </property>
             </column>
            </widget>
-           <widget class="QGraphicsView" name="graphicsView">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
+           <widget class="QTextEdit" name="textEditInfoBook">
+            <property name="readOnly">
+             <bool>true</bool>
             </property>
-            <property name="maximumSize">
-             <size>
-              <width>16777215</width>
-              <height>200</height>
-             </size>
-            </property>
-            <property name="whatsThis">
-             <string>يعرض معلومات عن الكتاب عند تحديده في قائمة الكتب</string>
-            </property>
-            <property name="verticalScrollBarPolicy">
-             <enum>Qt::ScrollBarAsNeeded</enum>
-            </property>
-            <property name="horizontalScrollBarPolicy">
-             <enum>Qt::ScrollBarAsNeeded</enum>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignHCenter|Qt::AlignTop</set>
-            </property>
-            <property name="cacheMode">
-             <set>QGraphicsView::CacheBackground</set>
-            </property>
-            <property name="transformationAnchor">
-             <enum>QGraphicsView::NoAnchor</enum>
+            <property name="html">
+             <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Microsoft Sans Serif'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;حدد كتابا من الشجرة لعرض معلومات عنه&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;img src=&quot;:/images/image/groupbook.png&quot; /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
            </widget>
           </widget>
@@ -896,15 +875,15 @@ p, li { white-space: pre-wrap; }
   </widget>
   <widget class="QDockWidget" name="dockWidget_curaan">
    <property name="sizePolicy">
-    <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
      <horstretch>0</horstretch>
      <verstretch>0</verstretch>
     </sizepolicy>
    </property>
    <property name="minimumSize">
     <size>
-     <width>185</width>
-     <height>209</height>
+     <width>229</width>
+     <height>224</height>
     </size>
    </property>
    <property name="styleSheet">
@@ -1153,66 +1132,11 @@ p, li { white-space: pre-wrap; }
     </layout>
    </widget>
   </widget>
-  <widget class="QToolBar" name="mainToolBar">
-   <property name="windowTitle">
-    <string>ازرارقياسية</string>
-   </property>
-   <property name="iconSize">
-    <size>
-     <width>22</width>
-     <height>22</height>
-    </size>
-   </property>
-   <attribute name="toolBarArea">
-    <enum>TopToolBarArea</enum>
-   </attribute>
-   <attribute name="toolBarBreak">
-    <bool>false</bool>
-   </attribute>
-   <addaction name="actionOption"/>
-   <addaction name="action_fulscreen"/>
-   <addaction name="actionRemoveTechkil"/>
-   <addaction name="separator"/>
-   <addaction name="action_favorit"/>
-   <addaction name="actionHiperlink"/>
-   <addaction name="action_edit"/>
-   <addaction name="separator"/>
-   <addaction name="actionFind_all"/>
-  </widget>
-  <widget class="QToolBar" name="toolBar_navegator">
-   <property name="windowTitle">
-    <string>التنقل بين السجلات</string>
-   </property>
-   <property name="styleSheet">
-    <string/>
-   </property>
-   <property name="iconSize">
-    <size>
-     <width>22</width>
-     <height>22</height>
-    </size>
-   </property>
-   <attribute name="toolBarArea">
-    <enum>TopToolBarArea</enum>
-   </attribute>
-   <attribute name="toolBarBreak">
-    <bool>false</bool>
-   </attribute>
-   <addaction name="action_first"/>
-   <addaction name="action_prev"/>
-   <addaction name="separator"/>
-   <addaction name="actionGotoPage"/>
-   <addaction name="separator"/>
-   <addaction name="action_next"/>
-   <addaction name="action_last"/>
-   <addaction name="separator"/>
-   <addaction name="actionBookInfo"/>
-  </widget>
   <widget class="QDockWidget" name="dockWidget_find">
    <property name="minimumSize">
     <size>
-     <width>86</width>
-     <height>118</height>
+     <width>98</width>
+     <height>122</height>
     </size>
    </property>
    <property name="styleSheet">
@@ -1284,6 +1208,12 @@ p, li { white-space: pre-wrap; }
    </widget>
   </widget>
   <widget class="QDockWidget" name="dockWidget_favorite">
+   <property name="minimumSize">
+    <size>
+     <width>79</width>
+     <height>140</height>
+    </size>
+   </property>
    <property name="baseSize">
     <size>
      <width>1</width>
@@ -1403,6 +1333,7 @@ QToolButton:checked {
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="actionPageIntro"/>
    <addaction name="actionAnimGroup"/>
    <addaction name="actionAnimHistorie"/>
    <addaction name="separator"/>
@@ -1457,6 +1388,7 @@ QToolButton:checked {
     <bool>false</bool>
    </attribute>
    <addaction name="actionFindBkOrHt"/>
+   <addaction name="actionControle"/>
    <addaction name="separator"/>
    <addaction name="actionBookExpAll"/>
    <addaction name="actionBookColpAll"/>
@@ -1516,8 +1448,8 @@ QToolButton:checked {
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>507</width>
-     <height>27</height>
+     <width>800</width>
+     <height>23</height>
     </rect>
    </property>
    <property name="maximumSize">
@@ -1530,17 +1462,19 @@ QToolButton:checked {
     <property name="title">
      <string>&amp;تحرير</string>
     </property>
-    <addaction name="action_first"/>
-    <addaction name="action_next"/>
-    <addaction name="action_prev"/>
-    <addaction name="action_last"/>
-    <addaction name="actionGotoPage"/>
-    <addaction name="separator"/>
-    <addaction name="actionFind_all"/>
-    <addaction name="separator"/>
     <addaction name="action_edit"/>
     <addaction name="action_favorit"/>
     <addaction name="actionHiperlink"/>
+    <addaction name="actionRemoveTechkil"/>
+    <addaction name="separator"/>
+    <addaction name="action_first"/>
+    <addaction name="action_prev"/>
+    <addaction name="actionGotoPage"/>
+    <addaction name="action_next"/>
+    <addaction name="action_last"/>
+    <addaction name="separator"/>
+    <addaction name="actionBookInfo"/>
+    <addaction name="actionFind_all"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -1561,11 +1495,9 @@ QToolButton:checked {
     </widget>
     <addaction name="action_fulscreen"/>
     <addaction name="actionOption"/>
-    <addaction name="actionRemoveTechkil"/>
+    <addaction name="actionControle"/>
     <addaction name="menuDockTooBar"/>
     <addaction name="separator"/>
-    <addaction name="separator"/>
-    <addaction name="actionPageIntro"/>
     <addaction name="actionZoumIn"/>
     <addaction name="actionZoomOut"/>
    </widget>
@@ -1595,7 +1527,6 @@ QToolButton:checked {
     <addaction name="actionCreatNewBook"/>
     <addaction name="actionExport"/>
     <addaction name="actionArchive"/>
-    <addaction name="actionBookInfo"/>
     <addaction name="separator"/>
     <addaction name="actionNewTab"/>
     <addaction name="separator"/>
@@ -1617,6 +1548,9 @@ QToolButton:checked {
     <addaction name="separator"/>
     <addaction name="actionUpdatGroup"/>
     <addaction name="actionUpdatGroupRemove"/>
+    <addaction name="actionDvd"/>
+    <addaction name="separator"/>
+    <addaction name="actionCostumActions"/>
    </widget>
    <addaction name="menu_file"/>
    <addaction name="menuEdit"/>
@@ -1717,6 +1651,10 @@ QToolButton:checked {
    </property>
   </action>
   <action name="action_about">
+   <property name="icon">
+    <iconset resource="images.qrc">
+     <normaloff>:/images/image/help-about.png</normaloff>:/images/image/help-about.png</iconset>
+   </property>
    <property name="text">
     <string>حول البرنامج</string>
    </property>
@@ -1800,7 +1738,7 @@ p, li { white-space: pre-wrap; }
   <action name="action_import">
    <property name="icon">
     <iconset resource="images.qrc">
-     <normaloff>:/images/image/address-book-new.png</normaloff>:/images/image/address-book-new.png</iconset>
+     <normaloff>:/images/image/importTxt.png</normaloff>:/images/image/importTxt.png</iconset>
    </property>
    <property name="text">
     <string>استيراد ملفات نصية</string>
@@ -1818,6 +1756,10 @@ html
    </property>
   </action>
   <action name="action_close">
+   <property name="icon">
+    <iconset resource="images.qrc">
+     <normaloff>:/images/image/quit.png</normaloff>:/images/image/quit.png</iconset>
+   </property>
    <property name="text">
     <string>خروج</string>
    </property>
@@ -1868,7 +1810,7 @@ html
   <action name="actionMdb">
    <property name="icon">
     <iconset resource="images.qrc">
-     <normaloff>:/images/image/address-book-new.png</normaloff>:/images/image/address-book-new.png</iconset>
+     <normaloff>:/images/image/import-Shamila.png</normaloff>:/images/image/import-Shamila.png</iconset>
    </property>
    <property name="text">
     <string>استيراد ملفات المكتبة الشاملة</string>
@@ -1949,6 +1891,10 @@ mdbtools</string>
    </property>
   </action>
   <action name="actionExport">
+   <property name="icon">
+    <iconset resource="images.qrc">
+     <normaloff>:/images/image/exportBook.png</normaloff>:/images/image/exportBook.png</iconset>
+   </property>
    <property name="text">
     <string>تصديرالكتاب الى ملف</string>
    </property>
@@ -1964,6 +1910,10 @@ pdf , odf ,html</string>
    </property>
   </action>
   <action name="actionPrintPreview">
+   <property name="icon">
+    <iconset resource="images.qrc">
+     <normaloff>:/images/image/printerPreview.png</normaloff>:/images/image/printerPreview.png</iconset>
+   </property>
    <property name="text">
     <string>معاينة قبل الطباعة</string>
    </property>
@@ -1975,6 +1925,10 @@ pdf , odf ,html</string>
    </property>
   </action>
   <action name="actionPrint">
+   <property name="icon">
+    <iconset resource="images.qrc">
+     <normaloff>:/images/image/printer.png</normaloff>:/images/image/printer.png</iconset>
+   </property>
    <property name="text">
     <string>طباعة الصفحة</string>
    </property>
@@ -2007,6 +1961,10 @@ pdf , odf ,html</string>
    </property>
   </action>
   <action name="actionHelp">
+   <property name="icon">
+    <iconset resource="images.qrc">
+     <normaloff>:/images/image/help-contents.png</normaloff>:/images/image/help-contents.png</iconset>
+   </property>
    <property name="text">
     <string>التعليمات</string>
    </property>
@@ -2018,6 +1976,10 @@ pdf , odf ,html</string>
    </property>
   </action>
   <action name="actionOrganizeFahrasse">
+   <property name="icon">
+    <iconset resource="images.qrc">
+     <normaloff>:/images/image/fahrasa-exact.png</normaloff>:/images/image/fahrasa-exact.png</iconset>
+   </property>
    <property name="text">
     <string>ضبط روابط الفهرسة الحالية</string>
    </property>
@@ -2057,6 +2019,10 @@ pdf , odf ,html</string>
    </property>
   </action>
   <action name="actionPageIntro">
+   <property name="icon">
+    <iconset resource="images.qrc">
+     <normaloff>:/images/image/gohome.png</normaloff>:/images/image/gohome.png</iconset>
+   </property>
    <property name="text">
     <string>صفحة البداية</string>
    </property>
@@ -2472,6 +2438,10 @@ p, li { white-space: pre-wrap; }
    </property>
   </action>
   <action name="actionUpdatGroup">
+   <property name="icon">
+    <iconset resource="images.qrc">
+     <normaloff>:/images/image/edit-select.png</normaloff>:/images/image/edit-select.png</iconset>
+   </property>
    <property name="text">
     <string>تعليم الكتب الغير متوفرة</string>
    </property>
@@ -2483,6 +2453,10 @@ p, li { white-space: pre-wrap; }
    </property>
   </action>
   <action name="actionUpdatGroupRemove">
+   <property name="icon">
+    <iconset resource="images.qrc">
+     <normaloff>:/images/image/edit-clear.png</normaloff>:/images/image/edit-clear.png</iconset>
+   </property>
    <property name="text">
     <string>حذف الكتب الغير متوفرة</string>
    </property>
@@ -2495,6 +2469,10 @@ p, li { white-space: pre-wrap; }
    </property>
   </action>
   <action name="actionBookInfo">
+   <property name="icon">
+    <iconset resource="images.qrc">
+     <normaloff>:/images/image/help-about.png</normaloff>:/images/image/help-about.png</iconset>
+   </property>
    <property name="text">
     <string>معلومات عن الكتاب</string>
    </property>
@@ -2540,6 +2518,10 @@ tar.gz
    </property>
   </action>
   <action name="actionZoumIn">
+   <property name="icon">
+    <iconset resource="images.qrc">
+     <normaloff>:/images/image/zoom-in.png</normaloff>:/images/image/zoom-in.png</iconset>
+   </property>
    <property name="text">
     <string>تكبير النص</string>
    </property>
@@ -2551,6 +2533,10 @@ tar.gz
    </property>
   </action>
   <action name="actionZoomOut">
+   <property name="icon">
+    <iconset resource="images.qrc">
+     <normaloff>:/images/image/zoom-out.png</normaloff>:/images/image/zoom-out.png</iconset>
+   </property>
    <property name="text">
     <string>تصغير النص</string>
    </property>
@@ -2641,7 +2627,7 @@ tar.gz
   <action name="actionCreatNewBook">
    <property name="icon">
     <iconset resource="images.qrc">
-     <normaloff>:/images/image/address-book-new.png</normaloff>:/images/image/address-book-new.png</iconset>
+     <normaloff>:/images/image/newBlanBook.png</normaloff>:/images/image/newBlanBook.png</iconset>
    </property>
    <property name="text">
     <string>انشاء كتاب جديد</string>
@@ -2657,6 +2643,10 @@ tar.gz
    </property>
   </action>
   <action name="actionDownloadBooks">
+   <property name="icon">
+    <iconset resource="images.qrc">
+     <normaloff>:/images/image/mail-receive.png</normaloff>:/images/image/mail-receive.png</iconset>
+   </property>
    <property name="text">
     <string>تحميل كتب</string>
    </property>
@@ -2668,8 +2658,45 @@ tar.gz
    </property>
   </action>
   <action name="actionShamilaCdrom">
+   <property name="icon">
+    <iconset resource="images.qrc">
+     <normaloff>:/images/image/import-ShamilaCdrom.png</normaloff>:/images/image/import-ShamilaCdrom.png</iconset>
+   </property>
    <property name="text">
     <string>تحويل قرص الشاملة</string>
+   </property>
+  </action>
+  <action name="actionControle">
+   <property name="icon">
+    <iconset resource="images.qrc">
+     <normaloff>:/images/image/preferences-other.png</normaloff>:/images/image/preferences-other.png</iconset>
+   </property>
+   <property name="text">
+    <string>لوحة التحكم</string>
+   </property>
+   <property name="toolTip">
+    <string>لوحة التحكم في المجموعات والكتب وتحريرها</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+B</string>
+   </property>
+  </action>
+  <action name="actionDvd">
+   <property name="icon">
+    <iconset resource="images.qrc">
+     <normaloff>:/images/image/import-cdrom.png</normaloff>:/images/image/import-cdrom.png</iconset>
+   </property>
+   <property name="text">
+    <string>اضافة كتب من القرص المضغوط</string>
+   </property>
+  </action>
+  <action name="actionCostumActions">
+   <property name="icon">
+    <iconset resource="images.qrc">
+     <normaloff>:/images/image/configure-toolbars.png</normaloff>:/images/image/configure-toolbars.png</iconset>
+   </property>
+   <property name="text">
+    <string>اضبط شريط الأدوات</string>
    </property>
   </action>
  </widget>
@@ -2681,7 +2708,6 @@ tar.gz
   <tabstop>treeWidget_curaan</tabstop>
   <tabstop>treeWidgetFind</tabstop>
   <tabstop>lineEdit</tabstop>
-  <tabstop>graphicsView</tabstop>
   <tabstop>pushButtonEditClose</tabstop>
   <tabstop>comboBox_tafasir</tabstop>
   <tabstop>comboBox</tabstop>
