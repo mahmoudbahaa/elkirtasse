@@ -56,8 +56,12 @@ public:
 QString mypath;
 protected:
     void changeEvent(QEvent *e);
+<<<<<<< HEAD
 public slots:
         bool downloadFile(QString urlPath,QString distPath);
+=======
+
+>>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
 private:
 
     Ui::Dialognet *ui;
@@ -81,7 +85,11 @@ private slots:
     void on_buttonBox_accepted();
     void on_toolButton_clicked();
     void cancelDownload();
+<<<<<<< HEAD
 
+=======
+    bool downloadFile(QString urlPath,QString distPath);
+>>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
     void httpRequestFinished(int requestId, bool error);
     void updateDataReadProgress(int bytesRead, int totalBytes);
     void readResponseHeader(const QHttpResponseHeader &responseHeader);

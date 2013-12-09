@@ -65,7 +65,10 @@ public slots:
     void treeChargeSoura(QTreeWidget *view);
     void treeChargeJozaa(QTreeWidget *view);
     void treeChargeFahrass(QTreeWidget *view,QString Bname);
+<<<<<<< HEAD
   QTreeWidgetItem *getItem(QTreeWidgetItem *item);
+=======
+>>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
     void treeChargeGroupe(QTreeWidget *view,int checked,bool asCombobox);
      void treeUpdateGroupe(QTreeWidget *view,bool remove);
     bool treeMenuRemoveBook(QString BKname,bool removall);

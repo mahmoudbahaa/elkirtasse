@@ -54,6 +54,7 @@
         <file>image/draw-text.png</file>
         <file>image/list-add.png</file>
         <file>image/bkg.png</file>
+<<<<<<< HEAD
         <file>image/gohome.png</file>
         <file>image/edit-select.png</file>
         <file>image/exportBook.png</file>
@@ -79,5 +80,7 @@
         <file>image/view-favo.png</file>
         <file>image/view-find.png</file>
         <file>image/configure-toolbars.png</file>
+=======
+>>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
     </qresource>
 </RCC>

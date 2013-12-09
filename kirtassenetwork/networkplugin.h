@@ -44,7 +44,10 @@ private:
 public slots:
 
   QString execPlugin();
+<<<<<<< HEAD
   QString loadFile(QString urlPath);
+=======
+>>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
   QString pluginTitle();
 
 

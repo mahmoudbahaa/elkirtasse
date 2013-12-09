@@ -349,6 +349,7 @@ p, li { white-space: pre-wrap; }
              </widget>
             </item>
             <item>
+<<<<<<< HEAD
              <widget class="QCheckBox" name="checkBoxHamza">
               <property name="text">
                <string>تجاهل الهمزة</string>
@@ -356,6 +357,8 @@ p, li { white-space: pre-wrap; }
              </widget>
             </item>
             <item>
+=======
+>>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
              <spacer name="verticalSpacer">
               <property name="orientation">
                <enum>Qt::Vertical</enum>
@@ -397,7 +400,27 @@ p, li { white-space: pre-wrap; }
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_5">
      <item>
+<<<<<<< HEAD
       <widget class="QDialogButtonBox" name="buttonBox">
+=======
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>6</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QDialogButtonBox" name="buttonBox">
+       <property name="layoutDirection">
+        <enum>Qt::LeftToRight</enum>
+       </property>
+>>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>

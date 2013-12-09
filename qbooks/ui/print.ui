@@ -64,11 +64,14 @@
             <string>ملفات epub</string>
            </property>
           </item>
+<<<<<<< HEAD
           <item>
            <property name="text">
             <string>ملف qml</string>
            </property>
           </item>
+=======
+>>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
          </widget>
         </item>
        </layout>

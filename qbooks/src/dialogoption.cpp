@@ -32,7 +32,11 @@ Dialogoption::Dialogoption(QWidget *parent)
     ui->comboBoxLng->addItem(QString::fromUtf8("english"));
     ui->comboBoxLng->addItem(QString::fromUtf8("francais"));
     //------------
+<<<<<<< HEAD
     ui->comboBoxCadre->addItem(QIcon(":/images/image/top.png"),trUtf8("الافتراضي"));
+=======
+    ui->comboBoxCadre->addItem(trUtf8("الافتراضي"));
+>>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
     QDir appDir(qApp->applicationDirPath());
     appDir.cdUp();
     QString pathApp=  appDir.absolutePath()+"/share/elkirtasse";
@@ -40,7 +44,11 @@ Dialogoption::Dialogoption(QWidget *parent)
     QString subdir;
     foreach ( subdir, dirImage.entryList(QDir::AllDirs | QDir::NoDotAndDotDot |
                                          QDir::Hidden )){
+<<<<<<< HEAD
         ui->comboBoxCadre->addItem(QIcon(pathApp+"/data/images/"+subdir+"/top.png"),subdir);
+=======
+        ui->comboBoxCadre->addItem(subdir);
+>>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
     }
 }
 Dialogoption::~Dialogoption()
@@ -193,7 +201,11 @@ void Dialogoption:: setPathCostm(QString arg)
 }
 QString Dialogoption::getPathCostm()
 {
+<<<<<<< HEAD
     return ui->lineEdit_costmPath->text();
+=======
+    return pathCostm;
+>>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
 }
 void Dialogoption::setCadreFolder(QString arg)
 {
@@ -239,6 +251,7 @@ int Dialogoption::getLng()
 {
     return ui->comboBoxLng->currentIndex();
 }
+<<<<<<< HEAD
 void Dialogoption::setStandardTool(bool st)
 {
     ui->checkBoxStandardTool->setChecked(st);
@@ -286,6 +299,8 @@ void Dialogoption::setStandardTool(bool st)
  {
      return ui->lineEditStyleCostum->text();
  }
+=======
+>>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
 
 //----------------end set get variable---------------------------------------------------------
 void Dialogoption::on_pushButton_fontcolor_clicked()
@@ -348,12 +363,22 @@ void Dialogoption::on_toolButton_clicked()
 void Dialogoption::on_buttonBox_accepted()
 {
 
+<<<<<<< HEAD
     themesStyle=ui->comboBox->currentText();
 
      pathCostm= ui->lineEdit_costmPath->text();
 
     cadreFolder=ui->comboBoxCadre->currentText();
 
+=======
+  themesStyle=ui->comboBox->currentText();
+
+    //    pathCostm= ui->lineEdit_costmPath->text();
+
+    cadreFolder=ui->comboBoxCadre->currentText();
+
+
+>>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
     //layouDir=ui->checkBoxLngLayou->checkState();
 }
 
@@ -365,7 +390,11 @@ void Dialogoption::on_toolButton_costmPath_clicked()
                                            homeDir,
                                            QFileDialog::ShowDirsOnly
                                            |QFileDialog::DontResolveSymlinks);
+<<<<<<< HEAD
    if(!dir.isEmpty())
+=======
+    if(dlg.AcceptOpen)
+>>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
         ui->lineEdit_costmPath->setText(dir);
 
 }
@@ -396,6 +425,7 @@ void Dialogoption::on_toolButton_3_clicked()
     }
 }
 
+<<<<<<< HEAD
 //void Dialogoption::on_comboBoxCadre_currentIndexChanged(QString img )
 //{
 //    QDir appDir(qApp->applicationDirPath());
@@ -410,6 +440,22 @@ void Dialogoption::on_toolButton_3_clicked()
 //    }
 
 //}
+=======
+void Dialogoption::on_comboBoxCadre_currentIndexChanged(QString img )
+{
+    QDir appDir(qApp->applicationDirPath());
+    appDir.cdUp();
+    QString pathApp=  appDir.absolutePath()+"/share/elkirtasse";
+    QString image=pathApp+"/data/images/"+img+"/preview.png";
+    QFile file(image);
+    if (file.exists()){
+        ui->labelCadre->setPixmap(image);
+    }else{
+        ui->labelCadre->setText(trUtf8("المعاينة غير متوفرة"));
+    }
+
+}
+>>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
 
 void Dialogoption::on_toolButton_10_clicked()
 {
@@ -421,6 +467,7 @@ void Dialogoption::on_toolButton_10_clicked()
         ui->label_fontKhasse->setText(police.family());
     }
 }
+<<<<<<< HEAD
 
 
 
@@ -437,3 +484,5 @@ void Dialogoption::on_toolButtonStyleCostum_clicked()
     if(!fileName.isEmpty())
         ui->lineEditStyleCostum->setText(fileName);
 }
+=======
+>>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e

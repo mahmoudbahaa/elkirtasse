@@ -39,7 +39,11 @@ public:
     virtual ~NetInterface() {}
 
 virtual    QString execPlugin() = 0;
+<<<<<<< HEAD
 virtual     QString loadFile(QString urlPath)=0;
+=======
+
+>>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
 
 };
 //! [0]

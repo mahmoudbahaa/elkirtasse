@@ -28,7 +28,11 @@
 ****************************************************************************/
 #include "cdromshamila.h"
 #include "dialogcdrom.h"
+<<<<<<< HEAD
 #include "ui_Dialogcdrom.h"
+=======
+#include "ui_dialog.h"
+>>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
 #include <QMessageBox>
 #ifdef   Q_WS_WIN
 #include <QtSql>

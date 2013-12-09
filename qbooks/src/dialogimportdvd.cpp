@@ -12,7 +12,10 @@ DialogImportDvd::DialogImportDvd(QWidget *parent) :
     ui(new Ui::DialogImportDvd)
 {
     ui->setupUi(this);
+<<<<<<< HEAD
 
+=======
+>>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
 }
 
 DialogImportDvd::~DialogImportDvd()
@@ -27,12 +30,16 @@ void DialogImportDvd::on_buttonBox_accepted()
 
 bool DialogImportDvd::unzipFile(QString fileGz,QString file)
 {
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
     process=new QProcess;
     connect(process,SIGNAL(readyReadStandardOutput()),this,SLOT(readstdout()));
     connect(process,SIGNAL(readyReadStandardError()),this,SLOT(readsteror()));
 
+<<<<<<< HEAD
 #ifdef   Q_WS_WIN
     QString tempfile=QDir::homePath()+"/.kirtasse/temp";
     process->setWorkingDirectory(QApplication::applicationDirPath());
@@ -42,18 +49,24 @@ bool DialogImportDvd::unzipFile(QString fileGz,QString file)
     process->start("7z x \""+tempfile+"\"/*.tar  -o\""+m_booksPath+"\" -r -y");
     qDebug()<< "7z x "+tempfile+"/*.tar  -o"+m_booksPath+" -r -y";
 #else
+=======
+>>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
     QString argument=QString("tar -xvf  %1 -C  %2  %3").arg(fileGz).arg(m_booksPath).arg(file);
     qDebug()<<argument;
     process->start(argument);
 
+<<<<<<< HEAD
 #endif
 
 
+=======
+>>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
     if (!process->waitForStarted())
         return false;
 
     if (!process->waitForFinished())
         return false;
+<<<<<<< HEAD
     QString tempDir=QDir::homePath()+"/.kirtasse/temp";
            QDir dirS(tempDir);
            QString subfile;
@@ -70,6 +83,10 @@ bool DialogImportDvd::unzipFile(QString fileGz,QString file)
 
 
 
+=======
+
+    return true;
+>>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
 }
 void DialogImportDvd::readstdout()
 {
@@ -104,11 +121,14 @@ void DialogImportDvd::setBooksPath(QString path)
     m_booksPath=path;
     ui->lineEditBooksPath->setText(path);
 }
+<<<<<<< HEAD
     void DialogImportDvd::setAppPath(QString path)
     {
         m_pathApp=path;
             treeChargeGroupe();
     }
+=======
+>>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
 
 QString DialogImportDvd::getBooksPath()
 {
@@ -122,11 +142,23 @@ void DialogImportDvd::on_toolButton_clicked()
                                                     QString(),
                                                     QFileDialog::ShowDirsOnly
                                                     |QFileDialog::DontResolveSymlinks);
+<<<<<<< HEAD
     if(!dirName.isEmpty()){
 
      m_groupPath=dirName;
      ui->lineEditDvdPath->setText(dirName);
 }
+=======
+    if(QFile::exists(dirName+"/group.xml")){
+
+     m_groupPath=dirName;
+     ui->lineEditDvdPath->setText(dirName);
+     treeChargeGroupe( );
+
+}else{
+        QMessageBox::information(this,"","group.xml no exist");
+    }
+>>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
 }
 
 void DialogImportDvd::treeChargeGroupe( )
@@ -135,8 +167,12 @@ void DialogImportDvd::treeChargeGroupe( )
     QTreeWidgetItem *itemRoot= new QTreeWidgetItem(ui->treeWidget);
     QTreeWidgetItem *itemGroup= new QTreeWidgetItem(itemRoot);
     QTreeWidgetItem *itemBook= new QTreeWidgetItem(itemGroup);
+<<<<<<< HEAD
     QFile file(m_pathApp+"/data/group.xml");
   qDebug()<<m_pathApp+"/data/group.xml";
+=======
+    QFile file(m_groupPath+"/group.xml");
+>>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
     file.open(QIODevice::ReadOnly);
 
     ui->treeWidget->clear();
@@ -173,7 +209,11 @@ void DialogImportDvd::treeChargeGroupe( )
 
             }
 
+<<<<<<< HEAD
         }else if (xml.name() == "bk"){ //
+=======
+        }else if (xml.name() == "bk"){ //niveau 3
+>>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
 
             QString idBook= xml.attributes().value("id").toString();
             QString textBook=xml.attributes().value("name").toString();
@@ -258,7 +298,11 @@ void DialogImportDvd::on_buttonBox_clicked(QAbstractButton *button)
 
             }
             if(ui->checkBoxGroup->isChecked()){
+<<<<<<< HEAD
                 QString gPathGroupAllbook=m_pathApp +"/data/group.xml";
+=======
+                QString gPathGroupAllbook=m_groupPath +"./group.xml";
+>>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
                 QString groupPath=QDir::homePath()+"/.kirtasse/data/group.xml";
                 QString groupPathNew=QDir::homePath()+"/.kirtasse/data/group.xml.old";
                 QFile file;
@@ -278,6 +322,7 @@ void DialogImportDvd::on_buttonBox_clicked(QAbstractButton *button)
     }
 
 }
+<<<<<<< HEAD
 void DialogImportDvd::on_toolButtonBooksPath_clicked()
 {
     QString dirName = QFileDialog::getExistingDirectory(this, tr("Open Directory"),
@@ -289,3 +334,5 @@ return;
 
      ui->lineEditBooksPath->setText(dirName);
 }
+=======
+>>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e

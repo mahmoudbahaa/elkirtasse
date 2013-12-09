@@ -104,6 +104,12 @@
    </item>
    <item>
     <widget class="QDialogButtonBox" name="buttonBox">
+<<<<<<< HEAD
+=======
+     <property name="layoutDirection">
+      <enum>Qt::LeftToRight</enum>
+     </property>
+>>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>

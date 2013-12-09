@@ -35,7 +35,11 @@ Dialogfind::Dialogfind(QWidget *parent)
 {
     ui->setupUi(this);
     Messages = new messages();
+<<<<<<< HEAD
     Findbook = new findbook();
+=======
+       Findbook = new findbook();
+>>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
 
     findList=false;
     findFirst=false;
@@ -44,8 +48,13 @@ Dialogfind::Dialogfind(QWidget *parent)
 
     Messages->treeChargeGroupe( ui->treeWidget,1,true);
     QString myxmlfind="<?xml version='1.0' encoding='UTF-8'?>"
+<<<<<<< HEAD
             "<root>"
             "</root>";
+=======
+                      "<root>"
+                      "</root>";
+>>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
     if (!m_docFind.setContent(myxmlfind))
     {
         return;
@@ -57,9 +66,18 @@ Dialogfind::~Dialogfind()
 
 }
 
+<<<<<<< HEAD
 void Dialogfind::on_lineEdit_2_textChanged(QString searchString)
 {
     Findbook->searchInTreeview(ui->treeWidget,searchString,0);
+=======
+
+
+
+void Dialogfind::on_lineEdit_2_textChanged(QString searchString)
+{
+      Findbook->searchInTreeview(ui->treeWidget,searchString,0);
+>>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
 }
 
 void Dialogfind::on_buttonBox_clicked(QAbstractButton* button)
@@ -79,6 +97,7 @@ void Dialogfind::on_buttonBox_clicked(QAbstractButton* button)
             }
         }
 
+<<<<<<< HEAD
         findFirst=ui->radioButtonFirst->isChecked();
         findList=ui->radioButtonJidre->isChecked();
         MultiFind=ui->radioButtonMulti->isChecked();
@@ -86,11 +105,25 @@ void Dialogfind::on_buttonBox_clicked(QAbstractButton* button)
         findAnd=ui->checkBoxAnd->isChecked();
         findIsNass=ui->radioButtonbooks->isChecked();
 noHamza=ui->checkBoxHamza->isChecked();
+=======
+            findFirst=ui->radioButtonFirst->isChecked();
+            findList=ui->radioButtonJidre->isChecked();
+            MultiFind=ui->radioButtonMulti->isChecked();
+            findSawabik=ui->checkBoxSawabik->isChecked();
+            findAnd=ui->checkBoxAnd->isChecked();
+          findIsNass=ui->radioButtonbooks->isChecked();
+
+
+>>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
 
         findString=ui->lineEdit->text();
         QTreeWidgetItem *item=new QTreeWidgetItem;
         QList<QTreeWidgetItem *> found =ui->treeWidget->findItems(
+<<<<<<< HEAD
                     "",Qt::MatchContains | Qt::MatchRecursive,0);
+=======
+                "",Qt::MatchContains | Qt::MatchRecursive,0);
+>>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
 
 
         QDomElement racine =m_docFind.documentElement(); //تحديد العنصر الجذر
@@ -166,6 +199,7 @@ void Dialogfind::on_treeWidget_itemChanged(QTreeWidgetItem* item, int )
         if (item->checkState(0)==Qt::Checked){
 
             QString mydata=item->data(1,1).toString();
+<<<<<<< HEAD
             QFile file;
             QDir appDir(qApp->applicationDirPath());
             appDir.cdUp();
@@ -180,6 +214,22 @@ void Dialogfind::on_treeWidget_itemChanged(QTreeWidgetItem* item, int )
                 int len=m_listBookNoMash.length();
                 m_listBookNoMash.insert(len,mytxt+"\n");
             }
+=======
+QFile file;
+QDir appDir(qApp->applicationDirPath());
+appDir.cdUp();
+QString pathApp=  appDir.absolutePath()+"/share/elkirtasse";
+         if (file.exists(bookPath+"/"+mydata+"/book.xml")){
+             item->setData(2,2,"user");
+         }else if(file.exists(pathApp+"/books/"+mydata+"/book.xml")){
+             item->setData(2,2,"apath");
+         }else{
+             QString mytxt=item->text(0);
+             item->setCheckState(0,Qt::Unchecked);
+            int len=m_listBookNoMash.length();
+             m_listBookNoMash.insert(len,mytxt+"\n");
+         }
+>>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
 
 
         }

@@ -1,4 +1,10 @@
+<<<<<<< HEAD
 
+=======
+#include "dialogfavo.h"
+
+#include  "ui_dialogfavo.h"
+>>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
 /****************************************************************************
 //   elkirtasse Copyright (C) 2010 yahia abouzakaria <yahiaui@gmail.com>
 //
@@ -27,8 +33,11 @@
 ** $elkirtasse_END_LICENSE$
 **
 ****************************************************************************/
+<<<<<<< HEAD
 #include "dialogfavo.h"
 #include  "ui_dialogfavo.h"
+=======
+>>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
 #include <QtGui>
 dialogfavo::dialogfavo(QWidget *parent)
     : QDialog(parent), ui(new Ui::dialogfavo)

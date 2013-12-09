@@ -195,7 +195,11 @@ void databook::treeOrganizFahrass(QTreeWidget *view,QString Bname)
         if (!m_doc.setContent(&file)){return;}
         view->clear();
         int d=0;
+<<<<<<< HEAD
         QTreeWidgetItem *item;
+=======
+        QTreeWidgetItem *item[d];
+>>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
         QString tit;
         QString id;
         QString lvl;
@@ -208,9 +212,15 @@ void databook::treeOrganizFahrass(QTreeWidget *view,QString Bname)
         progress.show();
         qApp->processEvents();
 
+<<<<<<< HEAD
         item= new QTreeWidgetItem(view);
         item->setText(0,trUtf8("بسم الله الرحمن الرحيم") );
         item->setData(1,1,1);
+=======
+        item[1]= new QTreeWidgetItem(view);
+        item[1]->setText(0,trUtf8("بسم الله الرحمن الرحيم") );
+        item[1]->setData(1,1,1);
+>>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
         int r=0;
         while(!noeud.isNull())
         {
@@ -243,6 +253,7 @@ void databook::treeOrganizFahrass(QTreeWidget *view,QString Bname)
                 bool ok;
                 d=lvl.toInt(&ok,0);
                 if (ok==true){
+<<<<<<< HEAD
                        if (d<1){d=1;}
                        if (d==1){
 
@@ -274,6 +285,28 @@ void databook::treeOrganizFahrass(QTreeWidget *view,QString Bname)
                        item->setText(1,id );
                        item->setData(1,1,id);
                    }
+=======
+                    if (d==1){
+                        item[1]= new QTreeWidgetItem(view);
+                        item[1]->setText(0,tit );
+                        item[1]->setText(1,id );
+                        item[1]->setData(1,1,id);
+                    }else{
+                        if (item[d-1]){
+                            item[d]= new QTreeWidgetItem( item[d-1]);
+                            item[d]->setText(0,tit );
+                            item[d]->setText(1,id );
+                            item[d]->setData(1,1,id);
+                        }
+
+                    }
+                }else{
+                    item[1]= new QTreeWidgetItem(view);
+                    item[1]->setText(0,tit );
+                    item[1]->setText(1,id );
+                    item[1]->setData(1,1,id);
+                }
+>>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
             }
             noeud = noeud.nextSibling();
         }
@@ -281,6 +314,7 @@ void databook::treeOrganizFahrass(QTreeWidget *view,QString Bname)
         file.close();
     }
 }
+<<<<<<< HEAD
 QTreeWidgetItem* databook::getItem(QTreeWidgetItem *item)
 {
 
@@ -290,6 +324,9 @@ QTreeWidgetItem* databook::getItem(QTreeWidgetItem *item)
  //   QTreeWidgetItem *itemParent=(item->child(index));
     return item->child(index);
 }
+=======
+
+>>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
 bool  databook::chargeList()
 {
     listId.clear();
@@ -331,6 +368,11 @@ void databook::insertPage(bool after)
         }
      }
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
     QDomElement racine = m_docBooK[boocNumIndex].documentElement(); //renvoie la balise racine
     QDomNode curNoeud = racine.childNodes().item(currentPosition[boocNumIndex]);
    // QDomNode newNooeud=m_docBooK[boocNumIndex].createElement("book");

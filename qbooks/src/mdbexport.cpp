@@ -85,9 +85,15 @@ bool mdbexport::readMain(QString mdbSource)
 {
     if (mdbSource.contains(".bok")){
 
+<<<<<<< HEAD
         QList<QString> listHeader;
         //        enum  { NumIndex = 40};
         //        QString strHeaderName[NumIndex];
+=======
+ QList<QString> listHeader;
+//        enum  { NumIndex = 40};
+//        QString strHeaderName[NumIndex];
+>>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
         //*********************************
         QFile fileCsv(m_tempDir+"/main.csv");
 
@@ -113,7 +119,11 @@ bool mdbexport::readMain(QString mdbSource)
         //QMessageBox::information(this,trUtf8("خطأ"),QString::number(tab));
         for (int i=1;i<tab+2;i++){
             if (i==tab+1){
+<<<<<<< HEAD
                 listHeader.append(line.section("|*|",-1));
+=======
+               listHeader.append(line.section("|*|",-1));
+>>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
             }else{
                 listHeader.append(line.section("|*|",i-1,i-1));
             }
@@ -163,7 +173,11 @@ bool mdbexport::readMain(QString mdbSource)
 bool mdbexport::creatmdbTempFiles(QString mdbSource)
 {
 
+<<<<<<< HEAD
     listId.clear();
+=======
+listId.clear();
+>>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
     QDir dir;
     if (!dir.exists(m_tempDir)) //التاكد من وجود مجلد temp
         return false;
@@ -176,9 +190,15 @@ bool mdbexport::creatmdbTempFiles(QString mdbSource)
         prosses.waitForFinished();
     }
     qApp->processEvents();
+<<<<<<< HEAD
     QFile file;
     if(!file.exists(m_tempDir+"/tempbk.csv"))
         return false;
+=======
+QFile file;
+    if(!file.exists(m_tempDir+"/tempbk.csv"))
+    return false;
+>>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
     QString bookDir=creatBooKDir();
 
 
@@ -191,9 +211,15 @@ bool mdbexport::creatmdbTempFiles(QString mdbSource)
     if (creatInfo(bookDir)==false){
 
         QMessageBox::information(this,trUtf8("معلومات"),trUtf8("no set"));
+<<<<<<< HEAD
         return false;
     }
     //  QMessageBox::information(this,trUtf8("معلومات"),trUtf8("تمت عملية اظافة الكتاب بنجاح"));
+=======
+      return false;
+    }
+   //  QMessageBox::information(this,trUtf8("معلومات"),trUtf8("تمت عملية اظافة الكتاب بنجاح"));
+>>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
     return true;
 
 }
@@ -201,7 +227,11 @@ bool mdbexport::creatmdbTempFiles(QString mdbSource)
 void mdbexport::on_toolButton_fileNam_clicked()
 {
     QStringList fn = QFileDialog::getOpenFileNames(this, tr("Open File..."),
+<<<<<<< HEAD
                                                    QString(), trUtf8("ملفات الشاملة (*.mdb *.bok);;كل الملفات (*)"));
+=======
+                 QString(), trUtf8("ملفات الشاملة (*.mdb *.bok);;كل الملفات (*)"));
+>>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
     if (!fn.isEmpty())
     {
         ui->listWidget->addItems(fn);
@@ -236,17 +266,30 @@ bool mdbexport::creatBash(QString fn,QString asbok)
     file.setPermissions(QFile::ExeUser | QFile::WriteUser | QFile::ReadUser);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
         return false;
+<<<<<<< HEAD
     file.setPermissions(QFile::ExeUser | QFile::WriteUser | QFile::ReadUser);
+=======
+ file.setPermissions(QFile::ExeUser | QFile::WriteUser | QFile::ReadUser);
+>>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
     QTextStream out(&file);
     fn.replace(" ","\\ ");
     if (asbok=="bok"){
         out << "#!/bin/sh" << "\n"<< "export MDB_ICONV='ISO8859-1'" <<"\n"
+<<<<<<< HEAD
             <<  "mdb-export -d'|*|' -Q  "+fn+ " Main >> "+m_tempDir+"/main.csv";
 
     }else if(asbok=="mdb"){
         out << "#!/bin/sh" << "\n"<< "export MDB_ICONV='ISO8859-1'" <<"\n"
             <<  "mdb-export -d'|*|' -Q  "+fn+ " "+tableBook+" >> "+m_tempDir+"/tempbk.csv"  <<"\n"
              <<  "mdb-export -d'|*|'  -Q  "+fn+ " "+tableTitle+" >> "+m_tempDir+"/temptitle.csv";
+=======
+                <<  "mdb-export -d'|*|' -Q  "+fn+ " Main >> "+m_tempDir+"/main.csv";
+
+    }else if(asbok=="mdb"){
+        out << "#!/bin/sh" << "\n"<< "export MDB_ICONV='ISO8859-1'" <<"\n"
+                <<  "mdb-export -d'|*|' -Q  "+fn+ " "+tableBook+" >> "+m_tempDir+"/tempbk.csv"  <<"\n"
+                <<  "mdb-export -d'|*|'  -Q  "+fn+ " "+tableTitle+" >> "+m_tempDir+"/temptitle.csv";
+>>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
 
     }
 
@@ -262,10 +305,17 @@ bool mdbexport::creatXmlFile(QString f,QString table,QString csv)
 {
 
 
+<<<<<<< HEAD
     QList<QString> listHeader;
     QXmlStreamWriter stream;
     //    enum  { NumIndex = 10};
     //    QString strHeaderName[NumIndex];
+=======
+     QList<QString> listHeader;
+    QXmlStreamWriter stream;
+//    enum  { NumIndex = 10};
+//    QString strHeaderName[NumIndex];
+>>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
     //*********************************
     QFile fileCsv(m_tempDir+csv);
 
@@ -283,9 +333,15 @@ bool mdbexport::creatXmlFile(QString f,QString table,QString csv)
     int tab=  line.count("|*|");//nombre col
     for (int i=1;i<tab+2;i++){
         if (i==tab+1){
+<<<<<<< HEAD
             listHeader.append(line.section("|*|",-1));
         }else{
             listHeader.append(line.section("|*|",i-1,i-1));
+=======
+          listHeader.append(line.section("|*|",-1));
+        }else{
+           listHeader.append(line.section("|*|",i-1,i-1));
+>>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
         }
 
     }
@@ -301,13 +357,20 @@ bool mdbexport::creatXmlFile(QString f,QString table,QString csv)
     stream.writeStartDocument();
     stream.writeStartElement("dataroot");
     ui->progressBar->setVisible(true);
+<<<<<<< HEAD
     ui->progressBar->setMaximum(0);
 
     while (!line.isNull()) {
+=======
+     ui->progressBar->setMaximum(0);
+
+     while (!line.isNull()) {
+>>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
 
         qApp->processEvents();
         ui->progressBar->setValue(1);
         line = textStream.readLine();
+<<<<<<< HEAD
         if(!line.isEmpty()){
             //   QMessageBox::information(this,trUtf8("خطأ"),line);
             stream.writeStartElement(table);//"book" or "title"
@@ -344,6 +407,44 @@ bool mdbexport::creatXmlFile(QString f,QString table,QString csv)
             //***************************************    end book
         }
     }
+=======
+if(!line.isEmpty()){
+     //   QMessageBox::information(this,trUtf8("خطأ"),line);
+        stream.writeStartElement(table);//"book" or "title"
+        //**************************************start book
+
+        for (int i=1;i<tab+2;i++){
+            QString headerName=listHeader.at(i-1);
+            QString strValue;
+            if (i==tab+1){
+                strValue=line.section("|*|",-1);
+            }else{
+                strValue=line.section("|*|",i-1,i-1);
+            }
+             if (strValue.isEmpty() || strValue==0){strValue="1";}
+            if (headerName=="hno" || headerName=="na" || headerName=="sub"){
+                //*--
+            }else if(headerName=="id"){
+                if (table=="book"){
+                    listId.append(strValue);
+                }else{
+                    int newid=listId.indexOf(strValue);
+                    if (newid==-1){newid=0;}
+                    QVariant dd= newid+1;
+                    strValue=dd.toString();
+                }
+
+                stream.writeTextElement(headerName, strValue);
+            }else{
+
+                stream.writeTextElement(headerName, strValue);
+            }
+        }
+        stream.writeEndElement(); // book table
+        //***************************************    end book
+    }
+ }
+>>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
     stream.writeEndElement(); // dataroot
     stream.writeEndDocument();
 
@@ -357,7 +458,11 @@ bool mdbexport::creatXmlFile(QString f,QString table,QString csv)
     QVariant idx;
     int index=ui->comboBox->currentIndex();
     idx=ui->comboBox->itemData(index);
+<<<<<<< HEAD
     QString  groupeId=idx.toString();
+=======
+  QString  groupeId=idx.toString();
+>>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
     //انشاء مجلد الكتاب******************************************
     QString mbookDir;
     QString newBooName=  Messages->geniratNewBookName(groupeId);
@@ -366,7 +471,11 @@ bool mdbexport::creatXmlFile(QString f,QString table,QString csv)
         QDir dir(m_path );
         dir.mkdir( newBooName);
         mbookDir=newBooName;
+<<<<<<< HEAD
         // m_newPath=m_path+"/"+ newBooName;
+=======
+       // m_newPath=m_path+"/"+ newBooName;
+>>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
     }else{
         bool exit=false;
         int i=0;
@@ -384,7 +493,11 @@ bool mdbexport::creatXmlFile(QString f,QString table,QString csv)
                 QDir dir(path );
                 dir.mkdir( newBooName+"_"+ m.toString());
                 mbookDir=newBooName+"_"+ m.toString();
+<<<<<<< HEAD
                 //  m_newPath=path+"/"+ newBooName+"_"+ m.toString();
+=======
+              //  m_newPath=path+"/"+ newBooName+"_"+ m.toString();
+>>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
                 exit=true;
             }
         }
@@ -398,7 +511,11 @@ bool mdbexport::creatInfo(QString bookdir)
     QVariant idx;
     int index=ui->comboBox->currentIndex();
     idx=ui->comboBox->itemData(index);
+<<<<<<< HEAD
     QString  groupeId=idx.toString();
+=======
+  QString  groupeId=idx.toString();
+>>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
     //اظافة معلومات الى المكتبة
     QString Add_Book_Name=m_bookTitle;
     QString Add_Autor_Name =m_bookAuthor;
@@ -408,21 +525,38 @@ bool mdbexport::creatInfo(QString bookdir)
     if (ui->checkBox_curan->checkState()==Qt::Checked) {
         checked=true;
     }
+<<<<<<< HEAD
     Messages->m_pathCostum=m_path;
     if (Messages->addNewBook(bookdir,Add_Book_Name,Add_Autor_Name,Add_Betaka,groupeId,checked)==false)
     {
         QMessageBox::information(this,trUtf8("خطأ"), trUtf8("ربما احد بيانات الكتاب خاطئة ") );
         return false;
+=======
+     Messages->m_pathCostum=m_path;
+    if (Messages->addNewBook(bookdir,Add_Book_Name,Add_Autor_Name,Add_Betaka,groupeId,checked)==false)
+    {
+        QMessageBox::information(this,trUtf8("خطأ"), trUtf8("ربما احد بيانات الكتاب خاطئة ") );
+       return false;
+>>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
 
     } else{
 
 
+<<<<<<< HEAD
         Messages->saveBookInfo(bookdir,Add_Book_Name,Add_Autor_Name,Add_Betaka);
 
     }
     msgTitle=msgTitle+Add_Book_Name+"\n"+
             trUtf8("المسار :")+m_path+"/"+bookdir+"\n";
     return true;
+=======
+       Messages->saveBookInfo(bookdir,Add_Book_Name,Add_Autor_Name,Add_Betaka);
+
+          }
+     msgTitle=msgTitle+Add_Book_Name+"\n"+
+              trUtf8("المسار :")+m_path+"/"+bookdir+"\n";
+      return true;
+>>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
 }
 
 void mdbexport::on_comboBox_currentIndexChanged(int index)
@@ -430,10 +564,17 @@ void mdbexport::on_comboBox_currentIndexChanged(int index)
 
 
     QVariant idx;
+<<<<<<< HEAD
     //int index=ui->comboBox->currentIndex();
     idx=ui->comboBox->itemData(index);
 
     m_addGroupeName= ui->comboBox->itemText(index);
+=======
+   //int index=ui->comboBox->currentIndex();
+       idx=ui->comboBox->itemData(index);
+
+  m_addGroupeName= ui->comboBox->itemText(index);
+>>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
     if (idx.toString()=="28")
     {
         ui->checkBox_curan->setVisible(true);
@@ -451,12 +592,17 @@ void mdbexport::on_toolButtonInfo_clicked()
     if (ui->listWidget->count()==0){return;}
     QListWidgetItem *item=ui->listWidget->currentItem();
     if (!item->isSelected())
+<<<<<<< HEAD
         return;
+=======
+       return;
+>>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
 
     QString itemtxt=ui->listWidget->currentItem()->text();
 
     if (itemtxt.contains(".mdb")){
         QMessageBox::information(this,trUtf8("معلومات الكتاب"),trUtf8("مالفات من نوع mdb لاتحمل معلومات عن الكتاب \n يمكنك اضافتها يدويا بعد اضافة الكتاب"));
+<<<<<<< HEAD
         return;
     }
 
@@ -472,6 +618,23 @@ void mdbexport::on_toolButtonInfo_clicked()
         }
         prosses.execute("rm "+m_tempDir+"/out");
         prosses.execute("rm "+m_tempDir+"/main.csv");
+=======
+    return;
+    }
+
+    if(creatBash(itemtxt,"bok")==true){
+    QProcess prosses;
+    prosses.execute(m_tempDir+"/out");
+    prosses.waitForFinished();
+    if(readMain(itemtxt)==true){
+         QMessageBox::information(this,trUtf8("معلومات الكتاب"),m_bookTitle+"\n"+
+                                  m_bookAuthor+"\n"+
+                                  m_bookBitaka+"\n");
+
+    }
+     prosses.execute("rm "+m_tempDir+"/out");
+     prosses.execute("rm "+m_tempDir+"/main.csv");
+>>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
     }
 }
 
@@ -493,6 +656,7 @@ void mdbexport::criateEbookContent()
     QString title;
     QString author;
     QString textConten=QString(
+<<<<<<< HEAD
                 " <?xml version=\"1.0\" encoding=\"UTF-8\"?>"
                 "<package xmlns=\"http://www.idpf.org/2007/opf\" unique-identifier=\"BookID\" version=\"2.0\">"
                 " <metadata xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:opf=\"http://www.idpf.org/2007/opf\">"
@@ -514,11 +678,41 @@ void mdbexport::criateEbookContent()
                 "<itemref idref=\"P2\"/>"
                 "</spine>"
                 "</package>"    ).arg(title).arg(author);
+=======
+" <?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+  "<package xmlns=\"http://www.idpf.org/2007/opf\" unique-identifier=\"BookID\" version=\"2.0\">"
+                         " <metadata xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:opf=\"http://www.idpf.org/2007/opf\">"
+                                    "<dc:title> 1% </dc:title>"
+                                    "  <dc:creator opf:role=\"aut\"> 2% </dc:creator>"
+                                    "<dc:publisher>http://elkirtasse.ws</dc:publisher>"
+                                    "<dc:language>ar</dc:language>"
+                                   "<dc:identifier id=\"BookID\" opf:scheme=\"UUID\">urn:uuid:52c0ee2aaf4ca262c96145e220f0cf67</dc:identifier>"
+                "</metadata>"
+                "<manifest>"
+                                 "<item id=\"ncx\" href=\"toc.ncx\" media-type=\"application/x-dtbncx+xml\"/>"
+                                  "<item id=\"stylesheet\" href=\"style.css\" media-type=\"text/css\"/>"
+                                 " <item id=\"logo\" href=\"img/logo.png\" media-type=\"image/png\"/>"
+                                  "<item id=\"info\" href=\"xhtml/info.xhtml\" media-type=\"application/xhtml+xml\"/>"
+                                  " <item id=\"P2\" href=\"xhtml/P2.xhtml\" media-type=\"application/xhtml+xml\"/>"
+                    "</manifest>"
+                   "<spine toc=\"ncx\">"
+                                    "<itemref idref=\"info\"/>"
+                                   "<itemref idref=\"P2\"/>"
+                "</spine>"
+ "</package>"    ).arg(title).arg(author);
+>>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
 
 
 }
 
+<<<<<<< HEAD
 void mdbexport::criateEbookToc()
 {
 
 }
+=======
+ void mdbexport::criateEbookToc()
+ {
+
+ }
+>>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e

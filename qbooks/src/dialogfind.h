@@ -53,7 +53,10 @@ public:
     bool MultiFind;
     bool findAnd;
     bool findSawabik;
+<<<<<<< HEAD
     bool noHamza;
+=======
+>>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
     QString bookPath;
 private:
     Ui::Dialogfind *ui;
