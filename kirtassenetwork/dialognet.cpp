@@ -31,6 +31,8 @@
 #include <QXmlStreamReader>
 #include <QtGui>
 #include <QDomDocument>
+#include <QNetworkAccessManager>
+#include <QMessageBox>
 class QSslError;
 class QHttp;
 class QHttpResponseHeader;
@@ -156,28 +158,27 @@ bool Dialognet::downloadFile(QString urlPath,QString distPath)
 {
     //***************
     progressDialog = new QProgressDialog(0);
-isloaded=false;
-    http = new QHttp(this);
+    isloaded=false;
+    QNetworkAccessManager *manager = new QNetworkAccessManager(this);
 
 
-    connect(http, SIGNAL(requestFinished(int,bool)),
-            this, SLOT(httpRequestFinished(int,bool)));
-    connect(http, SIGNAL(dataReadProgress(int,int)),
-            this, SLOT(updateDataReadProgress(int,int)));
-    connect(http, SIGNAL(responseHeaderReceived(QHttpResponseHeader)),
-            this, SLOT(readResponseHeader(QHttpResponseHeader)));
+    connect(manager, &QNetworkAccessManager::finished,
+            this, &Dialognet::httpRequestFinished);
+
 
 #ifndef QT_NO_OPENSSL
-    connect(http, SIGNAL(sslErrors(QList<QSslError>)),
-            this, SLOT(sslErrors(QList<QSslError>)));
+    connect(manager, &QNetworkAccessManager::sslErrors,
+            this, &Dialognet::sslErrors);
 #endif
     connect(progressDialog, SIGNAL(canceled()), this, SLOT(cancelDownload()));
 
     //******************************
-m_urlPath=urlPath;
+    m_urlPath=urlPath;
     QUrl url(m_urlPath);
+    QNetworkRequest request;
+    request.setUrl(url);
     QFileInfo fileInfo(url.path());
-    QString fileName =distPath+ fileInfo.fileName();
+    QString fileName = distPath + fileInfo.fileName();
 
     if (fileName.isEmpty())
         fileName = "index.html";
@@ -202,17 +203,15 @@ m_urlPath=urlPath;
         return false;
     }
 
-    QHttp::ConnectionMode mode = url.scheme().toLower() == "https" ? QHttp::ConnectionModeHttps : QHttp::ConnectionModeHttp;
-    http->setHost(url.host(), mode, url.port() == -1 ? 0 : url.port());
+    reply = manager->get(request);
 
-    if (!url.userName().isEmpty())
-        http->setUser(url.userName(), url.password());
+    connect(reply, &QNetworkReply::downloadProgress,
+            this, &Dialognet::updateDataReadProgress);
 
     httpRequestAborted = false;
     QByteArray path = QUrl::toPercentEncoding(url.path(), "!$&'()*+,;=:@/");
     if (path.isEmpty())
         path = "/";
-    httpGetId = http->get(path, fileHttp);
 
     progressDialog->setWindowTitle(tr("HTTP"));
     progressDialog->setLabelText(tr("Downloading %1.").arg(fileName));
@@ -231,10 +230,8 @@ qApp->processEvents();
 return true;
 
 }
-void Dialognet::httpRequestFinished(int requestId, bool error)
+void Dialognet::httpRequestFinished(QNetworkReply *reply)
 {
-    if (requestId != httpGetId)
-        return;
     if (httpRequestAborted) {
         if (fileHttp) {
             fileHttp->close();
@@ -247,17 +244,14 @@ void Dialognet::httpRequestFinished(int requestId, bool error)
         return;
     }
 
-    if (requestId != httpGetId)
-        return;
-
     progressDialog->hide();
     fileHttp->close();
 
-    if (error) {
+    if (reply->error() != QNetworkReply::NoError) {
         fileHttp->remove();
         QMessageBox::information(0, tr("HTTP"),
                                  tr("Download failed: %1.")
-                                 .arg(http->errorString()));
+                                 .arg(reply->errorString()));
          httpRequestAborted=true;
     } else {
         QString fileName = QFileInfo(QUrl(m_urlPath).path()).fileName();
@@ -271,30 +265,8 @@ void Dialognet::httpRequestFinished(int requestId, bool error)
     delete fileHttp;
     fileHttp = 0;
 }
-void Dialognet::readResponseHeader(const QHttpResponseHeader &responseHeader)
-{
-    switch (responseHeader.statusCode()) {
-    case 200:                   // Ok
-    case 301:                   // Moved Permanently
-    case 302:                   // Found
-    case 303:                   // See Other
-    case 307:                   // Temporary Redirect
-        // these are not error conditions
-        break;
 
-    default:
-
-        QMessageBox::information(0, tr("HTTP"),
-                                 tr("Download failed: %1.")
-                                 .arg(responseHeader.reasonPhrase()));
-
-        progressDialog->hide();
-        http->abort();
-
-    }
-
-}
-void Dialognet::updateDataReadProgress(int bytesRead, int totalBytes)
+void Dialognet::updateDataReadProgress(qint64 bytesRead, qint64 totalBytes)
 {
     if (httpRequestAborted)
         return;
@@ -302,17 +274,18 @@ void Dialognet::updateDataReadProgress(int bytesRead, int totalBytes)
     progressDialog->setMaximum(totalBytes);
     progressDialog->setValue(bytesRead);
 }
+
 void Dialognet::cancelDownload()
 {
      QMessageBox::information(0, tr("HTTP"),tr("Download canceled."));
     httpRequestAborted = true;
-    http->abort();
+    reply->abort();
 
 }
 
 
 #ifndef QT_NO_OPENSSL
-void Dialognet::sslErrors(const QList<QSslError> &errors)
+void Dialognet::sslErrors(QNetworkReply *reply, const QList<QSslError> &errors)
 {
     QString errorString;
     foreach (const QSslError &error, errors) {
@@ -324,7 +297,7 @@ void Dialognet::sslErrors(const QList<QSslError> &errors)
     if (QMessageBox::warning(0, tr("HTTP "),
                              tr("One or more SSL errors has occurred: %1").arg(errorString),
                              QMessageBox::Ignore | QMessageBox::Abort) == QMessageBox::Ignore) {
-        http->ignoreSslErrors();
+        reply->ignoreSslErrors();
     }
 }
 #endif
@@ -376,29 +349,14 @@ bool Dialognet::treeSaveGroupe(QTreeWidget *view)
             items.setAttribute("Name",title);
             QString drbox;
             for(int b=1;b<36;b++){
-<<<<<<< HEAD
-=======
-
->>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
                 if (id==QString::number(b))
                     drbox= "http://dl.dropbox.com/u/7206075/"+id+"/";
                 if (id=="27")
                     drbox= "http://dl.dropbox.com/u/13013844/"+id+"/";
-<<<<<<< HEAD
             }
             for(int c=36;c<100;c++){
                 if (id==QString::number(c))
                     drbox= "http://dl.dropbox.com/u/13013844/"+id+"/";
-=======
-
-            }
-            for(int c=36;c<100;c++){
-
-                if (id==QString::number(c))
-                    drbox= "http://dl.dropbox.com/u/13013844/"+id+"/";
-
-
->>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
             }
 
             for(int r=0;r<itemols->childCount();++r)

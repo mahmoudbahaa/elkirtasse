@@ -32,7 +32,7 @@
 #include <QDialog>
 #include <QTreeWidget>
 #include <QProgressDialog>
-#include <QHttp>
+#include <QNetworkAccessManager>
 #include <QFile>
  #include <QtNetwork>
 
@@ -56,20 +56,15 @@ public:
 QString mypath;
 protected:
     void changeEvent(QEvent *e);
-<<<<<<< HEAD
 public slots:
         bool downloadFile(QString urlPath,QString distPath);
-=======
-
->>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
 private:
 
     Ui::Dialognet *ui;
     void treeChargeGroupe(QTreeWidget *view,int checked);
     QProgressDialog *progressDialog;
-    QHttp *http;
+    QNetworkReply *reply;
     QFile *fileHttp;
-    int httpGetId;
     bool httpRequestAborted;
 QString m_bkUrlPath;
     QString m_urlPath;
@@ -85,18 +80,12 @@ private slots:
     void on_buttonBox_accepted();
     void on_toolButton_clicked();
     void cancelDownload();
-<<<<<<< HEAD
-
-=======
-    bool downloadFile(QString urlPath,QString distPath);
->>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
-    void httpRequestFinished(int requestId, bool error);
-    void updateDataReadProgress(int bytesRead, int totalBytes);
-    void readResponseHeader(const QHttpResponseHeader &responseHeader);
+    void httpRequestFinished(QNetworkReply *reply);
+    void updateDataReadProgress(qint64 bytesRead, qint64 totalBytes);
 bool treeSaveGroupe(QTreeWidget *view);
 
 #ifndef QT_NO_OPENSSL
-    void sslErrors(const QList<QSslError> &errors);
+    void sslErrors(QNetworkReply *reply, const QList<QSslError> &errors);
 #endif
 
 };

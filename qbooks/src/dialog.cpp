@@ -32,7 +32,9 @@
 #include <QtXml>
 #include <QDomDocument>
 #include <QMessageBox>
-#include<QtGui>
+#include <QtGui>
+#include <QFileDialog>
+
 Dialog::Dialog(QWidget *parent)
     : QDialog(parent), ui(new Ui::Dialog)
 {

@@ -30,6 +30,7 @@
 #include "ui_Dialogcdrom.h"
 #include <QFile>
 #include <QFileDialog>
+#include <QStyle>
 
 Dialogcdrom::Dialogcdrom(QWidget *parent) :
     QDialog(parent),

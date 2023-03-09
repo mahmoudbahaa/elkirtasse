@@ -1,6 +1,7 @@
 #include "dialogactions.h"
 #include "ui_dialogactions.h"
 #include <QDebug>
+#include <QAction>
 
 DialogActions::DialogActions(QWidget *parent) :
     QDialog(parent),

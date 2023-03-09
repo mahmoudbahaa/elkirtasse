@@ -6,4 +6,6 @@
 elkirtasse.pro.user
 *build*
 *debug*
+*release*
+*plugins*
 *ui_*

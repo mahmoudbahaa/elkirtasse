@@ -4,7 +4,10 @@ INCLUDEPATH += ../qbooks
 TARGET = $$qtLibraryTarget(kirtasserowat)
 DESTDIR = ../usr/share/elkirtasse/plugins
 HEADERS += rowat.h
-   QT += xml
+QT += \
+    xml \
+    widgets
+
 SOURCES += rowat.cpp \
     
 # install

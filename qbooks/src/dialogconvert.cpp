@@ -30,6 +30,7 @@
 #include  "ui_dialogconvert.h"
 #include <QMessageBox>
 #include <QtGui>
+#include <QFileDialog>
 
 dialogconvert::dialogconvert(QWidget *parent)
     : QDialog(parent), ui(new Ui::dialogconvert)

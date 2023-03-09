@@ -29,6 +29,10 @@
 #include "about.h"
 #include  "ui_about.h"
 #include <QtGui>
+#include <QGraphicsWidget>
+#include <QGraphicsPixmapItem>
+#include <QGraphicsDropShadowEffect>
+
 About::About(QWidget *parent)
     : QDialog(parent), ui(new Ui::About)
 {

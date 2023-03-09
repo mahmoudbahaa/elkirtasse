@@ -31,6 +31,8 @@
 #include <QObject>
 #include <QDomDocument>
 #include <QtGui>
+#include <QTreeWidget>
+
 class databook : public QObject
 {
     Q_OBJECT
@@ -65,25 +67,16 @@ public slots:
 void insertPage(bool after);
 void removeCurPage();
 void treeOrganizFahrass(QTreeWidget *view,QString Bname);
-<<<<<<< HEAD
 
 private slots:
      QString noTechkile(QString text) const;
      QTreeWidgetItem* getItem(QTreeWidgetItem *item);
-=======
-private slots:
-     QString noTechkile(QString text) const;
->>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
   bool chargeList();
    int getPositionID(QString id);
 private:
   QString m_currentBookName[NumRows];
     QDomDocument m_docBooK[NumRows];
-<<<<<<< HEAD
 //QList<QDomDocument *> *listBook;
-=======
-
->>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
 QList<QString> listId;
 
 };

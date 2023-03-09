@@ -37,10 +37,6 @@ messages::messages()
     m_pathUser=QDir::homePath()+"/.kirtasse";
     // m_pathCostum=QDir::homePath()+"/.kirtasse/books";
     recentLoad();
-<<<<<<< HEAD
-=======
-
->>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
 }
 messages::~messages()
 {
@@ -157,10 +153,7 @@ void messages::treeChargeGroupe(QTreeWidget *view,int checked,bool asCombobox)
     xml.setDevice(&file);
     while (!xml.atEnd()) {
         xml.readNext();
-<<<<<<< HEAD
         QString drbox;
-=======
->>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
         if (xml.name() == "root"){ //niveau 1
             QString textRoot=xml.attributes().value("Name").toString();
             if(!textRoot.isNull()){
@@ -180,10 +173,6 @@ void messages::treeChargeGroupe(QTreeWidget *view,int checked,bool asCombobox)
                 if (checked==1){
                     itemGroup->setCheckState(0,Qt::Unchecked);
                 }
-<<<<<<< HEAD
-
-=======
->>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
             }
 
         }else if (xml.name() == "bk"){ //niveau 3
@@ -193,10 +182,7 @@ void messages::treeChargeGroupe(QTreeWidget *view,int checked,bool asCombobox)
             QString AutBook= xml.attributes().value("aut").toString();
             QString BetakaBook= xml.attributes().value("betaka").toString();
             QString curanBook= xml.attributes().value("tfsr").toString();
-<<<<<<< HEAD
 
-=======
->>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
             if(!textBook.isNull()){
                 itemBook= new QTreeWidgetItem( itemGroup);
                 itemBook->setText(0,textBook);
@@ -205,10 +191,7 @@ void messages::treeChargeGroupe(QTreeWidget *view,int checked,bool asCombobox)
                 itemBook->setData(1,1,idBook);
                 itemBook->setIcon(0,icon);
                 itemBook->setData(2,1,curanBook);
-<<<<<<< HEAD
 
-=======
->>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
                 if (checked==1){
                     itemBook->setCheckState(0,Qt::Unchecked);
                 }
@@ -388,27 +371,16 @@ void messages::treeChargeFahrass(QTreeWidget *view,QString Bname)
     file.open(QIODevice::ReadOnly);
     view->clear();
     int d=1;
-<<<<<<< HEAD
  //   enum  { NumIndex = 10};
     QTreeWidgetItem *item;
-
-=======
-    QTreeWidgetItem *item[d];
->>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
     QString tit;
     QString id;
     QString lvl;
 
-<<<<<<< HEAD
     item= new QTreeWidgetItem(view);
     item->setText(0,trUtf8("بسم الله الرحمن الرحيم") );
     item->setData(1,1,1);
 
-=======
-    item[1]= new QTreeWidgetItem(view);
-    item[1]->setText(0,trUtf8("بسم الله الرحمن الرحيم") );
-    item[1]->setData(1,1,1);
->>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
     QXmlStreamReader xml;
     xml.setDevice(&file);
     if (xml.readNextStartElement()) {
@@ -438,7 +410,6 @@ void messages::treeChargeFahrass(QTreeWidget *view,QString Bname)
                     bool ok;
                     d=lvl.toInt(&ok,0);
 
-<<<<<<< HEAD
                  if (ok==true){
                         if (d<1){d=1;}
                         if (d==1){
@@ -470,29 +441,7 @@ void messages::treeChargeFahrass(QTreeWidget *view,QString Bname)
                         item->setText(0,tit );
                         item->setText(1,id );
                         item->setData(1,1,id);
-=======
-                    if (ok==true){
-                        if (d<1){d=1;}
-                        if (d==1){
-                            item[1]= new QTreeWidgetItem(view);
-                            item[1]->setText(0,tit );
-                            item[1]->setText(1,id );
-                            item[1]->setData(1,1,id);
-                        }else{
-                            if (item[d-1]){
-                                item[d]= new QTreeWidgetItem( item[d-1]);
-                                item[d]->setText(0,tit );
-                                item[d]->setText(1,id );
-                                item[d]->setData(1,1,id);
-                            }
 
-                        }
-                    }else{
-                        item[1]= new QTreeWidgetItem(view);
-                        item[1]->setText(0,tit );
-                        item[1]->setText(1,id );
-                        item[1]->setData(1,1,id);
->>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
                     }
                 }
             }
@@ -504,7 +453,6 @@ void messages::treeChargeFahrass(QTreeWidget *view,QString Bname)
     //listId.clear();
     xml.clear();
 }
-<<<<<<< HEAD
 
 QTreeWidgetItem* messages::getItem(QTreeWidgetItem *item)
 {
@@ -516,9 +464,6 @@ QTreeWidgetItem* messages::getItem(QTreeWidgetItem *item)
     return item->child(index);
 }
 
-
-=======
->>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
 //حذف الكتاب المحدد
 bool messages::treeMenuRemoveBook(QString BKname,bool removall)
 {

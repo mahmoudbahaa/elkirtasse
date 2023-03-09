@@ -33,8 +33,10 @@
 #include <QTreeWidget>
 #include <QWidget>
 #include <QTimer>
- #include <QLabel>
+#include <QLabel>
 #include <QIcon>
+#include <QComboBox>
+#include <QAction>
 
 class QComboBox;
 class QProgressBar;
@@ -65,12 +67,9 @@ public slots:
     void treeChargeSoura(QTreeWidget *view);
     void treeChargeJozaa(QTreeWidget *view);
     void treeChargeFahrass(QTreeWidget *view,QString Bname);
-<<<<<<< HEAD
-  QTreeWidgetItem *getItem(QTreeWidgetItem *item);
-=======
->>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
+    QTreeWidgetItem *getItem(QTreeWidgetItem *item);
     void treeChargeGroupe(QTreeWidget *view,int checked,bool asCombobox);
-     void treeUpdateGroupe(QTreeWidget *view,bool remove);
+    void treeUpdateGroupe(QTreeWidget *view,bool remove);
     bool treeMenuRemoveBook(QString BKname,bool removall);
     bool treeSaveGroupe(QTreeWidget *view);
     void recentLoad();
@@ -101,14 +100,11 @@ public slots:
     bool loadBookInfo(QString bookname);
     QString geniratNewBookName(QString groupParent);
     //**********************load save result searsh
-bool loadTarGz(QString path);
-void removeTempDirs(QString dirName);
+    bool loadTarGz(QString path);
+    void removeTempDirs(QString dirName);
 private slots:
 
-bool removeTempFiles(QString tempDir);
-
-
-
+    bool removeTempFiles(QString tempDir);
     bool writeInDoc(QString tit,QString data,QString lvl);
 //*******************************
 

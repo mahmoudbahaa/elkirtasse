@@ -38,6 +38,8 @@ class cdromShamila : public QObject, ShamilaInterface
 {
     Q_OBJECT
     Q_INTERFACES(ShamilaInterface)
+    Q_PLUGIN_METADATA(IID "org.qt-project.Qt.QImageIOHandlerFactoryInterface" FILE "cdromShamila.json")
+
 public:
 
 private:

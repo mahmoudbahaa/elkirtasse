@@ -1,7 +1,10 @@
 # -------------------------------------------------
 # Project created by QtCreator 2009-09-04T23:38:07
 # -------------------------------------------------
-QT += xml
+QT += \
+    xml \
+    widgets \
+    printsupport
 TEMPLATE = app
 CONFIG += qt \
     release
@@ -9,8 +12,6 @@ OBJECTS_DIR = build
 MOC_DIR = build
 UI_DIR = build
 INCLUDEPATH += build
-<<<<<<< HEAD
-
 
 win32 {
     QT += sql
@@ -30,8 +31,6 @@ else {
 
 }
 
-=======
->>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
 SOURCES += src/main.cpp \
     src/mainwindow.cpp \
     src/dialogupdat.cpp \
@@ -50,13 +49,9 @@ SOURCES += src/main.cpp \
     src/findbook.cpp \
     src/dialogconfigbooks.cpp \
     src/dialogimportdvd.cpp\
-<<<<<<< HEAD
     src/classepub.cpp \
     src/toolrubon.cpp \
     src/dialogactions.cpp
-=======
-src/classepub.cpp
->>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
 
 HEADERS += src/mainwindow.h \
     src/dialogupdat.h \
@@ -77,27 +72,26 @@ HEADERS += src/mainwindow.h \
     src/booksInterface.h \
     src/dialogconfigbooks.h \
     src/dialogimportdvd.h\
-<<<<<<< HEAD
     src/classepub.h \
     src/toolrubon.h \
     src/dialogactions.h
-=======
-src/classepub.h
->>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
-FORMS += ui/mainwindow.ui \
-    ui/dialogupdat.ui \
-    ui/dialogfind.ui \
-    ui/dialogfavo.ui \
-    ui/dialogconvert.ui \
+
+FORMS += ui/about.ui \
     ui/dialog.ui \
-    ui/dialogoption.ui \
-    ui/about.ui \
-    ui/print.ui \
-    ui/dialoggoto.ui \
+    ui/dialogactions.ui \
     ui/dialogconfigbooks.ui \
-<<<<<<< HEAD
+    ui/dialogconvert.ui \
+    ui/dialogfavo.ui \
+    ui/dialogfind.ui \
+    ui/dialoggoto.ui \
     ui/dialogimportdvd.ui \
-    ui/dialogactions.ui
+    ui/dialogmdb.ui \
+    ui/dialogoption.ui \
+    ui/dialogupdat.ui \
+    ui/mainwindow.ui \
+    ui/mdbexport.ui \
+    ui/print.ui
+
 RESOURCES += ui/images.qrc
 
 
@@ -109,42 +103,6 @@ RESOURCES += ui/images.qrc
     target.path = /usr/bin/
     INSTALLS += target
 #  INSTALLS += data \
-
-
-
-
-
-
-
-=======
-    ui/dialogimportdvd.ui
-RESOURCES += ui/images.qrc
-
-win32 { 
-    QT += sql
-    SOURCES += src/dialogmdb.cpp
-    HEADERS += src/dialogmdb.h
-    FORMS += ui/dialogmdb.ui
-    RC_FILE = src/myapp.rc
-    debug:DESTDIR = ../debug/
-    release:DESTDIR = ../release/
-    TARGET = ../elkirtasse
-}
-else { 
-    SOURCES += src/mdbexport.cpp
-    HEADERS += src/mdbexport.h
-    FORMS += ui/mdbexport.ui
-    TARGET = ../usr/bin/elkirtasse
-   # install
-    MKDIR = mkdir -p /usr/share/elkirtasse
-   
-
-    target.path = /usr/bin/
-    INSTALLS += target
-
-       
-}
->>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
 
 
 

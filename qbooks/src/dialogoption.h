@@ -65,11 +65,7 @@ private:
 
 private slots:
     void on_toolButton_10_clicked();
-<<<<<<< HEAD
 //    void on_comboBoxCadre_currentIndexChanged(QString img );
-=======
-    void on_comboBoxCadre_currentIndexChanged(QString img );
->>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
     void on_toolButton_3_clicked();
     void on_toolButton_2_clicked();
     void on_toolButton_costmPath_clicked();
@@ -81,15 +77,9 @@ private slots:
     void on_pushButton_prefercolor_clicked();
     void on_pushButton_titlecolor_clicked();
     void on_pushButton_fontcolor_clicked();
-<<<<<<< HEAD
-
-
     void on_checkBoxStandardTool_clicked();
-
     void on_toolButtonStyleCostum_clicked();
 
-=======
->>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
 public slots:
     //-------------set------------
 
@@ -113,7 +103,6 @@ public slots:
     void setIconsThemes(bool arg);
     void setRecentNbr(int arg);
      void setLng(int arg);
-<<<<<<< HEAD
      void setStandardTool(bool st);
  void setTxtUnderIcon(bool istxt);
  bool getTxtUnderIcon();
@@ -123,8 +112,7 @@ public slots:
  bool getStyleType();
  void setStyleSheetName(QString arg);
  QString getStyleSheetName();
-=======
->>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
+
     //---------get----------
     QFont  getFontName();
     QString getFontTitleName();
@@ -141,11 +129,7 @@ public slots:
     QString getPathCostm();
     QString getCadreFolder();
     bool getWebCadre();
-<<<<<<< HEAD
   bool getsetStandardTool();
-=======
-
->>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
     bool getIconsThemes();
     int getRecentNbr();
 

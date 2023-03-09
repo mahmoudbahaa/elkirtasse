@@ -28,12 +28,9 @@
 ****************************************************************************/
 #include "cdromshamila.h"
 #include "dialogcdrom.h"
-<<<<<<< HEAD
 #include "ui_Dialogcdrom.h"
-=======
-#include "ui_dialog.h"
->>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
 #include <QMessageBox>
+#include <QProgressDialog>
 #ifdef   Q_WS_WIN
 #include <QtSql>
 #endif
@@ -891,4 +888,4 @@ bool cdromShamila::saveBookInfo(QString bookname,QString title,QString author,QS
     return true;
 }
 //! [1]
-Q_EXPORT_PLUGIN2(kirtassecdrom, cdromShamila)
+//Q_EXPORT_PLUGIN2(kirtassecdrom, cdromShamila)

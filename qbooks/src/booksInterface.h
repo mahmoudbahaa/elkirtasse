@@ -30,6 +30,7 @@
 #define BOOKSINTERFACE_H
 #include <QObject>
 #include <QtGui>
+#include <QTreeWidget>
 
 //! [0]
 class NetInterface
@@ -39,11 +40,7 @@ public:
     virtual ~NetInterface() {}
 
 virtual    QString execPlugin() = 0;
-<<<<<<< HEAD
 virtual     QString loadFile(QString urlPath)=0;
-=======
-
->>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
 
 };
 //! [0]

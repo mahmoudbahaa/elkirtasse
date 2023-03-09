@@ -32,6 +32,8 @@
 #include "databook.h"
 #include <QTreeWidget>
 #include <QDomDocument>
+#include <QTextEdit>
+#include <QAbstractButton>
 
 namespace Ui
 {
@@ -59,16 +61,13 @@ public:
     void setBookFontPrefertColor(QString name);
     void setBookCurentPath(QString name);
      void setBookFontTitle(QString name);
-<<<<<<< HEAD
      void setpathApp(QString path);
-=======
->>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
 private:
     Ui::Print *ui;
     QDomDocument m_docBooK;
     int rowsCount;
     QString m_fileName;
-    QTextEdit* m_textEdit;
+    QTextEdit *m_textEdit;
     int mCurPart;
  int m_n;
  QString m_bookTitle;
@@ -81,10 +80,7 @@ QString    m_bookBetaka;
  QString m_WebFontPrefertColor;
  QString m_curentPath;
  QString m_WebFontTitle;
-<<<<<<< HEAD
  QString m_pathApp;
-=======
->>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
 private slots:
 
     void on_toolButton_clicked();
@@ -93,7 +89,6 @@ private slots:
 
     bool fileSave();
     void creatDocument();
-<<<<<<< HEAD
     QString convertTextBetaka(QString txt);
     QString convertText(QString txt,QString part,QString page,int id);
     QString convertEpubStyle(QString txt,QString part,QString page, int id);
@@ -102,15 +97,6 @@ private slots:
  void creatHtmlFahrassa(bool isQml );
 QString getChildHtml(QTreeWidgetItem *item);
 bool creatHtmlPages(bool isQml);
-=======
-    QString convertText(QString txt,QString part,QString page,int id);
-    QString convertEpubStyle(QString txt,QString part,QString page, int id);
-  //html
- void    creatHtmlDocument();
- void creatHtmlFahrassa();
-QString getChildHtml(QTreeWidgetItem *item);
-bool creatHtmlPages();
->>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
     //  epub
 void creatEpubDocument();
 bool   creatEpubDIrectory();
@@ -121,12 +107,9 @@ bool creatEpubInfo();
 bool creatEpubPages();
 bool   zipUpubDocument();
 void on_comboBox_currentIndexChanged(int index);
-<<<<<<< HEAD
 void removeTempDirs(QString dirName);
 bool removeTempFiles(QString tempDir);
 
-=======
->>>>>>> 782789df57a2a7d2f3b28c5cde42eee89c50d76e
 };
 
 #endif // PRINT_H
