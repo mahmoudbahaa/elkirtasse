@@ -1,7 +1,8 @@
 /****************************************************************************
 //   elkirtasse Copyright (C) 2010 yahia abouzakaria <yahiaui@gmail.com>
 //
-//      This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
+//      This program comes with ABSOLUTELY NO WARRANTY; for details type `show
+w'.
 //      This is free software, and you are welcome to redistribute it
 //      under certain conditions; type `show c' for details.
 //
@@ -26,18 +27,18 @@
 ** $elkirtasse_END_LICENSE$
 **
 ****************************************************************************/
-#include <QApplication>
 #include "mainwindow.h"
+#include <QApplication>
+#include <QFontDatabase>
+#include <QLocale>
 #include <QSplashScreen>
 #include <QTranslator>
-#include <QLocale>
-#include <QFontDatabase>
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
     QApplication a(argc, argv);
     a.setApplicationName("elkirtasse");
     a.setApplicationVersion("3.6.5");
-qDebug()<<a.libraryPaths();
+    qDebug() << a.libraryPaths();
     QIcon icon;
     QPixmap pixmap(":/images/image/titlekirtasse.png");
     QSplashScreen splash(pixmap);
@@ -45,75 +46,78 @@ qDebug()<<a.libraryPaths();
     splash.show();
     a.processEvents();
     QDir dir;
-    QString h=dir.homePath();
+    QString h = dir.homePath();
 
-    if (!dir.exists(h+"/.kirtasse")) //التاكد من وجود مجلد المكتبة
+    if (!dir.exists(h + "/.kirtasse")) // التاكد من وجود مجلد المكتبة
     {
-        dir.mkdir( h+"/.kirtasse");
+        dir.mkdir(h + "/.kirtasse");
     }
-    if (!dir.exists(h+"/.kirtasse/data")) //التاكد من وجود مجلد البياات
+    if (!dir.exists(h + "/.kirtasse/data")) // التاكد من وجود مجلد البياات
     {
-        dir.mkdir( h+"/.kirtasse/data");
+        dir.mkdir(h + "/.kirtasse/data");
     }
-    if (!dir.exists(h+"/.kirtasse/books")) //التاكد من وجود مجلد الكتاب
+    if (!dir.exists(h + "/.kirtasse/books")) // التاكد من وجود مجلد الكتاب
     {
-        dir.mkdir( h+"/.kirtasse/books");
+        dir.mkdir(h + "/.kirtasse/books");
     }
-    if (!dir.exists(h+"/.kirtasse/download")) //التاكد من وجود مجلد مؤقت
+    if (!dir.exists(h + "/.kirtasse/download")) // التاكد من وجود مجلد مؤقت
     {
-        dir.mkdir( h+"/.kirtasse/download");
-
+        dir.mkdir(h + "/.kirtasse/download");
     }
-    if (!dir.exists(h+"/.fonts")) //التاكد من وجود مجلد مؤقت
+    if (!dir.exists(h + "/.fonts")) // التاكد من وجود مجلد مؤقت
     {
-        dir.mkdir( h+"/.fonts");
+        dir.mkdir(h + "/.fonts");
     }
     QFile file;
-    QDir appDir(QCoreApplication::applicationDirPath() );
+    QDir appDir(QCoreApplication::applicationDirPath());
     appDir.cdUp();
-    QString pathApp=  appDir.absolutePath()+"/share/elkirtasse";
-    if (!file.exists(h+"/.kirtasse/data/group.xml")){
-        file.copy(pathApp+"/data/group.xml",h +"/.kirtasse/data/group.xml");
+    QString pathApp = appDir.absolutePath() + "/share/elkirtasse";
+    if (!file.exists(h + "/.kirtasse/data/group.xml")) {
+        file.copy(pathApp + "/data/group.xml", h + "/.kirtasse/data/group.xml");
     }
-    if (!file.exists(h+"/.kirtasse/data/bookslist.xml")){
-        file.copy(pathApp+"/data/bookslist.xml",h +"/.kirtasse/data/bookslist.xml");
+    if (!file.exists(h + "/.kirtasse/data/bookslist.xml")) {
+        file.copy(pathApp + "/data/bookslist.xml",
+            h + "/.kirtasse/data/bookslist.xml");
     }
-    if (!file.exists(h+"/.fonts/trado.ttf")){
-        file.copy(pathApp+"/data/font/trado.ttf",h +"/.fonts/trado.ttf");
+    if (!file.exists(h + "/.fonts/trado.ttf")) {
+        file.copy(pathApp + "/data/font/trado.ttf", h + "/.fonts/trado.ttf");
     }
 
+    //    QFontDatabase::addApplicationFont(pathApp+"/data/font/Jameel-Noori.ttf");
+    //     QFontDatabase::addApplicationFont(pathApp+"/data/font/arial.ttf");
+    //     QFontDatabase::addApplicationFont(pathApp+"/data/font/SimplifiedNaskh.ttf");
+    // QLocale::setDefault(QLocale(QLocale::Arabic, QLocale::Egypt));
+    QString translatorFileName = QLatin1String("qt_");
+    translatorFileName += QLocale::system().name();
+    QTranslator* translatorsys = new QTranslator(&a);
+    if (translatorsys->load(
+            translatorFileName,
+            QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
+        a.installTranslator(translatorsys);
 
-//    QFontDatabase::addApplicationFont(pathApp+"/data/font/Jameel-Noori.ttf");
-//     QFontDatabase::addApplicationFont(pathApp+"/data/font/arial.ttf");
-//     QFontDatabase::addApplicationFont(pathApp+"/data/font/SimplifiedNaskh.ttf");
-    //QLocale::setDefault(QLocale(QLocale::Arabic, QLocale::Egypt));
-        QString translatorFileName = QLatin1String("qt_");
-        translatorFileName += QLocale::system().name();
-        QTranslator *translatorsys = new QTranslator(&a);
-        if (translatorsys->load(translatorFileName, QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
-            a.installTranslator(translatorsys);
-
-    QSettings settings(h+"/.kirtasse/data/setting.ini",QSettings::IniFormat);
+    QSettings settings(h + "/.kirtasse/data/setting.ini", QSettings::IniFormat);
     settings.beginGroup("MainWindow");
-    int lng=settings.value("lng",0).toInt();
+    int lng = settings.value("lng", 0).toInt();
 
     settings.endGroup();
     QString locale = QLocale::system().name();
-  // QMessageBox::information(0,"",locale.section("_",0,0));
+    // QMessageBox::information(0,"",locale.section("_",0,0));
     QTranslator translator;
-    if(lng==0){
-      translator.load(QString(pathApp+"/translat/kirtasse_"+locale.section("_",0,0)) );
-    }else  if(lng==2){
-        translator.load(QString(pathApp+"/translat/kirtasse_pk") );
-    }else if(lng==3){
-        translator.load(QString(pathApp+"/translat/kirtasse_en") );
-    }else if(lng==4){
-        translator.load(QString(pathApp+"/translat/kirtasse_fr") );
+    if (lng == 0) {
+        translator.load(
+            QString(pathApp + "/translat/kirtasse_" + locale.section("_", 0, 0)));
+    } else if (lng == 2) {
+        translator.load(QString(pathApp + "/translat/kirtasse_pk"));
+    } else if (lng == 3) {
+        translator.load(QString(pathApp + "/translat/kirtasse_en"));
+    } else if (lng == 4) {
+        translator.load(QString(pathApp + "/translat/kirtasse_fr"));
     }
 
     a.installTranslator(&translator);
 
-    icon.addPixmap(QPixmap(QString::fromUtf8(":/images/image/groupbook.png")), QIcon::Normal, QIcon::Off);
+    icon.addPixmap(QPixmap(QString::fromUtf8(":/images/image/groupbook.png")),
+        QIcon::Normal, QIcon::Off);
     a.setWindowIcon(icon);
     MainWindow w;
     w.show();

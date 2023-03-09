@@ -1,7 +1,8 @@
 /****************************************************************************
 //   elkirtasse Copyright (C) 2010 yahia abouzakaria <yahiaui@gmail.com>
 //
-//      This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
+//      This program comes with ABSOLUTELY NO WARRANTY; for details type `show
+w'.
 //      This is free software, and you are welcome to redistribute it
 //      under certain conditions; type `show c' for details.
 //
@@ -27,55 +28,55 @@
 **
 ****************************************************************************/
 #include "about.h"
-#include  "ui_about.h"
-#include <QtGui>
-#include <QGraphicsWidget>
-#include <QGraphicsPixmapItem>
+#include "ui_about.h"
 #include <QGraphicsDropShadowEffect>
+#include <QGraphicsPixmapItem>
+#include <QGraphicsWidget>
+#include <QtGui>
 
-About::About(QWidget *parent)
-    : QDialog(parent), ui(new Ui::About)
+About::About(QWidget* parent)
+    : QDialog(parent)
+    , ui(new Ui::About)
 {
     ui->setupUi(this);
-    QGraphicsWidget *  panelParent = new QGraphicsWidget;
-    QGraphicsPixmapItem* lab=new QGraphicsPixmapItem(panelParent);
-   // QGraphicsPixmapItem* labreflet=new QGraphicsPixmapItem(panelParent);
-    m_scene=new QGraphicsScene();
-    //setText(trUtf8("القرطاس"),m_scene);
+    QGraphicsWidget* panelParent = new QGraphicsWidget;
+    QGraphicsPixmapItem* lab = new QGraphicsPixmapItem(panelParent);
+    // QGraphicsPixmapItem* labreflet=new QGraphicsPixmapItem(panelParent);
+    m_scene = new QGraphicsScene();
+    // setText(trUtf8("القرطاس"),m_scene);
     lab->setPixmap(QPixmap(QString::fromUtf8(":/images/image/groupbook.png")));
-   // labreflet->setPixmap(QPixmap(QString::fromUtf8(":/images/image/groupbook2.png")));
+    // labreflet->setPixmap(QPixmap(QString::fromUtf8(":/images/image/groupbook2.png")));
 #if QT_VERSION >= 0x040600
 
-    QGraphicsDropShadowEffect *efet=new QGraphicsDropShadowEffect;
-    efet->setOffset(4,3);
+    QGraphicsDropShadowEffect* efet = new QGraphicsDropShadowEffect;
+    efet->setOffset(4, 3);
     efet->setColor(QColor(63, 63, 63, 80));
     lab->setGraphicsEffect(efet);
 
-//    QLinearGradient alphaGradient(0, 0,0,128);
-//    //  alphaGradient.setColorAt(0.0, Qt::transparent);
- //   alphaGradient.setColorAt(0.0, QColor(63, 63, 63, 30));
-//    alphaGradient.setColorAt(0.2, QColor(63, 63, 63, 40));
-//    alphaGradient.setColorAt(1.0, Qt::transparent);
-//    QGraphicsOpacityEffect *effect = new QGraphicsOpacityEffect;
-//    effect->setOpacityMask(alphaGradient);
-//    labreflet->setGraphicsEffect(effect);
+    //    QLinearGradient alphaGradient(0, 0,0,128);
+    //    //  alphaGradient.setColorAt(0.0, Qt::transparent);
+    //   alphaGradient.setColorAt(0.0, QColor(63, 63, 63, 30));
+    //    alphaGradient.setColorAt(0.2, QColor(63, 63, 63, 40));
+    //    alphaGradient.setColorAt(1.0, Qt::transparent);
+    //    QGraphicsOpacityEffect *effect = new QGraphicsOpacityEffect;
+    //    effect->setOpacityMask(alphaGradient);
+    //    labreflet->setGraphicsEffect(effect);
 
-    //labreflet->setTransform(QTransform().rotate(180).translate(-120, -120));
+    // labreflet->setTransform(QTransform().rotate(180).translate(-120, -120));
 
-    QPropertyAnimation * anim = new QPropertyAnimation(panelParent, "pos");
+    QPropertyAnimation* anim = new QPropertyAnimation(panelParent, "pos");
     //  lab->setAlignment(Qt::AlignRight);
     anim->setEasingCurve(QEasingCurve::CosineCurve);
-    //startAnimation();
+    // startAnimation();
     anim->setStartValue(QPointF(0, 0));
     anim->setEndValue(QPointF(0, ui->graphicsView->height()));
     anim->setDuration(1000);
     anim->setLoopCount(-1); // forever
     anim->start();
 
-
- #endif
-    lab->setPos(0,0);
-    //labreflet->setPos(0,128);
+#endif
+    lab->setPos(0, 0);
+    // labreflet->setPos(0,128);
 
     m_scene->addItem(panelParent);
 
@@ -86,6 +87,5 @@ About::About(QWidget *parent)
 About::~About()
 {
 
-//m_anim->stop();
+    // m_anim->stop();
 }
-

@@ -1,7 +1,8 @@
 /****************************************************************************
 //   elkirtasse Copyright (C) 2010 yahia abouzakaria <yahiaui@gmail.com>
 //
-//      This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
+//      This program comes with ABSOLUTELY NO WARRANTY; for details type `show
+w'.
 //      This is free software, and you are welcome to redistribute it
 //      under certain conditions; type `show c' for details.
 //
@@ -30,64 +31,64 @@
 #define DIALOGNET_H
 
 #include <QDialog>
-#include <QTreeWidget>
-#include <QProgressDialog>
-#include <QNetworkAccessManager>
 #include <QFile>
- #include <QtNetwork>
-
-
+#include <QNetworkAccessManager>
+#include <QProgressDialog>
+#include <QTreeWidget>
+#include <QtNetwork>
 
 class QSslError;
 class QHttp;
 class QHttpResponseHeader;
 namespace Ui {
-    class Dialognet;
+class Dialognet;
 
 }
 
 class Dialognet : public QDialog {
     Q_OBJECT
-  // Q_INTERFACES(BooksInterface)
+    // Q_INTERFACES(BooksInterface)
 
 public:
-    Dialognet(QWidget *parent = 0);
+    Dialognet(QWidget* parent = 0);
     ~Dialognet();
-QString mypath;
-protected:
-    void changeEvent(QEvent *e);
-public slots:
-        bool downloadFile(QString urlPath,QString distPath);
-private:
+    QString mypath;
 
-    Ui::Dialognet *ui;
-    void treeChargeGroupe(QTreeWidget *view,int checked);
-    QProgressDialog *progressDialog;
-    QNetworkReply *reply;
-    QFile *fileHttp;
+protected:
+    void changeEvent(QEvent* e);
+public slots:
+    bool downloadFile(QString urlPath, QString distPath);
+
+private:
+    Ui::Dialognet* ui;
+    void treeChargeGroupe(QTreeWidget* view, int checked);
+    QProgressDialog* progressDialog;
+    QNetworkReply* reply;
+    QFile* fileHttp;
     bool httpRequestAborted;
-QString m_bkUrlPath;
+    QString m_bkUrlPath;
     QString m_urlPath;
     bool isloaded;
 private slots:
 
-    void on_lineEdit_2_textChanged(QString );
-    void searchInTreeview(QTreeWidget *view,QString searchString,int colum);
-    bool searchTreeForString( const QString &searchString, QTreeWidgetItem* parent,bool itemtop,int  topindex,QTreeWidget *view,int colum);
-    bool showAllItems( QTreeWidgetItem* parent,QTreeWidget *view );
+    void on_lineEdit_2_textChanged(QString);
+    void searchInTreeview(QTreeWidget* view, QString searchString, int colum);
+    bool searchTreeForString(const QString& searchString, QTreeWidgetItem* parent,
+        bool itemtop, int topindex, QTreeWidget* view,
+        int colum);
+    bool showAllItems(QTreeWidgetItem* parent, QTreeWidget* view);
     void on_treeWidget_itemSelectionChanged();
-   // void on_pushButton_clicked();
+    // void on_pushButton_clicked();
     void on_buttonBox_accepted();
     void on_toolButton_clicked();
     void cancelDownload();
-    void httpRequestFinished(QNetworkReply *reply);
+    void httpRequestFinished(QNetworkReply* reply);
     void updateDataReadProgress(qint64 bytesRead, qint64 totalBytes);
-bool treeSaveGroupe(QTreeWidget *view);
+    bool treeSaveGroupe(QTreeWidget* view);
 
 #ifndef QT_NO_OPENSSL
-    void sslErrors(QNetworkReply *reply, const QList<QSslError> &errors);
+    void sslErrors(QNetworkReply* reply, const QList<QSslError>& errors);
 #endif
-
 };
 
 #endif // DIALOGNET_H

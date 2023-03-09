@@ -1,7 +1,8 @@
 /****************************************************************************
 //   elkirtasse Copyright (C) 2010 yahia abouzakaria <yahiaui@gmail.com>
 //
-//      This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
+//      This program comes with ABSOLUTELY NO WARRANTY; for details type `show
+w'.
 //      This is free software, and you are welcome to redistribute it
 //      under certain conditions; type `show c' for details.
 //
@@ -28,9 +29,9 @@
 ****************************************************************************/
 #ifndef FINDBOOK_H
 #define FINDBOOK_H
+#include <QDomDocument>
 #include <QObject>
 #include <QTreeWidget>
-#include <QDomDocument>
 #include <QXmlStreamReader>
 
 class QProgressBar;
@@ -39,29 +40,25 @@ class QLabel;
 class QTextDocument;
 class QPushButton;
 
-class findbook : public QObject
-{
+class findbook : public QObject {
     Q_OBJECT
 
 public:
-
-
     findbook();
     ~findbook();
 
-
-    QTreeWidget *treeView;
-    QLabel *labelProgress;
-    QLabel *label_progressImg;
-    QProgressBar *progressBar1;
-    QAction *buttonStop;
-    QString  findText;
-    QString  findTitle;
+    QTreeWidget* treeView;
+    QLabel* labelProgress;
+    QLabel* label_progressImg;
+    QProgressBar* progressBar1;
+    QAction* buttonStop;
+    QString findText;
+    QString findTitle;
     QString findAuthor;
     QString findName;
-bool isTefsir;
-    //مسار البرنامج
- bool isNassToFind;
+    bool isTefsir;
+    // مسار البرنامج
+    bool isNassToFind;
     QString pathCostum;
     int resultCount;
     int getFind;
@@ -73,6 +70,7 @@ bool isTefsir;
     bool findAnd;
     bool findSawabik;
     bool noHamza;
+
 private:
     int m_listbkfind;
     QList<QString> m_listStrToFind;
@@ -83,7 +81,7 @@ private:
 
     QXmlStreamReader xml;
 
-    QDomDocument m_docBKfindlist;                   //وثيقة قائمة الكتب للبحث
+    QDomDocument m_docBKfindlist; // وثيقة قائمة الكتب للبحث
 
     QString str;
     QString id;
@@ -92,27 +90,28 @@ private:
 public slots:
     void findOneBook(QString bookpath);
     void findInAllBook(bool inbooks);
-void findInAllFahariss(QString bookpath);
+    void findInAllFahariss(QString bookpath);
 
-void findFahariss(QTreeWidget *view,QString bookpath,QRegExp str1,QRegExp str2,int rowcount);
-//*****************************
-    bool searchInDoc(QTextDocument *document,QString searchString,QColor color);
-    void searchInTreeview(QTreeWidget *view,QString searchString,int colum);
+    void findFahariss(QTreeWidget* view, QString bookpath, QRegExp str1,
+        QRegExp str2, int rowcount);
+    //*****************************
+    bool searchInDoc(QTextDocument* document, QString searchString, QColor color);
+    void searchInTreeview(QTreeWidget* view, QString searchString, int colum);
 
     //**********************load save result searsh
-    void loadResultFind(QTreeWidget *view,QString fn);
-    bool saveResultFind(QTreeWidget *view,QString fn);
+    void loadResultFind(QTreeWidget* view, QString fn);
+    bool saveResultFind(QTreeWidget* view, QString fn);
 
 private slots:
-void readStrFirst();
+    void readStrFirst();
     void readXml();
     void readStrMultiFind();
     void readStr();
     bool chargelistStrToFind(QString search);
     bool chargelistStrMultiFind(QString search);
-    bool showAllItems( QTreeWidgetItem* parent ,QTreeWidget *view) ;
-    bool searchTreeForString( const QString &searchString, QTreeWidgetItem* parent ,bool  itemtop,int  topindex,QTreeWidget *view,int colum) ;
-
-
+    bool showAllItems(QTreeWidgetItem* parent, QTreeWidget* view);
+    bool searchTreeForString(const QString& searchString, QTreeWidgetItem* parent,
+        bool itemtop, int topindex, QTreeWidget* view,
+        int colum);
 };
 #endif // FINDBOOK_H

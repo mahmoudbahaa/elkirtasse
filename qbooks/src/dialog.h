@@ -1,7 +1,8 @@
 /****************************************************************************
 //   elkirtasse Copyright (C) 2010 yahia abouzakaria <yahiaui@gmail.com>
 //
-//      This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
+//      This program comes with ABSOLUTELY NO WARRANTY; for details type `show
+w'.
 //      This is free software, and you are welcome to redistribute it
 //      under certain conditions; type `show c' for details.
 //
@@ -28,26 +29,24 @@
 ****************************************************************************/
 #ifndef DIALOG_H
 #define DIALOG_H
-#include <QDialog>
-#include <QAbstractButton>
 #include "messages.h"
-namespace Ui
-{
-    class Dialog;
+#include <QAbstractButton>
+#include <QDialog>
+namespace Ui {
+class Dialog;
 }
 
-class Dialog : public QDialog
-{
+class Dialog : public QDialog {
     Q_OBJECT
-    messages *Messages;
+    messages* Messages;
 
 public:
-    Dialog(QWidget *parent = 0);
+    Dialog(QWidget* parent = 0);
     ~Dialog();
-  QString m_path;
+    QString m_path;
 
 private:
-    Ui::Dialog *ui;
+    Ui::Dialog* ui;
     QString m_addGroupeName;
     QString m_addGroupeId;
 
@@ -57,8 +56,8 @@ private:
     QString Add_Book_Name;
     QString Add_Autor_Name;
     QString Add_Betaka;
-  QString msgTitle;
- // QString archiveDir;
+    QString msgTitle;
+    // QString archiveDir;
 private slots:
     void on_toolButtonInfo_clicked();
     void on_toolButton_delete_clicked();
@@ -68,14 +67,14 @@ private slots:
     void on_toolButton_fileNam_clicked();
 
     void on_comboBox_group_currentIndexChanged(int index);
-    bool  creat_dir();
-    bool copyDir(QString filname,int items);
+    bool creat_dir();
+    bool copyDir(QString filname, int items);
 
-//void removeTempDirs(QString dirName);
-//bool removeTempFiles(QString tempDir);
- void loadBookInfo(QString path);
+    // void removeTempDirs(QString dirName);
+    // bool removeTempFiles(QString tempDir);
+    void loadBookInfo(QString path);
 public slots:
 
-   //  bool loadTarGz(QString path);
+    //  bool loadTarGz(QString path);
 };
 #endif // DIALOG_H

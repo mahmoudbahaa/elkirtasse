@@ -1,7 +1,8 @@
 /****************************************************************************
 //   elkirtasse Copyright (C) 2010 yahia abouzakaria <yahiaui@gmail.com>
 //
-//      This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
+//      This program comes with ABSOLUTELY NO WARRANTY; for details type `show
+w'.
 //      This is free software, and you are welcome to redistribute it
 //      under certain conditions; type `show c' for details.
 //
@@ -28,27 +29,27 @@
 ****************************************************************************/
 #ifndef DIALOGCONVERT_H
 #define DIALOGCONVERT_H
-#include <QDialog>
 #include "messages.h"
- #include <QTextEdit>
+#include <QDialog>
+#include <QTextEdit>
 
-namespace Ui
-{
-    class dialogconvert;
+namespace Ui {
+class dialogconvert;
 }
 
-class dialogconvert : public QDialog
-{
+class dialogconvert : public QDialog {
     Q_OBJECT
-    messages *Messages;
+    messages* Messages;
+
 public:
-    dialogconvert(QWidget *parent = 0);
+    dialogconvert(QWidget* parent = 0);
     ~dialogconvert();
     QString m_pathCostum;
+
 private:
-    Ui::dialogconvert *ui;
+    Ui::dialogconvert* ui;
     bool creat_xmlfile(QString path);
-    bool load(const QString &f);
+    bool load(const QString& f);
     bool creat_dir();
     bool ecrirexml(int jozaa);
     QTextEdit m_textEdit;
@@ -56,9 +57,8 @@ private:
     QString m_newPath;
     QString m_newPathDir;
     QString m_addGroupeId;
-int creatId;
+    int creatId;
 public slots:
-
 
 private slots:
 
@@ -68,7 +68,5 @@ private slots:
     void on_comboBox_group_currentIndexChanged(int index);
     void on_toolButton_fileNam_clicked();
     void on_pushButton_clicked();
-
-
 };
 #endif // DIALOGCONVERT_H

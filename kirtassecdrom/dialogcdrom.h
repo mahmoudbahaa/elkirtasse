@@ -1,7 +1,8 @@
 /****************************************************************************
 //   elkirtasse Copyright (C) 2010 yahia abouzakaria <yahiaui@gmail.com>
 //
-//      This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
+//      This program comes with ABSOLUTELY NO WARRANTY; for details type `show
+w'.
 //      This is free software, and you are welcome to redistribute it
 //      under certain conditions; type `show c' for details.
 //
@@ -32,15 +33,14 @@
 #include <QDialog>
 
 namespace Ui {
-    class Dialogcdrom;
+class Dialogcdrom;
 }
 
-class Dialogcdrom : public QDialog
-{
+class Dialogcdrom : public QDialog {
     Q_OBJECT
 
 public:
-    explicit Dialogcdrom(QWidget *parent = 0);
+    explicit Dialogcdrom(QWidget* parent = 0);
     ~Dialogcdrom();
 
     QString pathMain;
@@ -49,24 +49,22 @@ public:
     bool acceptedPath;
 private slots:
 
+    void on_lineEditPathMain_textChanged(const QString& arg1);
 
+    void on_lineEditBooks_textChanged(const QString& arg1);
 
-     void on_lineEditPathMain_textChanged(const QString &arg1);
+    void on_lineEditPathBooksNew_textChanged(const QString& arg1);
 
-     void on_lineEditBooks_textChanged(const QString &arg1);
+    void on_toolButtonMain_clicked();
 
-     void on_lineEditPathBooksNew_textChanged(const QString &arg1);
+    void on_toolButtonBooks_clicked();
 
-     void on_toolButtonMain_clicked();
+    void on_toolButtonBooksNew_clicked();
 
-     void on_toolButtonBooks_clicked();
-
-     void on_toolButtonBooksNew_clicked();
-
-     void on_buttonBox_accepted();
+    void on_buttonBox_accepted();
 
 private:
-    Ui::Dialogcdrom *ui;
+    Ui::Dialogcdrom* ui;
 };
 
 #endif // DIALOG_H

@@ -1,7 +1,8 @@
 /****************************************************************************
 //   elkirtasse Copyright (C) 2010 yahia abouzakaria <yahiaui@gmail.com>
 //
-//      This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
+//      This program comes with ABSOLUTELY NO WARRANTY; for details type `show
+w'.
 //      This is free software, and you are welcome to redistribute it
 //      under certain conditions; type `show c' for details.
 //
@@ -31,53 +32,51 @@
 #include "src/booksInterface.h"
 #include <QDomDocument>
 #include <QList>
- #ifdef   Q_WS_WIN
+#ifdef Q_WS_WIN
 #include <QSqlDatabase>
- #endif
-class cdromShamila : public QObject, ShamilaInterface
-{
+#endif
+class cdromShamila : public QObject, ShamilaInterface {
     Q_OBJECT
     Q_INTERFACES(ShamilaInterface)
-    Q_PLUGIN_METADATA(IID "org.qt-project.Qt.QImageIOHandlerFactoryInterface" FILE "cdromShamila.json")
+    Q_PLUGIN_METADATA(IID "org.qt-project.Qt.QImageIOHandlerFactoryInterface" FILE
+                          "cdromShamila.json")
 
 public:
-
 private:
-
     QString m_pathMain;
     QString m_pathBooks;
     QString m_pathBooksNew;
     QString m_tempDir;
     QDomDocument m_doc;
     QList<QString> listId;
-#ifdef   Q_WS_WIN
+#ifdef Q_WS_WIN
     QSqlDatabase m_db;
 #endif
-    int  tbcount;
+    int tbcount;
 signals:
 
 public slots:
     QString execPlugin();
 private slots:
 
-
-
     bool creatShamellaX();
-#ifdef   Q_WS_WIN
+#ifdef Q_WS_WIN
     bool creatShamellaWin();
     bool winCreatBooks();
-    bool  winCreatgroupXml();
-    bool winWriteBooks(QString fn,QString bookname);
+    bool winCreatgroupXml();
+    bool winWriteBooks(QString fn, QString bookname);
 #endif
     bool creatBashMain(QString fn);
     //  bool creatListBooks();
     bool creatCatigorie();
     bool creatBooksInfo();
     bool creatBashMdb(QString fn);
-    bool creatBook(QString id,QString cat);
-    bool addNewBook(QString bkpath,QString bktitle,QString bkauth,QString bkbetaka,QString groupid);
-    bool creatXmlFile(QString f,QString table,QString csv);
-    bool saveBookInfo(QString bookname,QString title,QString author,QString betaka);
+    bool creatBook(QString id, QString cat);
+    bool addNewBook(QString bkpath, QString bktitle, QString bkauth,
+        QString bkbetaka, QString groupid);
+    bool creatXmlFile(QString f, QString table, QString csv);
+    bool saveBookInfo(QString bookname, QString title, QString author,
+        QString betaka);
 };
 
 #endif // CDROMSHAMILA_H

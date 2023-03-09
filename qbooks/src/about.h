@@ -1,7 +1,8 @@
 /****************************************************************************
 //   elkirtasse Copyright (C) 2010 yahia abouzakaria <yahiaui@gmail.com>
 //
-//      This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
+//      This program comes with ABSOLUTELY NO WARRANTY; for details type `show
+w'.
 //      This is free software, and you are welcome to redistribute it
 //      under certain conditions; type `show c' for details.
 //
@@ -30,26 +31,20 @@
 #define ABOUT_H
 #include <QDialog>
 #include <QtGui>
-namespace Ui
-{
-    class About;
+namespace Ui {
+class About;
 }
 
-class About : public QDialog
-{
+class About : public QDialog {
     Q_OBJECT
 
 public:
-    About(QWidget *parent = 0);
+    About(QWidget* parent = 0);
     ~About();
 
 private:
-     Ui::About *ui;
+    Ui::About* ui;
 
-
-
-QGraphicsScene* m_scene;
-
-
+    QGraphicsScene* m_scene;
 };
 #endif // ABOUT_H

@@ -1,7 +1,8 @@
 /****************************************************************************
 //   elkirtasse Copyright (C) 2010 yahia abouzakaria <yahiaui@gmail.com>
 //
-//      This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
+//      This program comes with ABSOLUTELY NO WARRANTY; for details type `show
+w'.
 //      This is free software, and you are welcome to redistribute it
 //      under certain conditions; type `show c' for details.
 //
@@ -28,36 +29,30 @@
 ****************************************************************************/
 #ifndef ROWAT_H
 #define ROWAT_H
-#include <QTreeWidget>
+#include "src/booksInterface.h"
 #include <QDomDocument>
-#include <QXmlStreamReader>
+#include <QFile>
 #include <QProgressBar>
 #include <QTreeWidget>
-#include <QFile>
-#include "src/booksInterface.h"
-class rowat : public QObject, RowatInterface
-{
+#include <QXmlStreamReader>
+class rowat : public QObject, RowatInterface {
     Q_OBJECT
-Q_INTERFACES(RowatInterface)
+    Q_INTERFACES(RowatInterface)
 public:
-
-
- private:
-
-QDomDocument docRowat;
-QString name,TABAQA,WHO,AQUAL,ROTBA,R_ZAHBI,sheok,telmez,birth,death;
+private:
+    QDomDocument docRowat;
+    QString name, TABAQA, WHO, AQUAL, ROTBA, R_ZAHBI, sheok, telmez, birth, death;
 public slots:
 
-
-    void treeChargeRowtName(QTreeWidget *view);
+    void treeChargeRowtName(QTreeWidget* view);
     bool chargeRowat();
     QString moveToPosition(int position);
     QString readxml(int pos);
-    void  rawiFind(QString rawi,QTreeWidget *viewS,QTreeWidget *viewD);
+    void rawiFind(QString rawi, QTreeWidget* viewS, QTreeWidget* viewD);
     void clearData();
- private slots:
+private slots:
     QString creatHtml();
     QString fullRawi(QString rawi);
-     bool  rawiFindAbou(QString rawi,QTreeWidget *viewS,QTreeWidget *viewD);
+    bool rawiFindAbou(QString rawi, QTreeWidget* viewS, QTreeWidget* viewD);
 };
 #endif // ROWAT_H

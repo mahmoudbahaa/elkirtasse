@@ -1,7 +1,8 @@
 /****************************************************************************
 //   elkirtasse Copyright (C) 2010 yahia abouzakaria <yahiaui@gmail.com>
 //
-//      This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
+//      This program comes with ABSOLUTELY NO WARRANTY; for details type `show
+w'.
 //      This is free software, and you are welcome to redistribute it
 //      under certain conditions; type `show c' for details.
 //
@@ -32,59 +33,61 @@
 #include <QFileDialog>
 #include <QStyle>
 
-Dialogcdrom::Dialogcdrom(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::Dialogcdrom)
+Dialogcdrom::Dialogcdrom(QWidget* parent)
+    : QDialog(parent)
+    , ui(new Ui::Dialogcdrom)
 {
     ui->setupUi(this);
 }
 
-Dialogcdrom::~Dialogcdrom()
-{
-    delete ui;
-}
+Dialogcdrom::~Dialogcdrom() { delete ui; }
 
-void Dialogcdrom::on_lineEditPathMain_textChanged(const QString &arg1)
+void Dialogcdrom::on_lineEditPathMain_textChanged(const QString& arg1)
 {
     QFile file(arg1);
-    if(file.exists()){
-        ui->labelPathMain->setPixmap(style()->standardPixmap(QStyle::SP_DialogApplyButton));
-         pathMain=arg1;
+    if (file.exists()) {
+        ui->labelPathMain->setPixmap(
+            style()->standardPixmap(QStyle::SP_DialogApplyButton));
+        pathMain = arg1;
     } else {
-        ui->labelPathMain->setPixmap(style()->standardPixmap(QStyle::SP_DialogCancelButton));
-        pathMain="";
+        ui->labelPathMain->setPixmap(
+            style()->standardPixmap(QStyle::SP_DialogCancelButton));
+        pathMain = "";
     }
 }
 
-void Dialogcdrom::on_lineEditBooks_textChanged(const QString &arg1)
+void Dialogcdrom::on_lineEditBooks_textChanged(const QString& arg1)
 {
     QFile file(arg1);
-    if(file.exists()){
-        ui->labelPathBooks->setPixmap(style()->standardPixmap(QStyle::SP_DialogApplyButton));
-         pathBooks=arg1;
+    if (file.exists()) {
+        ui->labelPathBooks->setPixmap(
+            style()->standardPixmap(QStyle::SP_DialogApplyButton));
+        pathBooks = arg1;
     } else {
-        ui->labelPathBooks->setPixmap(style()->standardPixmap(QStyle::SP_DialogCancelButton));
-        pathBooks="";
+        ui->labelPathBooks->setPixmap(
+            style()->standardPixmap(QStyle::SP_DialogCancelButton));
+        pathBooks = "";
     }
 }
 
-void Dialogcdrom::on_lineEditPathBooksNew_textChanged(const QString &arg1)
+void Dialogcdrom::on_lineEditPathBooksNew_textChanged(const QString& arg1)
 {
     QFile file(arg1);
-    if(file.exists()){
-        ui->labelPathBooksNew->setPixmap(style()->standardPixmap(QStyle::SP_DialogApplyButton));
-        pathBooksNew=arg1;
+    if (file.exists()) {
+        ui->labelPathBooksNew->setPixmap(
+            style()->standardPixmap(QStyle::SP_DialogApplyButton));
+        pathBooksNew = arg1;
     } else {
-        ui->labelPathBooksNew->setPixmap(style()->standardPixmap(QStyle::SP_DialogCancelButton));
-        pathBooksNew="";
+        ui->labelPathBooksNew->setPixmap(
+            style()->standardPixmap(QStyle::SP_DialogCancelButton));
+        pathBooksNew = "";
     }
 }
 
 void Dialogcdrom::on_toolButtonMain_clicked()
 {
-    QString fn = QFileDialog::getOpenFileName(this, tr("Open File..."),
-                                              QString(), tr("main.mdb (*.mdb *.MDB)"));
-
+    QString fn = QFileDialog::getOpenFileName(this, tr("Open File..."), QString(),
+        tr("main.mdb (*.mdb *.MDB)"));
 
     if (!fn.isEmpty())
 
@@ -93,33 +96,29 @@ void Dialogcdrom::on_toolButtonMain_clicked()
 
 void Dialogcdrom::on_toolButtonBooks_clicked()
 {
-    QString dirName = QFileDialog::getExistingDirectory(this, tr("Open Directory"),
-                                                    QString(),
-                                                    QFileDialog::ShowDirsOnly
-                                                    |QFileDialog::DontResolveSymlinks);
-    if(QFile::exists(dirName)){
-     ui->lineEditBooks->setText(dirName);
-
-     }
+    QString dirName = QFileDialog::getExistingDirectory(
+        this, tr("Open Directory"), QString(),
+        QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+    if (QFile::exists(dirName)) {
+        ui->lineEditBooks->setText(dirName);
+    }
 }
 
 void Dialogcdrom::on_toolButtonBooksNew_clicked()
 {
-    QString dirName = QFileDialog::getExistingDirectory(this, tr("Open Directory"),
-                                                    QString(),
-                                                    QFileDialog::ShowDirsOnly
-                                                    |QFileDialog::DontResolveSymlinks);
-    if(QFile::exists(dirName)){
-     ui->lineEditPathBooksNew->setText(dirName);
-
-     }
+    QString dirName = QFileDialog::getExistingDirectory(
+        this, tr("Open Directory"), QString(),
+        QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+    if (QFile::exists(dirName)) {
+        ui->lineEditPathBooksNew->setText(dirName);
+    }
 }
 
 void Dialogcdrom::on_buttonBox_accepted()
 {
-    if(pathMain.isEmpty() || pathBooks.isEmpty() || pathBooksNew.isEmpty()){
-        acceptedPath=false;
-    }else {
-        acceptedPath=true;
+    if (pathMain.isEmpty() || pathBooks.isEmpty() || pathBooksNew.isEmpty()) {
+        acceptedPath = false;
+    } else {
+        acceptedPath = true;
     }
 }

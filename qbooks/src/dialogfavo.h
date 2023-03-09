@@ -1,7 +1,8 @@
 /****************************************************************************
 //   elkirtasse Copyright (C) 2010 yahia abouzakaria <yahiaui@gmail.com>
 //
-//      This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
+//      This program comes with ABSOLUTELY NO WARRANTY; for details type `show
+w'.
 //      This is free software, and you are welcome to redistribute it
 //      under certain conditions; type `show c' for details.
 //
@@ -29,34 +30,32 @@
 #ifndef DIALOGFAVO_H
 #define DIALOGFAVO_H
 #include <QDialog>
-#include <QTreeWidget>
 #include <QIcon>
-namespace Ui
-{
-    class dialogfavo;
+#include <QTreeWidget>
+namespace Ui {
+class dialogfavo;
 }
 
-class dialogfavo : public QDialog
-{
+class dialogfavo : public QDialog {
     Q_OBJECT
 
 public:
-    dialogfavo(QWidget *parent = 0);
+    dialogfavo(QWidget* parent = 0);
     ~dialogfavo();
     QIcon iconFolder;
     QIcon iconFile;
-    QTreeWidget *view;
+    QTreeWidget* view;
     QString bookTitle;
     QString bookName;
     QString bookAut;
     QString bookId;
+
 private:
-    Ui::dialogfavo *ui;
+    Ui::dialogfavo* ui;
 
     int reowcount;
 public slots:
     void charge_combo();
-
 
 private slots:
 

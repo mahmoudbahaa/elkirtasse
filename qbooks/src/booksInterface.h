@@ -1,7 +1,8 @@
 /****************************************************************************
 //   elkirtasse Copyright (C) 2010 yahia abouzakaria <yahiaui@gmail.com>
 //
-//      This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
+//      This program comes with ABSOLUTELY NO WARRANTY; for details type `show
+w'.
 //      This is free software, and you are welcome to redistribute it
 //      under certain conditions; type `show c' for details.
 //
@@ -29,55 +30,46 @@
 #ifndef BOOKSINTERFACE_H
 #define BOOKSINTERFACE_H
 #include <QObject>
-#include <QtGui>
 #include <QTreeWidget>
+#include <QtGui>
 
 //! [0]
-class NetInterface
-{
+class NetInterface {
 public:
+    virtual ~NetInterface() { }
 
-    virtual ~NetInterface() {}
-
-virtual    QString execPlugin() = 0;
-virtual     QString loadFile(QString urlPath)=0;
-
+    virtual QString execPlugin() = 0;
+    virtual QString loadFile(QString urlPath) = 0;
 };
 //! [0]
 //! [1]
-class RowatInterface
-{
+class RowatInterface {
 public:
-
-   virtual ~RowatInterface() {}
-   virtual  void treeChargeRowtName(QTreeWidget *view) = 0;
-   virtual  QString readxml(int pos) = 0;
-  virtual  void  rawiFind(QString rawi,QTreeWidget *viewS,QTreeWidget *viewD) = 0;
-
+    virtual ~RowatInterface() { }
+    virtual void treeChargeRowtName(QTreeWidget* view) = 0;
+    virtual QString readxml(int pos) = 0;
+    virtual void rawiFind(QString rawi, QTreeWidget* viewS,
+        QTreeWidget* viewD)
+        = 0;
 };
 
 //! [1]
 //! [2]
-class ShamilaInterface
-{
+class ShamilaInterface {
 public:
-
-   virtual ~ShamilaInterface() {}
-virtual    QString execPlugin() = 0;
-
+    virtual ~ShamilaInterface() { }
+    virtual QString execPlugin() = 0;
 };
 
 //! [2]
 
 QT_BEGIN_NAMESPACE
 
-Q_DECLARE_INTERFACE(NetInterface,
-                    "com.elirtasse.Plugin.NetInterface/1.0");
-Q_DECLARE_INTERFACE(RowatInterface,
-                    "com.trolltech.Plugin.RowatInterface/1.0");
+Q_DECLARE_INTERFACE(NetInterface, "com.elirtasse.Plugin.NetInterface/1.0");
+Q_DECLARE_INTERFACE(RowatInterface, "com.trolltech.Plugin.RowatInterface/1.0");
 
 Q_DECLARE_INTERFACE(ShamilaInterface,
-                    "com.trolltech.Plugin.ShamilaInterface/1.0");
+    "com.trolltech.Plugin.ShamilaInterface/1.0");
 
 QT_END_NAMESPACE
 #endif // BOOKSINTERFACE_H

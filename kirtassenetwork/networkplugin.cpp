@@ -1,7 +1,8 @@
 /****************************************************************************
 //   elkirtasse Copyright (C) 2010 yahia abouzakaria <yahiaui@gmail.com>
 //
-//      This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
+//      This program comes with ABSOLUTELY NO WARRANTY; for details type `show
+w'.
 //      This is free software, and you are welcome to redistribute it
 //      under certain conditions; type `show c' for details.
 //
@@ -32,33 +33,29 @@
 
 //! [0]
 
-
 //! [1]
 QString networkplugin::execPlugin()
 {
-    //QMessageBox::information(0,"","exec");
-Dialognet *dlg =new Dialognet();
-if ( dlg->exec() == QDialog::Accepted ){
-  return dlg->mypath;
-}
-return "";
+    // QMessageBox::information(0,"","exec");
+    Dialognet* dlg = new Dialognet();
+    if (dlg->exec() == QDialog::Accepted) {
+        return dlg->mypath;
+    }
+    return "";
 }
 QString networkplugin::loadFile(QString urlPath)
 {
 
-Dialognet *dlg =new Dialognet();
-if (dlg->downloadFile(urlPath,QDir::homePath()+"/.kirtasse/download/")==true){
+    Dialognet* dlg = new Dialognet();
+    if (dlg->downloadFile(urlPath, QDir::homePath() + "/.kirtasse/download/") == true) {
 
-    return dlg->mypath;
-}
-return "";
+        return dlg->mypath;
+    }
+    return "";
 }
 //! [1]
-QString networkplugin::pluginTitle()
-{
-    return trUtf8("تحميل الكتب");
-}
+QString networkplugin::pluginTitle() { return trUtf8("تحميل الكتب"); }
 
 //! [2]
-//Q_EXPORT_PLUGIN2(kirtassenet, networkplugin);
+// Q_EXPORT_PLUGIN2(kirtassenet, networkplugin);
 //! [2]

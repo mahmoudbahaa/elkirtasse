@@ -1,7 +1,8 @@
 /****************************************************************************
 //   elkirtasse Copyright (C) 2010 yahia abouzakaria <yahiaui@gmail.com>
 //
-//      This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
+//      This program comes with ABSOLUTELY NO WARRANTY; for details type `show
+w'.
 //      This is free software, and you are welcome to redistribute it
 //      under certain conditions; type `show c' for details.
 //
@@ -28,26 +29,25 @@
 ****************************************************************************/
 #ifndef DIALOGFIND_H
 #define DIALOGFIND_H
-#include <QDialog>
-#include "messages.h"
 #include "findbook.h"
+#include "messages.h"
 #include <QAbstractButton>
+#include <QDialog>
 class QComboBox;
-namespace Ui
-{
-    class Dialogfind;
+namespace Ui {
+class Dialogfind;
 }
 
-class Dialogfind : public QDialog
-{
+class Dialogfind : public QDialog {
     Q_OBJECT
-    messages *Messages;
-    findbook *Findbook;
+    messages* Messages;
+    findbook* Findbook;
+
 public:
-    Dialogfind(QWidget *parent = 0);
+    Dialogfind(QWidget* parent = 0);
     ~Dialogfind();
-    QString   findString;
-  bool findIsNass;
+    QString findString;
+    bool findIsNass;
     bool findFirst;
     bool findList;
     bool MultiFind;
@@ -55,19 +55,17 @@ public:
     bool findSawabik;
     bool noHamza;
     QString bookPath;
+
 private:
-    Ui::Dialogfind *ui;
-  // QComboBox *m_comboBoxGroup;
+    Ui::Dialogfind* ui;
+    // QComboBox *m_comboBoxGroup;
     QDomDocument m_docFind;
     QString m_listBookNoMash;
 private slots:
 
-
-
-    void on_treeWidget_itemChanged(QTreeWidgetItem* item, int );
+    void on_treeWidget_itemChanged(QTreeWidgetItem* item, int);
 
     void on_buttonBox_clicked(QAbstractButton* button);
-    void on_lineEdit_2_textChanged(QString );
-
+    void on_lineEdit_2_textChanged(QString);
 };
 #endif // DIALOGFIND_H

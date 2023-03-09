@@ -1,7 +1,8 @@
 /****************************************************************************
 //   elkirtasse Copyright (C) 2010 yahia abouzakaria <yahiaui@gmail.com>
 //
-//      This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
+//      This program comes with ABSOLUTELY NO WARRANTY; for details type `show
+w'.
 //      This is free software, and you are welcome to redistribute it
 //      under certain conditions; type `show c' for details.
 //
@@ -28,59 +29,57 @@
 ****************************************************************************/
 #ifndef PRINT_H
 #define PRINT_H
-#include <QDialog>
 #include "databook.h"
-#include <QTreeWidget>
+#include <QAbstractButton>
+#include <QDialog>
 #include <QDomDocument>
 #include <QTextEdit>
-#include <QAbstractButton>
+#include <QTreeWidget>
 
-namespace Ui
-{
-    class Print;
+namespace Ui {
+class Print;
 }
 
-class Print : public QDialog
-{
+class Print : public QDialog {
     Q_OBJECT
 
 public:
-    Print(QWidget *parent = 0);
+    Print(QWidget* parent = 0);
     ~Print();
-   QTreeWidget *treeviw;
-   // QString m_bookName;
-
+    QTreeWidget* treeviw;
+    // QString m_bookName;
 
     void setBookTitle(QString name);
     void setBookAuthor(QString name);
-  void setBookBetaka(QString name);
-   void setBookColorBack(QString name);
-   void setBookFont(QString name);
-   void setBookFontColor(QString name);
+    void setBookBetaka(QString name);
+    void setBookColorBack(QString name);
+    void setBookFont(QString name);
+    void setBookFontColor(QString name);
     void setBookFontTitleColor(QString name);
     void setBookFontPrefertColor(QString name);
     void setBookCurentPath(QString name);
-     void setBookFontTitle(QString name);
-     void setpathApp(QString path);
+    void setBookFontTitle(QString name);
+    void setpathApp(QString path);
+
 private:
-    Ui::Print *ui;
+    Ui::Print* ui;
     QDomDocument m_docBooK;
     int rowsCount;
     QString m_fileName;
-    QTextEdit *m_textEdit;
+    QTextEdit* m_textEdit;
     int mCurPart;
- int m_n;
- QString m_bookTitle;
- QString m_bookAuthor;
-QString    m_bookBetaka;
- QString m_WebColorBack;                           //لون خلفية النص
- QString m_WebFont;                            //نوع النص
- QString m_WebFontColor;
- QString m_WebFontTitleColor;
- QString m_WebFontPrefertColor;
- QString m_curentPath;
- QString m_WebFontTitle;
- QString m_pathApp;
+    int m_n;
+    QString m_bookTitle;
+    QString m_bookAuthor;
+    QString m_bookBetaka;
+    QString m_WebColorBack; // لون خلفية النص
+    QString m_WebFont; // نوع النص
+    QString m_WebFontColor;
+    QString m_WebFontTitleColor;
+    QString m_WebFontPrefertColor;
+    QString m_curentPath;
+    QString m_WebFontTitle;
+    QString m_pathApp;
 private slots:
 
     void on_toolButton_clicked();
@@ -90,26 +89,25 @@ private slots:
     bool fileSave();
     void creatDocument();
     QString convertTextBetaka(QString txt);
-    QString convertText(QString txt,QString part,QString page,int id);
-    QString convertEpubStyle(QString txt,QString part,QString page, int id);
-  //html
- void    creatHtmlDocument(bool isQml);
- void creatHtmlFahrassa(bool isQml );
-QString getChildHtml(QTreeWidgetItem *item);
-bool creatHtmlPages(bool isQml);
+    QString convertText(QString txt, QString part, QString page, int id);
+    QString convertEpubStyle(QString txt, QString part, QString page, int id);
+    // html
+    void creatHtmlDocument(bool isQml);
+    void creatHtmlFahrassa(bool isQml);
+    QString getChildHtml(QTreeWidgetItem* item);
+    bool creatHtmlPages(bool isQml);
     //  epub
-void creatEpubDocument();
-bool   creatEpubDIrectory();
-bool creatEpubContent();
- bool  creatEpubToc();
- QString getChildNavpoint(QTreeWidgetItem *item);
-bool creatEpubInfo();
-bool creatEpubPages();
-bool   zipUpubDocument();
-void on_comboBox_currentIndexChanged(int index);
-void removeTempDirs(QString dirName);
-bool removeTempFiles(QString tempDir);
-
+    void creatEpubDocument();
+    bool creatEpubDIrectory();
+    bool creatEpubContent();
+    bool creatEpubToc();
+    QString getChildNavpoint(QTreeWidgetItem* item);
+    bool creatEpubInfo();
+    bool creatEpubPages();
+    bool zipUpubDocument();
+    void on_comboBox_currentIndexChanged(int index);
+    void removeTempDirs(QString dirName);
+    bool removeTempFiles(QString tempDir);
 };
 
 #endif // PRINT_H

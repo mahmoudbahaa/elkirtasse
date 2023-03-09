@@ -1,7 +1,8 @@
 /****************************************************************************
 //   elkirtasse Copyright (C) 2010 yahia abouzakaria <yahiaui@gmail.com>
 //
-//      This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
+//      This program comes with ABSOLUTELY NO WARRANTY; for details type `show
+w'.
 //      This is free software, and you are welcome to redistribute it
 //      under certain conditions; type `show c' for details.
 //
@@ -28,8 +29,8 @@
 ****************************************************************************/
 #ifndef CLASSWIZARD_H
 #define CLASSWIZARD_H
-#include <QWizard>
 #include "messages.h"
+#include <QWizard>
 QT_BEGIN_NAMESPACE
 class QCheckBox;
 class QGroupBox;
@@ -41,99 +42,99 @@ QT_END_NAMESPACE
 
 //! [0]
 
-class ClassWizard : public QWizard
-{
+class ClassWizard : public QWizard {
     Q_OBJECT
 
 public:
-    ClassWizard(QWidget *parent = 0);
+    ClassWizard(QWidget* parent = 0);
 
-    enum { Page_Intro, Page_InfoPage, Page_TreeBook, Page_Details,
-           Page_Conclusion };
+    enum {
+        Page_Intro,
+        Page_InfoPage,
+        Page_TreeBook,
+        Page_Details,
+        Page_Conclusion
+    };
     void accept();
-    int nextId()const;
+    int nextId() const;
     QString urlTexte;
-
 };
 //! [0]
 
 //! [1]
-class IntroPage : public QWizardPage
-{
+class IntroPage : public QWizardPage {
     Q_OBJECT
 
 public:
-    IntroPage(QWidget *parent = 0);
+    IntroPage(QWidget* parent = 0);
 
 private:
-    QLabel *label;
+    QLabel* label;
 };
 //! [1]
 
 //! [2]
-class ClassInfoPage : public QWizardPage
-{
+class ClassInfoPage : public QWizardPage {
     Q_OBJECT
 
 public:
-    ClassInfoPage(QWidget *parent = 0);
+    ClassInfoPage(QWidget* parent = 0);
 
 private:
-    QLabel *labelUrlName;
-    QLineEdit *lineEditUrlName;
-    QGroupBox *groupBox;
-    QRadioButton *radioButtonUrlBook;
-    QRadioButton *radioButtonUrlFavorite;
-    QRadioButton *radioButtonUrlWeb;
-    QLineEdit *lineEditUrlWebName;
+    QLabel* labelUrlName;
+    QLineEdit* lineEditUrlName;
+    QGroupBox* groupBox;
+    QRadioButton* radioButtonUrlBook;
+    QRadioButton* radioButtonUrlFavorite;
+    QRadioButton* radioButtonUrlWeb;
+    QLineEdit* lineEditUrlWebName;
 };
 //! [2]
 
 //! [3]
-class PageTreeBook : public QWizardPage
-{
+class PageTreeBook : public QWizardPage {
     Q_OBJECT
 
 public:
-    PageTreeBook(QWidget *parent = 0);
-    messages *Messages;
-    QTreeWidget *treeViewBook;
+    PageTreeBook(QWidget* parent = 0);
+    messages* Messages;
+    QTreeWidget* treeViewBook;
 private slots:
     void treeBookitemSelectionChanged();
-private:
-    QLineEdit *bookInfo;
 
+private:
+    QLineEdit* bookInfo;
 };
 //! [3]
 
-class PageTreeFavorite : public QWizardPage
-{
-    Q_OBJECT
-
-public:    
-    PageTreeFavorite(QWidget *parent = 0);
-    messages *Messages;
-    QTreeWidget *treeViewFavorite;
-    QString curentBook;
-protected:
-private slots:
-    void treeFavoriteItemSelectionChanged();
-private:
-    QLineEdit  *FavoriteInfo;
-};
-
-class ConclusionPage : public QWizardPage
-{
+class PageTreeFavorite : public QWizardPage {
     Q_OBJECT
 
 public:
-    ConclusionPage(QWidget *parent = 0);
+    PageTreeFavorite(QWidget* parent = 0);
+    messages* Messages;
+    QTreeWidget* treeViewFavorite;
+    QString curentBook;
+
+protected:
+private slots:
+    void treeFavoriteItemSelectionChanged();
+
+private:
+    QLineEdit* FavoriteInfo;
+};
+
+class ConclusionPage : public QWizardPage {
+    Q_OBJECT
+
+public:
+    ConclusionPage(QWidget* parent = 0);
 
 protected:
     void initializePage();
 
 private:
-    QLabel *label;
+    QLabel* label;
 };
 
 #endif

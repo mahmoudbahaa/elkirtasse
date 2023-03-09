@@ -1,7 +1,8 @@
 /****************************************************************************
 //   elkirtasse Copyright (C) 2010 yahia abouzakaria <yahiaui@gmail.com>
 //
-//      This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
+//      This program comes with ABSOLUTELY NO WARRANTY; for details type `show
+w'.
 //      This is free software, and you are welcome to redistribute it
 //      under certain conditions; type `show c' for details.
 //
@@ -28,28 +29,22 @@
 ****************************************************************************/
 #ifndef NETWORKPLUGIN_H
 #define NETWORKPLUGIN_H
-#include <QObject>
-#include "src/booksInterface.h"
 #include "dialognet.h"
+#include "src/booksInterface.h"
+#include <QObject>
 
 //! [0]
-class networkplugin : public QObject, NetInterface
-{
+class networkplugin : public QObject, NetInterface {
     Q_OBJECT
     Q_INTERFACES(NetInterface)
 public:
-
 private:
-
 public slots:
 
-  QString execPlugin();
-  QString loadFile(QString urlPath);
-  QString pluginTitle();
-
+    QString execPlugin();
+    QString loadFile(QString urlPath);
+    QString pluginTitle();
 
 private slots:
-
-
 };
 #endif // NETWORKPLUGIN_H

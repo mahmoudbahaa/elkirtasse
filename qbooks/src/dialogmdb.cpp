@@ -1,7 +1,8 @@
 /****************************************************************************
 //   elkirtasse Copyright (C) 2010 yahia abouzakaria <yahiaui@gmail.com>
 //
-//      This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
+//      This program comes with ABSOLUTELY NO WARRANTY; for details type `show
+w'.
 //      This is free software, and you are welcome to redistribute it
 //      under certain conditions; type `show c' for details.
 //
@@ -27,123 +28,114 @@
 **
 ****************************************************************************/
 #include "dialogmdb.h"
+#include "ui_dialogmdb.h"
 #include <QMessageBox>
-#include  "ui_dialogmdb.h"
-#include <QtSql>   //for linux
-//#include <QtSQL>   //for windows
-//#include  "qsql_odbc.cpp"
-//#include  "qsql_odbc.h"
+#include <QtSql> //for linux
+// #include <QtSQL>   //for windows
+// #include  "qsql_odbc.cpp"
+// #include  "qsql_odbc.h"
 
 #include <QFileDialog>
 #include <QTextCodec>
 #include <QtGui>
-Dialogmdb::Dialogmdb(QWidget *parent)
-    : QDialog(parent), ui(new Ui::Dialogmdb)
+Dialogmdb::Dialogmdb(QWidget* parent)
+    : QDialog(parent)
+    , ui(new Ui::Dialogmdb)
 {
 
     ui->setupUi(this);
 
-    ui->toolButtonInfo->setIcon(style()->standardPixmap(QStyle::SP_MessageBoxInformation));
-    ui->toolButton_fileNam->setIcon(style()->standardPixmap(QStyle::SP_DirOpenIcon));
-  ui->progressBar->setVisible(false);
+    ui->toolButtonInfo->setIcon(
+        style()->standardPixmap(QStyle::SP_MessageBoxInformation));
+    ui->toolButton_fileNam->setIcon(
+        style()->standardPixmap(QStyle::SP_DirOpenIcon));
+    ui->progressBar->setVisible(false);
     Messages = new messages();
-//    m_path=QCoreApplication::applicationDirPath ();
- m_path=QDir::homePath()+"/.kirtasse";
+    //    m_path=QCoreApplication::applicationDirPath ();
+    m_path = QDir::homePath() + "/.kirtasse";
     Messages->comboCharge(ui->comboBox);
 
-  if   ( QSqlDatabase::addDatabase("QODBC").isValid())
-    {
+    if (QSqlDatabase::addDatabase("QODBC").isValid()) {
 
-       m_db= QSqlDatabase::addDatabase("QODBC");
-  }else{
-       QMessageBox::information(this, "conection", "QODBC driver not loaded");
-       this->close();
- }
-
+        m_db = QSqlDatabase::addDatabase("QODBC");
+    } else {
+        QMessageBox::information(this, "conection", "QODBC driver not loaded");
+        this->close();
+    }
 }
-Dialogmdb::~Dialogmdb()
-{
-
-}
+Dialogmdb::~Dialogmdb() { }
 
 void Dialogmdb::on_toolButton_fileNam_clicked()
 {
-    QStringList fn = QFileDialog::getOpenFileNames(this, tr("Open File..."),
-                                              QString(), trUtf8("ملفات الشاملة (*.mdb *.bok);;كل الملفات (*)"));
-    if (!fn.isEmpty())
-    {
-       ui->listWidget->addItems(fn);
-
+    QStringList fn = QFileDialog::getOpenFileNames(
+        this, tr("Open File..."), QString(),
+        trUtf8("ملفات الشاملة (*.mdb *.bok);;كل الملفات (*)"));
+    if (!fn.isEmpty()) {
+        ui->listWidget->addItems(fn);
     }
 }
-
 
 void Dialogmdb::creatBook(QString fn)
 {
     listId.clear();
     QFile file;
-    if (!file.exists( fn)) //التاكد من وجود مجلد الكتاب
+    if (!file.exists(fn)) // التاكد من وجود مجلد الكتاب
     {
-        QMessageBox::information(this,trUtf8("خطأ"), trUtf8("غير موجود")+fn);
+        QMessageBox::information(this, trUtf8("خطأ"), trUtf8("غير موجود") + fn);
         return;
     }
 
     //***********************************************بدأ عملية الفتح والتحويل
 
-
-
-    m_db.setDatabaseName("DRIVER={Microsoft Access Driver (*.mdb)};FIL={MS Access};DBQ="+fn);
-
+    m_db.setDatabaseName(
+        "DRIVER={Microsoft Access Driver (*.mdb)};FIL={MS Access};DBQ=" + fn);
 
     if (m_db.open())
 
     {
-        if (fn.contains(".bok")){
+        if (fn.contains(".bok")) {
 
-            QSqlQuery  *modelsInfo;
-            modelsInfo=new QSqlQuery;
+            QSqlQuery* modelsInfo;
+            modelsInfo = new QSqlQuery;
             modelsInfo->exec("SELECT * FROM Main");
-            while (modelsInfo->next())
-            {
-                tableBook="b"+modelsInfo->record().field("BkId").value().toString();
-                tableTitle="t"+modelsInfo->record().field("BkId").value().toString();
-                Add_Book_Name=(modelsInfo->record().field("Bk").value().toString());
-                Add_Autor_Name=(modelsInfo->record().field("Auth").value().toString());
-                Add_Betaka=(modelsInfo->record().field("Betaka").value().toString());
+            while (modelsInfo->next()) {
+                tableBook = "b" + modelsInfo->record().field("BkId").value().toString();
+                tableTitle = "t" + modelsInfo->record().field("BkId").value().toString();
+                Add_Book_Name = (modelsInfo->record().field("Bk").value().toString());
+                Add_Autor_Name = (modelsInfo->record().field("Auth").value().toString());
+                Add_Betaka = (modelsInfo->record().field("Betaka").value().toString());
                 // QMessageBox::information(this,trUtf8("خطأ"),tableTitle);
             }
-        }else if(fn.contains(".mdb")){
-            tableBook="book";
-            tableTitle="title";
-            QFileInfo fi=fn;
-            Add_Book_Name=fi.fileName();
+        } else if (fn.contains(".mdb")) {
+            tableBook = "book";
+            tableTitle = "title";
+            QFileInfo fi = fn;
+            Add_Book_Name = fi.fileName();
         }
         // QMessageBox::information(this, "conection", "succided");
-        QSqlQuery  *models;
-        models=new QSqlQuery;
+        QSqlQuery* models;
+        models = new QSqlQuery;
 
-
-        models->exec("SELECT * FROM "+tableBook+" ORDER BY id ASC");
-        if (!models->record().field("nass").isValid() || !models->record().field("id").isValid()
-            || !models->record().field("page").isValid()){
+        models->exec("SELECT * FROM " + tableBook + " ORDER BY id ASC");
+        if (!models->record().field("nass").isValid() || !models->record().field("id").isValid() || !models->record().field("page").isValid()) {
             QMessageBox::information(this, "conection", "mdb non valid");
             this->setCursor(QCursor(Qt::ArrowCursor));
             return;
         }
 
-        //انشاء مجلد الكتاب******************************************
-        if (creatDir()==false){
+        // انشاء مجلد الكتاب******************************************
+        if (creatDir() == false) {
             return;
         }
         //******************************************************************
 
-        //بداية الكتابة في الوثيقة*************************************************
-        //ملف النصوص****************************************
+        // بداية الكتابة في الوثيقة*************************************************
+        // ملف النصوص****************************************
         QXmlStreamWriter stream;
-        QFile filx(m_path +"/"+m_bookDir+"/book.xml");
+        QFile filx(m_path + "/" + m_bookDir + "/book.xml");
         if (!filx.open(QFile::WriteOnly | QFile::Text)) {
             QApplication::restoreOverrideCursor();
-            return ;
+            return;
         }
         stream.setDevice(&filx);
         stream.setAutoFormatting(true);
@@ -151,30 +143,28 @@ void Dialogmdb::creatBook(QString fn)
         stream.writeStartElement("dataroot");
 
         ui->progressBar->setVisible(true);
-       ui->progressBar->setMaximum(0);
+        ui->progressBar->setMaximum(0);
         QTextCodec::setCodecForLocale(QTextCodec::codecForLocale());
-        QTextCodec *codec = QTextCodec::codecForName("Windows-1256");
+        QTextCodec* codec = QTextCodec::codecForName("Windows-1256");
         stream.setCodec(QTextCodec::codecForName("UTF-8"));
 
-        while (models->next())
-        {
-qApp->processEvents();
+        while (models->next()) {
+            qApp->processEvents();
             ui->progressBar->setValue(1);
 
             QByteArray string;
 
-            string=models->record().field("nass").value().toByteArray();
+            string = models->record().field("nass").value().toByteArray();
 
             QString nass = codec->toUnicode(string);
-            string=models->record().field("id").value().toByteArray();
-            QString id=codec->toUnicode(string);
-            string=models->record().field("part").value().toByteArray();
-            QString part=codec->toUnicode(string);
-            string=models->record().field("page").value().toByteArray();
-            QString page=codec->toUnicode(string);
+            string = models->record().field("id").value().toByteArray();
+            QString id = codec->toUnicode(string);
+            string = models->record().field("part").value().toByteArray();
+            QString part = codec->toUnicode(string);
+            string = models->record().field("page").value().toByteArray();
+            QString page = codec->toUnicode(string);
 
-
-            stream.writeStartElement("book");//"book" or "title"
+            stream.writeStartElement("book"); //"book" or "title"
             stream.writeTextElement("nass", nass);
             stream.writeTextElement("id", id);
             listId.append(id);
@@ -185,41 +175,40 @@ qApp->processEvents();
         stream.writeEndElement(); // dataroot
         stream.writeEndDocument();
         filx.close();
-        //ملف الفهرسة****************************************
-        QSqlQuery  *modeltitle;
-        modeltitle=new QSqlQuery;
-        modeltitle->exec("SELECT * FROM "+tableTitle+" ORDER BY id ASC");
-        QFile filt(m_path +"/"+m_bookDir+"/title.xml");
+        // ملف الفهرسة****************************************
+        QSqlQuery* modeltitle;
+        modeltitle = new QSqlQuery;
+        modeltitle->exec("SELECT * FROM " + tableTitle + " ORDER BY id ASC");
+        QFile filt(m_path + "/" + m_bookDir + "/title.xml");
         if (!filt.open(QFile::WriteOnly | QFile::Text)) {
             QApplication::restoreOverrideCursor();
-            return ;
+            return;
         }
         stream.setDevice(&filt);
         stream.setAutoFormatting(true);
         stream.writeStartDocument();
         stream.writeStartElement("dataroot");
-        while (modeltitle->next())
-        {
-qApp->processEvents();
+        while (modeltitle->next()) {
+            qApp->processEvents();
             ui->progressBar->setValue(1);
 
             QByteArray string;
-            string=modeltitle->record().field("tit").value().toByteArray();
+            string = modeltitle->record().field("tit").value().toByteArray();
             QString tit = codec->toUnicode(string);
 
-            string=modeltitle->record().field("lvl").value().toByteArray();
+            string = modeltitle->record().field("lvl").value().toByteArray();
             QString lvl = codec->toUnicode(string);
 
-            string=modeltitle->record().field("id").value().toByteArray();
+            string = modeltitle->record().field("id").value().toByteArray();
             QString id = codec->toUnicode(string);
-            int newid=listId.indexOf(id);
-            if (newid==-1){newid=0;}
-            QVariant dd= newid+1;
-            id=dd.toString();
+            int newid = listId.indexOf(id);
+            if (newid == -1) {
+                newid = 0;
+            }
+            QVariant dd = newid + 1;
+            id = dd.toString();
 
-
-
-            stream.writeStartElement("title");//"book" or "title"
+            stream.writeStartElement("title"); //"book" or "title"
             stream.writeTextElement("tit", tit);
             stream.writeTextElement("id", id);
             stream.writeTextElement("lvl", lvl);
@@ -228,36 +217,33 @@ qApp->processEvents();
         stream.writeEndElement(); // dataroot
         stream.writeEndDocument();
         filt.close();
-
     }
-    //اظافة معلومات الى المكتبة
+    // اظافة معلومات الى المكتبة
 
-
-    bool checked=false;
-    if (ui->checkBox_curan->checkState()==Qt::Checked) {
-        checked=true;
+    bool checked = false;
+    if (ui->checkBox_curan->checkState() == Qt::Checked) {
+        checked = true;
     }
-    Messages->m_pathCostum=m_path;
-    if (Messages->addNewBook(m_bookDir,Add_Book_Name,Add_Autor_Name,Add_Betaka,m_addGroupeId,checked)==false)
-    {
+    Messages->m_pathCostum = m_path;
+    if (Messages->addNewBook(m_bookDir, Add_Book_Name, Add_Autor_Name, Add_Betaka,
+            m_addGroupeId, checked)
+        == false) {
 
-        QMessageBox::information(this,trUtf8("خطأ"), trUtf8("ربما احد بيانات الكتاب خاطئة ") );
+        QMessageBox::information(this, trUtf8("خطأ"),
+            trUtf8("ربما احد بيانات الكتاب خاطئة "));
 
         return;
+    } else {
+        Messages->saveBookInfo(m_bookDir, Add_Book_Name, Add_Autor_Name,
+            Add_Betaka);
+
+        // QMessageBox::information(this,trUtf8("معلومات"),Add_Book_Name
+        // +"\n"+m_bookDir);
     }
-    else
-    {
-        Messages->saveBookInfo(m_bookDir,Add_Book_Name,Add_Autor_Name,Add_Betaka);
-
-
-
-       // QMessageBox::information(this,trUtf8("معلومات"),Add_Book_Name +"\n"+m_bookDir);
-
-    }
-    msgTitle=msgTitle+trUtf8("الكتاب :")+Add_Book_Name+trUtf8(" المسار :")+m_bookDir+"\n";
-    Add_Book_Name="";
-    Add_Autor_Name ="";
-    Add_Betaka="";
+    msgTitle = msgTitle + trUtf8("الكتاب :") + Add_Book_Name + trUtf8(" المسار :") + m_bookDir + "\n";
+    Add_Book_Name = "";
+    Add_Autor_Name = "";
+    Add_Betaka = "";
 
     m_db.close();
 }
@@ -265,98 +251,90 @@ qApp->processEvents();
 void Dialogmdb::on_comboBox_currentIndexChanged(int index)
 {
     QVariant idx;
-    idx=ui->comboBox->itemData(index);
-    m_addGroupeId=idx.toString();
-    m_addGroupeName= ui->comboBox->itemText(index);
-    if (idx.toString()=="1")
-    {
+    idx = ui->comboBox->itemData(index);
+    m_addGroupeId = idx.toString();
+    m_addGroupeName = ui->comboBox->itemText(index);
+    if (idx.toString() == "1") {
         ui->checkBox_curan->setVisible(true);
-    }
-    else{
+    } else {
         ui->checkBox_curan->setVisible(false);
         ui->checkBox_curan->setChecked(false);
     }
-
 }
-
-
-
 
 void Dialogmdb::on_buttonBox_clicked(QAbstractButton* button)
 {
-    if(ui->buttonBox->standardButton(button)==QDialogButtonBox::Ok)
-    {
-        int countItem=ui->listWidget->count();
-        if (countItem<1)
+    if (ui->buttonBox->standardButton(button) == QDialogButtonBox::Ok) {
+        int countItem = ui->listWidget->count();
+        if (countItem < 1)
             this->reject();
 
-
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-        for(int i=0;i<countItem;i++){
-            ui->label_6->setText(trUtf8(" الرجاء الانتظار جاري انشاء الكتاب")+QString::number(i)+" / "+ QString::number(countItem));
-            QString filname= ui->listWidget->item(i)->text();
+        for (int i = 0; i < countItem; i++) {
+            ui->label_6->setText(trUtf8(" الرجاء الانتظار جاري انشاء الكتاب") + QString::number(i) + " / " + QString::number(countItem));
+            QString filname = ui->listWidget->item(i)->text();
             creatBook(filname);
-qApp->processEvents();
-
+            qApp->processEvents();
         }
-         QApplication::restoreOverrideCursor();
-         if(!msgTitle.isEmpty()){
+        QApplication::restoreOverrideCursor();
+        if (!msgTitle.isEmpty()) {
 
-             QMessageBox msgBox;
-             msgBox.setText(trUtf8(" لقد تم انشاء الكتب التالية بنجاح داخل المجموعة :  ")+m_addGroupeName );
-             msgBox.setInformativeText(trUtf8("انقر على اظهار التفاصيل لمعرفة قائمة الكتب "));
-             msgBox.setDetailedText(msgTitle);
-             msgBox.setIcon(QMessageBox::Information);
-             msgBox.setLayoutDirection(Qt::RightToLeft);
-             msgBox.setWindowTitle(trUtf8("تعليمات"));
-             msgBox.setStandardButtons(QMessageBox::Ok);
-             msgBox.exec();
+            QMessageBox msgBox;
+            msgBox.setText(
+                trUtf8(" لقد تم انشاء الكتب التالية بنجاح داخل المجموعة :  ") + m_addGroupeName);
+            msgBox.setInformativeText(
+                trUtf8("انقر على اظهار التفاصيل لمعرفة قائمة الكتب "));
+            msgBox.setDetailedText(msgTitle);
+            msgBox.setIcon(QMessageBox::Information);
+            msgBox.setLayoutDirection(Qt::RightToLeft);
+            msgBox.setWindowTitle(trUtf8("تعليمات"));
+            msgBox.setStandardButtons(QMessageBox::Ok);
+            msgBox.exec();
 
-         } //msg
-         this->accept();
+        } // msg
+        this->accept();
     }
 }
 bool Dialogmdb::creatDir()
 {
-    QString newBooName=  Messages->geniratNewBookName(m_addGroupeId);
-       QDir newdir= m_path+"/"+ newBooName;
-       if (!newdir.exists()){
-           QDir dir(m_path );
-           dir.mkdir( newBooName);
-           m_bookDir=newBooName;
-           m_newPath=m_path+"/"+ newBooName;
-       }else{
-           bool exit=false;
-           int i=0;
-           while(exit==false)
-           {
-               i=i+1;
-               QVariant m=i;
-               QString path=m_path;
-               QDir newdir =path+"/"+ newBooName+"_"+m.toString();
-               if (newdir.exists())
-               {
-                   exit=false;
-               }
-               else{
-                   QDir dir(path );
-                   dir.mkdir( newBooName+"_"+ m.toString());
-                   m_bookDir=newBooName+"_"+ m.toString();
-                   m_newPath=path+"/"+ newBooName+"_"+ m.toString();
-                   exit=true;
-               }
-           }
-       }
-       return true;
+    QString newBooName = Messages->geniratNewBookName(m_addGroupeId);
+    QDir newdir = m_path + "/" + newBooName;
+    if (!newdir.exists()) {
+        QDir dir(m_path);
+        dir.mkdir(newBooName);
+        m_bookDir = newBooName;
+        m_newPath = m_path + "/" + newBooName;
+    } else {
+        bool exit = false;
+        int i = 0;
+        while (exit == false) {
+            i = i + 1;
+            QVariant m = i;
+            QString path = m_path;
+            QDir newdir = path + "/" + newBooName + "_" + m.toString();
+            if (newdir.exists()) {
+                exit = false;
+            } else {
+                QDir dir(path);
+                dir.mkdir(newBooName + "_" + m.toString());
+                m_bookDir = newBooName + "_" + m.toString();
+                m_newPath = path + "/" + newBooName + "_" + m.toString();
+                exit = true;
+            }
+        }
+    }
+    return true;
 }
 
 void Dialogmdb::on_toolButtonDelete_clicked()
 {
-    if (ui->listWidget->count()==0){return;}
-    QListWidgetItem *item=ui->listWidget->currentItem();
-    if (item->isSelected()){
+    if (ui->listWidget->count() == 0) {
+        return;
+    }
+    QListWidgetItem* item = ui->listWidget->currentItem();
+    if (item->isSelected()) {
 
-        int x=ui->listWidget->currentRow();
+        int x = ui->listWidget->currentRow();
         ui->listWidget->takeItem(x);
     }
 }
@@ -364,32 +342,35 @@ void Dialogmdb::on_toolButtonDelete_clicked()
 void Dialogmdb::on_toolButtonInfo_clicked()
 {
 
-    if (ui->listWidget->count()==0){return;}
-    QListWidgetItem *item=ui->listWidget->currentItem();
+    if (ui->listWidget->count() == 0) {
+        return;
+    }
+    QListWidgetItem* item = ui->listWidget->currentItem();
     if (!item->isSelected())
-       return;
+        return;
 
-    QString fn=ui->listWidget->currentItem()->text();
+    QString fn = ui->listWidget->currentItem()->text();
 
-    if (fn.contains(".bok")){
-        m_db.setDatabaseName("DRIVER={Microsoft Access Driver (*.mdb)};FIL={MS Access};DBQ="+fn);
-        if (m_db.open()){
-            QSqlQuery  *modelsInfo;
-            modelsInfo=new QSqlQuery;
+    if (fn.contains(".bok")) {
+        m_db.setDatabaseName(
+            "DRIVER={Microsoft Access Driver (*.mdb)};FIL={MS Access};DBQ=" + fn);
+        if (m_db.open()) {
+            QSqlQuery* modelsInfo;
+            modelsInfo = new QSqlQuery;
             modelsInfo->exec("SELECT * FROM Main");
-            while (modelsInfo->next())
-            {
+            while (modelsInfo->next()) {
 
-                QString titleName=(modelsInfo->record().field("Bk").value().toString());
-                QString AutorName=(modelsInfo->record().field("Auth").value().toString());
-                QString BetakaName=(modelsInfo->record().field("Betaka").value().toString());
-                QMessageBox::information(this,trUtf8("معلومات الكتاب"),titleName+"\n"+
-                                         AutorName+"\n"+
-                                         BetakaName+"\n");
+                QString titleName = (modelsInfo->record().field("Bk").value().toString());
+                QString AutorName = (modelsInfo->record().field("Auth").value().toString());
+                QString BetakaName = (modelsInfo->record().field("Betaka").value().toString());
+                QMessageBox::information(this, trUtf8("معلومات الكتاب"),
+                    titleName + "\n" + AutorName + "\n" + BetakaName + "\n");
             }
         }
-    }else if(fn.contains(".mdb")){
-        QMessageBox::information(this,trUtf8("معلومات الكتاب"),trUtf8("مالفات من نوع mdb لاتحمل معلومات عن الكتاب \n يمكنك اضافتها يدويا بعد اضافة الكتاب"));
-
+    } else if (fn.contains(".mdb")) {
+        QMessageBox::information(
+            this, trUtf8("معلومات الكتاب"),
+            trUtf8("مالفات من نوع mdb لاتحمل معلومات عن الكتاب \n يمكنك اضافتها "
+                   "يدويا بعد اضافة الكتاب"));
     }
 }

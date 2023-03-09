@@ -4,26 +4,23 @@
 #include <QDialog>
 #include <QTreeWidgetItem>
 namespace Ui {
-    class DialogActions;
+class DialogActions;
 }
 
-class DialogActions : public QDialog
-{
+class DialogActions : public QDialog {
     Q_OBJECT
 
 public:
-    explicit DialogActions(QWidget *parent = 0);
+    explicit DialogActions(QWidget* parent = 0);
     ~DialogActions();
-QList<QVariant >listActToAdd;
+    QList<QVariant> listActToAdd;
+
 private:
-    Ui::DialogActions *ui;
-
-
-
+    Ui::DialogActions* ui;
 
 public slots:
 
-     void setListActions(   QList<QAction *>*listActions,QList<QVariant >listToAdd);
+    void setListActions(QList<QAction*>* listActions, QList<QVariant> listToAdd);
 private slots:
 
     void on_toolButtonAdd_clicked();

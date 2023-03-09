@@ -1,7 +1,8 @@
 /****************************************************************************
 //   elkirtasse Copyright (C) 2010 yahia abouzakaria <yahiaui@gmail.com>
 //
-//      This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
+//      This program comes with ABSOLUTELY NO WARRANTY; for details type `show
+w'.
 //      This is free software, and you are welcome to redistribute it
 //      under certain conditions; type `show c' for details.
 //
@@ -29,39 +30,37 @@
 #ifndef ANIMATION_H
 #define ANIMATION_H
 
-
-
-#include <QtGui>
-#include <QObject>
-#include <QGraphicsView>
-#include <QGraphicsWidget>
+#include <QAction>
 #include <QGraphicsItem>
 #include <QGraphicsSceneMouseEvent>
-#include <QTreeWidget>
-#include <QLineEdit>
+#include <QGraphicsView>
+#include <QGraphicsWidget>
 #include <QLabel>
-#include <QAction>
+#include <QLineEdit>
+#include <QObject>
+#include <QTreeWidget>
+#include <QtGui>
 
-class Pixmap : public QGraphicsWidget
-{
+class Pixmap : public QGraphicsWidget {
     Q_OBJECT
 
 public:
-    Pixmap(const QPixmap &pix, QGraphicsItem *parent = 0)
-        : QGraphicsWidget(parent), orig(pix), p(pix)
+    Pixmap(const QPixmap& pix, QGraphicsItem* parent = 0)
+        : QGraphicsWidget(parent)
+        , orig(pix)
+        , p(pix)
     {
 
         setCacheMode(DeviceCoordinateCache);
         setAcceptHoverEvents(true);
     }
 
-
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
+    void paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*)
     {
         painter->drawPixmap(QPointF(), p);
     }
 
-    virtual void setGeometry(const QRectF &rect)
+    virtual void setGeometry(const QRectF& rect)
     {
         QGraphicsWidget::setGeometry(rect);
 
@@ -76,54 +75,54 @@ signals:
     void enter();
     void leave();
 
-
 protected:
-
-    void mousePressEvent(QGraphicsSceneMouseEvent *)
+    void mousePressEvent(QGraphicsSceneMouseEvent*)
     {
         emit pressed();
         update();
     }
-    void mouseReleaseEvent(QGraphicsSceneMouseEvent *)
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent*)
     {
         emit release();
         update();
     }
-    void hoverEnterEvent(  QGraphicsSceneHoverEvent *)
+    void hoverEnterEvent(QGraphicsSceneHoverEvent*)
     {
 
         emit enter();
         update();
-
     }
-    void hoverLeaveEvent ( QGraphicsSceneHoverEvent  *)
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent*)
     {
         emit leave();
         update();
     }
+
 private:
     QPixmap orig;
     QPixmap p;
-
 };
-class View : public QGraphicsView
-{
+class View : public QGraphicsView {
     Q_OBJECT
 public:
-    View( QWidget *parent) : QGraphicsView(parent) { }
+    View(QWidget* parent)
+        : QGraphicsView(parent)
+    {
+    }
     View();
     ~View();
-    QTreeWidget *treeView;
+    QTreeWidget* treeView;
     void chargePixmap();
-    QLineEdit *lineEdit;
-    QLabel *label;
+    QLineEdit* lineEdit;
+    QLabel* label;
     bool threeD;
-   // QComboBox *comboBox;
+    // QComboBox *comboBox;
     int recentNbr;
     enum { MaxRecentFiles = 15 };
-    QAction *recentFileActs[MaxRecentFiles];
+    QAction* recentFileActs[MaxRecentFiles];
+
 protected:
-    void resizeEvent(QResizeEvent *event)
+    void resizeEvent(QResizeEvent* event)
     {
         //        if (threeD==true){
         //            QGraphicsView::resizeEvent(event);
@@ -133,28 +132,29 @@ protected:
         //            fitInView(sceneRect(), Qt::IgnoreAspectRatio);
         //        }
         QGraphicsView::resizeEvent(event);
-        setAlignment(Qt::AlignVCenter|Qt::AlignHCenter);
+        setAlignment(Qt::AlignVCenter | Qt::AlignHCenter);
     }
-void keyPressEvent(QKeyEvent *event);
-void keyReleaseEvent(QKeyEvent *event);
+    void keyPressEvent(QKeyEvent* event);
+    void keyReleaseEvent(QKeyEvent* event);
+
 private:
-    QGraphicsScene *mscene;
-    #if QT_VERSION >= 0x040600
+    QGraphicsScene* mscene;
+#if QT_VERSION >= 0x040600
     QEasingCurve::Type curveType;
 #endif
     int itemCurant;
-    QList<Pixmap *> items;
-    QTimer  *m_timer ;
+    QList<Pixmap*> items;
+    QTimer* m_timer;
     bool m_right;
     bool isBook;
-     bool isThreeD;
+    bool isThreeD;
 public slots:
     void chargeLevelOne();
     void chargeRecent();
     void chargeEnrto();
 private slots:
-    void animChargePixmape(int level,int index,int indexParent);
-    void ThreeDChargePixmape(int level,int index,int indexParent);
+    void animChargePixmape(int level, int index, int indexParent);
+    void ThreeDChargePixmape(int level, int index, int indexParent);
     void animTeled();
     void animChargeLevelTow();
     void animItemOpenBook();
@@ -172,8 +172,8 @@ private slots:
     void comboItemOpenBook();
     void ThreeDcomboItemOpenBook();
     void animEtoile(QRect rect);
-       void animEtoileTitle();
-        void animEtoileBook();
+    void animEtoileTitle();
+    void animEtoileBook();
 };
 
 #endif // ANIMATION_H

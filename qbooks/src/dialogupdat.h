@@ -1,7 +1,8 @@
 /****************************************************************************
 //   elkirtasse Copyright (C) 2010 yahia abouzakaria <yahiaui@gmail.com>
 //
-//      This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
+//      This program comes with ABSOLUTELY NO WARRANTY; for details type `show
+w'.
 //      This is free software, and you are welcome to redistribute it
 //      under certain conditions; type `show c' for details.
 //
@@ -28,20 +29,18 @@
 ****************************************************************************/
 #ifndef DIALOGUPDAT_H
 #define DIALOGUPDAT_H
-#include <QDialog>
 #include "messages.h"
-namespace Ui
-{
-    class dialogupdat;
+#include <QDialog>
+namespace Ui {
+class dialogupdat;
 }
 
-class dialogupdat : public QDialog
-{
+class dialogupdat : public QDialog {
     Q_OBJECT
-    messages *Messages;
+    messages* Messages;
 
 public:
-    dialogupdat(QWidget *parent = 0);
+    dialogupdat(QWidget* parent = 0);
     ~dialogupdat();
     void recharge();
     QString BookName;
@@ -50,12 +49,13 @@ public:
     QString bookAutor;
     QString bookBetaka;
     QString m_pathCostum;
-  QString  m_newPathDir;
+    QString m_newPathDir;
     QString creatNewBook;
-private:
-    Ui::dialogupdat *ui;
 
-bool imgChanged;
+private:
+    Ui::dialogupdat* ui;
+
+    bool imgChanged;
 private slots:
     void on_pushButtonImg_clicked();
     void on_comboBox_group_currentIndexChanged(int index);

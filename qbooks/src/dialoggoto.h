@@ -1,7 +1,8 @@
 /****************************************************************************
 //   elkirtasse Copyright (C) 2010 yahia abouzakaria <yahiaui@gmail.com>
 //
-//      This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
+//      This program comes with ABSOLUTELY NO WARRANTY; for details type `show
+w'.
 //      This is free software, and you are welcome to redistribute it
 //      under certain conditions; type `show c' for details.
 //
@@ -28,31 +29,29 @@
 ****************************************************************************/
 #ifndef DIALOGGOTO_H
 #define DIALOGGOTO_H
+#include <QAbstractButton>
 #include <QDialog>
 #include <QXmlStreamReader>
-#include <QAbstractButton>
-namespace Ui
-{
-    class dialoggoto;
+namespace Ui {
+class dialoggoto;
 }
 
-class dialoggoto : public QDialog
-{
+class dialoggoto : public QDialog {
     Q_OBJECT
 
 public:
-    dialoggoto(QWidget *parent = 0);
+    dialoggoto(QWidget* parent = 0);
     ~dialoggoto();
-QString pathBook; //مسار الكتاب
-int counter;
-int rowCount;
+    QString pathBook; // مسار الكتاب
+    int counter;
+    int rowCount;
+
 private:
-    Ui::dialoggoto *ui;
+    Ui::dialoggoto* ui;
 
-QXmlStreamReader xml;
+    QXmlStreamReader xml;
 private slots:
-bool readXmlBook(QString spinPart,QString spinPage);
-
+    bool readXmlBook(QString spinPart, QString spinPage);
 
     void on_buttonBox_clicked(QAbstractButton* button);
 public slots:

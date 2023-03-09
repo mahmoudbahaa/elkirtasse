@@ -27,33 +27,32 @@
 
 QT_BEGIN_NAMESPACE
 
-class Ui_Dialog
-{
+class Ui_Dialog {
 public:
-    QVBoxLayout *verticalLayout;
-    QLabel *label_4;
-    QLabel *label;
-    QHBoxLayout *horizontalLayout_2;
-    QToolButton *toolButtonMain;
-    QLineEdit *lineEditPathMain;
-    QLabel *labelPathMain;
-    QFrame *line;
-    QLabel *label_2;
-    QHBoxLayout *horizontalLayout_3;
-    QToolButton *toolButtonBooks;
-    QLineEdit *lineEditBooks;
-    QLabel *labelPathBooks;
-    QFrame *line_2;
-    QLabel *label_3;
-    QHBoxLayout *horizontalLayout_4;
-    QToolButton *toolButtonBooksNew;
-    QLineEdit *lineEditPathBooksNew;
-    QLabel *labelPathBooksNew;
-    QHBoxLayout *horizontalLayout;
-    QDialogButtonBox *buttonBox;
-    QSpacerItem *horizontalSpacer;
+    QVBoxLayout* verticalLayout;
+    QLabel* label_4;
+    QLabel* label;
+    QHBoxLayout* horizontalLayout_2;
+    QToolButton* toolButtonMain;
+    QLineEdit* lineEditPathMain;
+    QLabel* labelPathMain;
+    QFrame* line;
+    QLabel* label_2;
+    QHBoxLayout* horizontalLayout_3;
+    QToolButton* toolButtonBooks;
+    QLineEdit* lineEditBooks;
+    QLabel* labelPathBooks;
+    QFrame* line_2;
+    QLabel* label_3;
+    QHBoxLayout* horizontalLayout_4;
+    QToolButton* toolButtonBooksNew;
+    QLineEdit* lineEditPathBooksNew;
+    QLabel* labelPathBooksNew;
+    QHBoxLayout* horizontalLayout;
+    QDialogButtonBox* buttonBox;
+    QSpacerItem* horizontalSpacer;
 
-    void setupUi(QDialog *Dialog)
+    void setupUi(QDialog* Dialog)
     {
         if (Dialog->objectName().isEmpty())
             Dialog->setObjectName(QString::fromUtf8("Dialog"));
@@ -83,7 +82,8 @@ public:
         palette.setBrush(QPalette::Disabled, QPalette::Base, brush);
         palette.setBrush(QPalette::Disabled, QPalette::Window, brush);
         label_4->setPalette(palette);
-        label_4->setStyleSheet(QString::fromUtf8("background-color: rgb(254, 255, 170);"));
+        label_4->setStyleSheet(
+            QString::fromUtf8("background-color: rgb(254, 255, 170);"));
         label_4->setWordWrap(true);
 
         verticalLayout->addWidget(label_4);
@@ -107,10 +107,10 @@ public:
 
         labelPathMain = new QLabel(Dialog);
         labelPathMain->setObjectName(QString::fromUtf8("labelPathMain"));
-        labelPathMain->setPixmap(QPixmap(QString::fromUtf8(":/images/image/edit-delete.png")));
+        labelPathMain->setPixmap(
+            QPixmap(QString::fromUtf8(":/images/image/edit-delete.png")));
 
         horizontalLayout_2->addWidget(labelPathMain);
-
 
         verticalLayout->addLayout(horizontalLayout_2);
 
@@ -140,10 +140,10 @@ public:
 
         labelPathBooks = new QLabel(Dialog);
         labelPathBooks->setObjectName(QString::fromUtf8("labelPathBooks"));
-        labelPathBooks->setPixmap(QPixmap(QString::fromUtf8(":/images/image/edit-delete.png")));
+        labelPathBooks->setPixmap(
+            QPixmap(QString::fromUtf8(":/images/image/edit-delete.png")));
 
         horizontalLayout_3->addWidget(labelPathBooks);
-
 
         verticalLayout->addLayout(horizontalLayout_3);
 
@@ -167,16 +167,17 @@ public:
         horizontalLayout_4->addWidget(toolButtonBooksNew);
 
         lineEditPathBooksNew = new QLineEdit(Dialog);
-        lineEditPathBooksNew->setObjectName(QString::fromUtf8("lineEditPathBooksNew"));
+        lineEditPathBooksNew->setObjectName(
+            QString::fromUtf8("lineEditPathBooksNew"));
 
         horizontalLayout_4->addWidget(lineEditPathBooksNew);
 
         labelPathBooksNew = new QLabel(Dialog);
         labelPathBooksNew->setObjectName(QString::fromUtf8("labelPathBooksNew"));
-        labelPathBooksNew->setPixmap(QPixmap(QString::fromUtf8(":/images/image/edit-delete.png")));
+        labelPathBooksNew->setPixmap(
+            QPixmap(QString::fromUtf8(":/images/image/edit-delete.png")));
 
         horizontalLayout_4->addWidget(labelPathBooksNew);
-
 
         verticalLayout->addLayout(horizontalLayout_4);
 
@@ -190,7 +191,7 @@ public:
         sizePolicy.setHeightForWidth(buttonBox->sizePolicy().hasHeightForWidth());
         buttonBox->setSizePolicy(sizePolicy);
         buttonBox->setOrientation(Qt::Horizontal);
-        buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
+        buttonBox->setStandardButtons(QDialogButtonBox::Cancel | QDialogButtonBox::Ok);
 
         horizontalLayout->addWidget(buttonBox);
 
@@ -198,9 +199,7 @@ public:
 
         horizontalLayout->addItem(horizontalSpacer);
 
-
         verticalLayout->addLayout(horizontalLayout);
-
 
         retranslateUi(Dialog);
         QObject::connect(buttonBox, SIGNAL(accepted()), Dialog, SLOT(accept()));
@@ -209,37 +208,102 @@ public:
         QMetaObject::connectSlotsByName(Dialog);
     } // setupUi
 
-    void retranslateUi(QDialog *Dialog)
+    void retranslateUi(QDialog* Dialog)
     {
-        Dialog->setWindowTitle(QApplication::translate("Dialog", "\330\252\330\255\331\210\331\212\331\204 \331\203\330\252\330\250 \330\247\331\204\330\264\330\247\331\205\331\204\330\251", 0, QApplication::UnicodeUTF8));
-        label_4->setText(QApplication::translate("Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'Hacen Casablanca Light'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p dir='rtl' style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" color:#ff0000;\">\330\252\331\206\330\250\331\212\331\207 : </span><span style=\" color:#000000;\">\330\247\330\260\330\247 \331\203\331\206\330\252 \330\252\330\263\330\252\330\256\330\257\331\205 \331\204\331\206\331\203\330\263 \330\252\330\243\331\203\330\257 \331\205\331\206 \331\210\330\254\331\210\330\257 mdbtools \330\271\331\204\331\211 \330\254\331\207\330\247\330\262\331\203</span></p>\n"
-"<p dir='rtl' style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0p"
-                        "x;\"><span style=\" color:#000000;\">\330\247\330\260\330\247 \331\203\330\247\331\206\330\252 \330\247\331\204\330\264\330\247\331\205\331\204\330\251 \331\205\330\253\330\250\330\252\330\251 \330\271\331\204\331\211 \330\254\331\207\330\247\330\262\331\203 \331\201\331\207\330\260\330\247 \330\247\331\201\330\266\331\204 \331\205\331\206 \330\252\330\255\331\210\331\212\331\204\331\207\330\247 \331\205\331\206 \330\247\331\204\331\202\330\261\330\265 </span></p>\n"
-"<p dir='rtl' style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" color:#000000;\">\330\247\330\260\330\247\331\203\330\247\331\206 \331\204\330\257\331\212\331\203 \331\202\330\261\330\265 \330\247\331\204\330\264\330\247\331\205\331\204\330\251 \330\247\331\204\330\247\330\265\330\257\330\247\330\261 3 \331\201\331\205\330\247 \331\201\331\210\331\202 \330\252\330\243\331\203\330\257 \331\205\331\206 \330\247\331\206 \331\203\331\204 \330\247\331\204\331\203\330\252"
-                        "\330\250 \331\202\330\257 \330\252\331\205 \330\247\330\256\330\261\330\247\330\254\331\207\330\247 \331\205\331\206 \330\247\331\204\330\247\330\261\330\264\331\212\331\201</span></p>\n"
-"<p align=\"right\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"></p></body></html>", 0, QApplication::UnicodeUTF8));
-        label->setText(QApplication::translate("Dialog", "\331\205\330\263\330\247\330\261 \331\205\331\204\331\201 \330\250\331\212\330\247\331\206\330\247\330\252 \330\247\331\204\330\264\330\247\331\205\331\204\330\251 main.mdb", 0, QApplication::UnicodeUTF8));
-        toolButtonMain->setText(QApplication::translate("Dialog", "...", 0, QApplication::UnicodeUTF8));
+        Dialog->setWindowTitle(QApplication::translate(
+            "Dialog",
+            "\330\252\330\255\331\210\331\212\331\204 \331\203\330\252\330\250 "
+            "\330\247\331\204\330\264\330\247\331\205\331\204\330\251",
+            0, QApplication::UnicodeUTF8));
+        label_4->setText(QApplication::translate(
+            "Dialog",
+            "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" "
+            "\"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+            "<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
+            "type=\"text/css\">\n"
+            "p, li { white-space: pre-wrap; }\n"
+            "</style></head><body style=\" font-family:'Hacen Casablanca Light'; "
+            "font-size:9pt; font-weight:400; font-style:normal;\">\n"
+            "<p dir='rtl' style=\" margin-top:0px; margin-bottom:0px; "
+            "margin-left:0px; margin-right:0px; -qt-block-indent:0; "
+            "text-indent:0px;\"><span style=\" "
+            "color:#ff0000;\">\330\252\331\206\330\250\331\212\331\207 : "
+            "</span><span style=\" color:#000000;\">\330\247\330\260\330\247 "
+            "\331\203\331\206\330\252 "
+            "\330\252\330\263\330\252\330\256\330\257\331\205 "
+            "\331\204\331\206\331\203\330\263 \330\252\330\243\331\203\330\257 "
+            "\331\205\331\206 \331\210\330\254\331\210\330\257 mdbtools "
+            "\330\271\331\204\331\211 "
+            "\330\254\331\207\330\247\330\262\331\203</span></p>\n"
+            "<p dir='rtl' style=\" margin-top:0px; margin-bottom:0px; "
+            "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0p"
+            "x;\"><span style=\" color:#000000;\">\330\247\330\260\330\247 "
+            "\331\203\330\247\331\206\330\252 "
+            "\330\247\331\204\330\264\330\247\331\205\331\204\330\251 "
+            "\331\205\330\253\330\250\330\252\330\251 \330\271\331\204\331\211 "
+            "\330\254\331\207\330\247\330\262\331\203 "
+            "\331\201\331\207\330\260\330\247 \330\247\331\201\330\266\331\204 "
+            "\331\205\331\206 "
+            "\330\252\330\255\331\210\331\212\331\204\331\207\330\247 "
+            "\331\205\331\206 \330\247\331\204\331\202\330\261\330\265 "
+            "</span></p>\n"
+            "<p dir='rtl' style=\" margin-top:0px; margin-bottom:0px; "
+            "margin-left:0px; margin-right:0px; -qt-block-indent:0; "
+            "text-indent:0px;\"><span style=\" "
+            "color:#000000;\">\330\247\330\260\330\247\331\203\330\247\331\206 "
+            "\331\204\330\257\331\212\331\203 \331\202\330\261\330\265 "
+            "\330\247\331\204\330\264\330\247\331\205\331\204\330\251 "
+            "\330\247\331\204\330\247\330\265\330\257\330\247\330\261 3 "
+            "\331\201\331\205\330\247 \331\201\331\210\331\202 "
+            "\330\252\330\243\331\203\330\257 \331\205\331\206 \330\247\331\206 "
+            "\331\203\331\204 \330\247\331\204\331\203\330\252"
+            "\330\250 \331\202\330\257 \330\252\331\205 "
+            "\330\247\330\256\330\261\330\247\330\254\331\207\330\247 "
+            "\331\205\331\206 "
+            "\330\247\331\204\330\247\330\261\330\264\331\212\331\201</span></p>\n"
+            "<p align=\"right\" style=\"-qt-paragraph-type:empty; margin-top:0px; "
+            "margin-bottom:0px; margin-left:0px; margin-right:0px; "
+            "-qt-block-indent:0; text-indent:0px;\"></p></body></html>",
+            0, QApplication::UnicodeUTF8));
+        label->setText(QApplication::translate(
+            "Dialog",
+            "\331\205\330\263\330\247\330\261 \331\205\331\204\331\201 "
+            "\330\250\331\212\330\247\331\206\330\247\330\252 "
+            "\330\247\331\204\330\264\330\247\331\205\331\204\330\251 main.mdb",
+            0, QApplication::UnicodeUTF8));
+        toolButtonMain->setText(
+            QApplication::translate("Dialog", "...", 0, QApplication::UnicodeUTF8));
         lineEditPathMain->setText(QString());
         labelPathMain->setText(QString());
-        label_2->setText(QApplication::translate("Dialog", "\331\205\330\263\330\247\330\261 \330\247\331\204\331\203\330\252\330\250 \331\205\330\254\331\204\330\257 books \330\247\331\204\330\260\331\212 \331\212\330\255\330\252\331\210\331\212 \331\203\330\252\330\250 \330\247\331\204\330\264\330\247\331\205\331\204\330\251", 0, QApplication::UnicodeUTF8));
-        toolButtonBooks->setText(QApplication::translate("Dialog", "...", 0, QApplication::UnicodeUTF8));
+        label_2->setText(QApplication::translate(
+            "Dialog",
+            "\331\205\330\263\330\247\330\261 "
+            "\330\247\331\204\331\203\330\252\330\250 "
+            "\331\205\330\254\331\204\330\257 books "
+            "\330\247\331\204\330\260\331\212 "
+            "\331\212\330\255\330\252\331\210\331\212 \331\203\330\252\330\250 "
+            "\330\247\331\204\330\264\330\247\331\205\331\204\330\251",
+            0, QApplication::UnicodeUTF8));
+        toolButtonBooks->setText(
+            QApplication::translate("Dialog", "...", 0, QApplication::UnicodeUTF8));
         lineEditBooks->setText(QString());
         labelPathBooks->setText(QString());
-        label_3->setText(QApplication::translate("Dialog", "\330\247\331\204\331\205\330\263\330\247\330\261 \330\247\331\204\330\260\331\212 \330\263\331\212\330\252\331\205 \330\247\331\206\330\264\330\247\330\241 \330\247\331\204\331\203\330\252\330\250 \331\201\331\212\331\207", 0, QApplication::UnicodeUTF8));
-        toolButtonBooksNew->setText(QApplication::translate("Dialog", "...", 0, QApplication::UnicodeUTF8));
+        label_3->setText(QApplication::translate(
+            "Dialog",
+            "\330\247\331\204\331\205\330\263\330\247\330\261 "
+            "\330\247\331\204\330\260\331\212 \330\263\331\212\330\252\331\205 "
+            "\330\247\331\206\330\264\330\247\330\241 "
+            "\330\247\331\204\331\203\330\252\330\250 \331\201\331\212\331\207",
+            0, QApplication::UnicodeUTF8));
+        toolButtonBooksNew->setText(
+            QApplication::translate("Dialog", "...", 0, QApplication::UnicodeUTF8));
         lineEditPathBooksNew->setText(QString());
         labelPathBooksNew->setText(QString());
     } // retranslateUi
-
 };
 
 namespace Ui {
-    class cdrom: public Ui_Dialog {};
+class cdrom : public Ui_Dialog { };
 } // namespace Ui
 
 QT_END_NAMESPACE

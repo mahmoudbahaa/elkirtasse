@@ -1,7 +1,8 @@
 /****************************************************************************
 //   elkirtasse Copyright (C) 2010 yahia abouzakaria <yahiaui@gmail.com>
 //
-//      This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
+//      This program comes with ABSOLUTELY NO WARRANTY; for details type `show
+w'.
 //      This is free software, and you are welcome to redistribute it
 //      under certain conditions; type `show c' for details.
 //
@@ -33,19 +34,19 @@
 #include <QDialog>
 
 namespace Ui {
-    class DialogConfigBooks;
+class DialogConfigBooks;
 }
 
-class DialogConfigBooks : public QDialog
-{
+class DialogConfigBooks : public QDialog {
     Q_OBJECT
-    messages *Messages;
+    messages* Messages;
+
 public:
-    explicit DialogConfigBooks(QWidget *parent = 0);
+    explicit DialogConfigBooks(QWidget* parent = 0);
     ~DialogConfigBooks();
-QString pathCostm;
+    QString pathCostm;
 public slots:
-void setPathCostum(QString path);
+    void setPathCostum(QString path);
 private slots:
     void on_comboBoxSection_activated(int index);
 
@@ -53,7 +54,7 @@ private slots:
 
     void on_toolButtonGroupTosection_clicked();
 
-    void on_treeWidgetCurGroup_itemSelectionChanged( );
+    void on_treeWidgetCurGroup_itemSelectionChanged();
 
     void on_toolButtonSectionAdd_clicked();
 
@@ -83,26 +84,23 @@ private slots:
 
     void on_toolButtonRenBkPath_clicked();
 
-
-
     void on_buttonBox_accepted();
 
     void on_toolButtonFindBKOld_clicked();
-void addbook(QTreeWidgetItem *itemNew,QTreeWidgetItem *item,QString name);
+    void addbook(QTreeWidgetItem* itemNew, QTreeWidgetItem* item, QString name);
 
+    void on_treeWidgetCurGroup_itemActivated(QTreeWidgetItem, int);
 
-void on_treeWidgetCurGroup_itemActivated(QTreeWidgetItem , int );
+    void on_treeWidgetCurGroup_itemClicked(QTreeWidgetItem, int);
 
-void on_treeWidgetCurGroup_itemClicked(QTreeWidgetItem , int );
-
-void on_toolButtonReloadAll_clicked();
+    void on_toolButtonReloadAll_clicked();
 
 private:
-    Ui::DialogConfigBooks *ui;
-      int indexGroup;
-      bool imgChanged;
-      QStringList listRenameBk;
- QString     pathCostmOld;
+    Ui::DialogConfigBooks* ui;
+    int indexGroup;
+    bool imgChanged;
+    QStringList listRenameBk;
+    QString pathCostmOld;
 };
 
 #endif // DIALOGCONFIGBOOKS_H

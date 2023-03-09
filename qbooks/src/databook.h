@@ -1,7 +1,8 @@
 /****************************************************************************
 //   elkirtasse Copyright (C) 2010 yahia abouzakaria <yahiaui@gmail.com>
 //
-//      This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
+//      This program comes with ABSOLUTELY NO WARRANTY; for details type `show
+w'.
 //      This is free software, and you are welcome to redistribute it
 //      under certain conditions; type `show c' for details.
 //
@@ -28,56 +29,56 @@
 ****************************************************************************/
 #ifndef DATABOOK_H
 #define DATABOOK_H
-#include <QObject>
 #include <QDomDocument>
-#include <QtGui>
+#include <QObject>
 #include <QTreeWidget>
+#include <QtGui>
 
-class databook : public QObject
-{
+class databook : public QObject {
     Q_OBJECT
 
 public:
-   // enum  { NumRows = 10};
-      static const int NumRows=10 ;
+    // enum  { NumRows = 10};
+    static const int NumRows = 10;
     databook();
     ~databook();
     bool isTefsir;
-     int newPosition[NumRows];
-   // int prevPosition[NumRows];
+    int newPosition[NumRows];
+    // int prevPosition[NumRows];
     int currentPosition[NumRows];
     int rowsCount[NumRows];
+
     int boocNumIndex;
-bool removeTechkile;
+    bool removeTechkile;
     QString bookNass[NumRows];
     QString bookPart[NumRows];
     QString bookPage[NumRows];
     QString bookCurentId[NumRows];
-
     QString m_currentBookPath[NumRows];
+
 public slots:
     bool getIfTefsir();
-    bool openBook(QString bookName,int position,QString bkpath);
+    bool openBook(QString bookName, int position, QString bkpath);
     void moveToPosition(int position);
-    bool findAya(QString soura,QString aya);
-    void updatPage(QString oldText,QString newText,bool fullText);
+    bool findAya(QString soura, QString aya);
+    void updatPage(QString oldText, QString newText, bool fullText);
     bool saveBook();
     void claerBook(int num);
 
-void insertPage(bool after);
-void removeCurPage();
-void treeOrganizFahrass(QTreeWidget *view,QString Bname);
+    void insertPage(bool after);
+    void removeCurPage();
+    void treeOrganizFahrass(QTreeWidget* view, QString Bname);
 
 private slots:
-     QString noTechkile(QString text) const;
-     QTreeWidgetItem* getItem(QTreeWidgetItem *item);
-  bool chargeList();
-   int getPositionID(QString id);
-private:
-  QString m_currentBookName[NumRows];
-    QDomDocument m_docBooK[NumRows];
-//QList<QDomDocument *> *listBook;
-QList<QString> listId;
+    QString noTechkile(QString text) const;
+    QTreeWidgetItem* getItem(QTreeWidgetItem* item);
+    bool chargeList();
+    int getPositionID(QString id);
 
+private:
+    QString m_currentBookName[NumRows];
+    QDomDocument m_docBooK[NumRows];
+    // QList<QDomDocument *> *listBook;
+    QList<QString> listId;
 };
 #endif // DATABOOK_H

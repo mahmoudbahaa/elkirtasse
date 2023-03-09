@@ -1,7 +1,8 @@
 /****************************************************************************
 //   elkirtasse Copyright (C) 2010 yahia abouzakaria <yahiaui@gmail.com>
 //
-//      This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
+//      This program comes with ABSOLUTELY NO WARRANTY; for details type `show
+w'.
 //      This is free software, and you are welcome to redistribute it
 //      under certain conditions; type `show c' for details.
 //
@@ -28,35 +29,33 @@
 ****************************************************************************/
 #ifndef MESSAGES_H
 #define MESSAGES_H
-#include <QObject>
+#include <QAction>
+#include <QComboBox>
 #include <QDomDocument>
+#include <QIcon>
+#include <QLabel>
+#include <QObject>
+#include <QTimer>
 #include <QTreeWidget>
 #include <QWidget>
-#include <QTimer>
-#include <QLabel>
-#include <QIcon>
-#include <QComboBox>
-#include <QAction>
 
 class QComboBox;
 class QProgressBar;
 class QPushButton;
 class QTextDocument;
-class messages : public QObject
-{
+class messages : public QObject {
     Q_OBJECT
 
 public:
-
     messages();
     ~messages();
 
-   // QDomDocument docfind;
-    QComboBox *comboGroup;
-    QTreeWidget *treeView;
+    // QDomDocument docfind;
+    QComboBox* comboGroup;
+    QTreeWidget* treeView;
 
     enum { MaxRecentFiles = 16 };
-    QAction *recentFileActs[MaxRecentFiles];
+    QAction* recentFileActs[MaxRecentFiles];
     QString infoBookTitle;
     QString infoBookAutor;
     QString infoBookBetaka;
@@ -64,39 +63,39 @@ public:
     QString m_pathCostum;
 
 public slots:
-    void treeChargeSoura(QTreeWidget *view);
-    void treeChargeJozaa(QTreeWidget *view);
-    void treeChargeFahrass(QTreeWidget *view,QString Bname);
-    QTreeWidgetItem *getItem(QTreeWidgetItem *item);
-    void treeChargeGroupe(QTreeWidget *view,int checked,bool asCombobox);
-    void treeUpdateGroupe(QTreeWidget *view,bool remove);
-    bool treeMenuRemoveBook(QString BKname,bool removall);
-    bool treeSaveGroupe(QTreeWidget *view);
+    void treeChargeSoura(QTreeWidget* view);
+    void treeChargeJozaa(QTreeWidget* view);
+    void treeChargeFahrass(QTreeWidget* view, QString Bname);
+    QTreeWidgetItem* getItem(QTreeWidgetItem* item);
+    void treeChargeGroupe(QTreeWidget* view, int checked, bool asCombobox);
+    void treeUpdateGroupe(QTreeWidget* view, bool remove);
+    bool treeMenuRemoveBook(QString BKname, bool removall);
+    bool treeSaveGroupe(QTreeWidget* view);
     void recentLoad();
-    void recentChange(QString Bname,QString Btitle,QString Baut,QString Bid,int nbr,bool isTefsir);
+    void recentChange(QString Bname, QString Btitle, QString Baut, QString Bid,
+        int nbr, bool isTefsir);
     void recentCharge();
     void recentSave();
-    bool fahrasSave(QTreeWidget *view,QString bkname);
+    bool fahrasSave(QTreeWidget* view, QString bkname);
 
     //*************************
 
-
-
     //***************
-    void comboCharge(QComboBox *combo);
-    bool addNewBook(QString bkpath,QString bktitle,QString bkauth,QString bkbetaka,QString groupid ,bool cheked);
+    void comboCharge(QComboBox* combo);
+    bool addNewBook(QString bkpath, QString bktitle, QString bkauth,
+        QString bkbetaka, QString groupid, bool cheked);
     //*****************************
 
-
     //****************favorite***************
-    void favorite_charge(QTreeWidget *view,QIcon icong,QIcon iconf);
-    void favorite_save(QTreeWidget *view);
+    void favorite_charge(QTreeWidget* view, QIcon icong, QIcon iconf);
+    void favorite_save(QTreeWidget* view);
     //************************************
-    bool treeviewItemRemove(QTreeWidget *view);
-     bool treeviewItemUp(QTreeWidget *view);
-    bool treeviewItemDown(QTreeWidget *view);
-    int genirateId(QTreeWidget *view);
-    bool saveBookInfo(QString bookname,QString title,QString author,QString betaka);
+    bool treeviewItemRemove(QTreeWidget* view);
+    bool treeviewItemUp(QTreeWidget* view);
+    bool treeviewItemDown(QTreeWidget* view);
+    int genirateId(QTreeWidget* view);
+    bool saveBookInfo(QString bookname, QString title, QString author,
+        QString betaka);
     bool loadBookInfo(QString bookname);
     QString geniratNewBookName(QString groupParent);
     //**********************load save result searsh
@@ -105,17 +104,14 @@ public slots:
 private slots:
 
     bool removeTempFiles(QString tempDir);
-    bool writeInDoc(QString tit,QString data,QString lvl);
-//*******************************
-
+    bool writeInDoc(QString tit, QString data, QString lvl);
+    //*******************************
 
 private:
-
- QString m_pathUser;
-QList<QString> listId;
+    QString m_pathUser;
+    QList<QString> listId;
 
     QDomDocument m_doc;
-    QDomDocument m_docR;                             //وثيقة الكتب السابقة
-
+    QDomDocument m_docR; // وثيقة الكتب السابقة
 };
 #endif // MESSAGES_H
