@@ -1,2 +1,9 @@
 *.o
 /.git
+.qtc_clangd*
+.qmake.stash
+*Makefile*
+elkirtasse.pro.user
+*build*
+*debug*
+*ui_*
